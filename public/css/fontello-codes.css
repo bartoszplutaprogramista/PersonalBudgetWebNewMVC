@@ -1,0 +1,9 @@
+
+.icon-home:before { content: '\e800'; } /* '' */
+.icon-wrench:before { content: '\e801'; } /* '' */
+.icon-basket:before { content: '\e802'; } /* '' */
+.icon-money:before { content: '\e803'; } /* '' */
+.icon-chart-bar:before { content: '\e805'; } /* '' */
+.icon-dollar-1:before { content: '\e806'; } /* '' */
+.icon-logout-1:before { content: '\f02d'; } /* '' */
+.icon-dollar:before { content: '\f155'; } /* '' */

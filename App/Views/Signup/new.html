@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}ZAREJESTRUJ SIĘ{% endblock %}
+
+{% block footer %}
+<script src="/js/hideShowPassword.min.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        /**
+         * Validate the form
+         */
+        $('#formSignup').validate({
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/account/validate-email'
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    validPassword: true
+                }
+            },
+            messages: {
+                email: {
+                    remote: 'email already taken'
+                }
+            }
+        });
+
+
+        /**
+         * Show password toggle button
+         */
+        $('#inputPassword').hideShowPassword({
+            show: false,
+            innerToggle: 'focus'
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block body %}
+<article>
+    <div class="row justify-content-center m-0 p-0">
+        <div class="col-sm-12 col-lg-4 col-xxl-3 log-in-or-register mt-3">
+            <p class="p-2"> Masz już konto? </p>
+            <div class="submit"><button type="button" onclick="document.location='personal-budget'"
+                    class="btn btn-warning">Zaloguj się</div>
+        </div>
+        <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
+            <form method="post" action="/signup/create" id="formSignup">
+                <p class="p-2"> Nie masz jeszcze konta? </p>
+                <div class="input-group w-75 set-margin mb-2">
+                    <input type="text" class="form-control" placeholder="Podaj nick" name="name" id="inputName"
+                        required>
+                </div>
+                <div class="input-group w-75 set-margin mb-2">
+                    <!--            <input type="text" class="form-control" placeholder="Podaj adres e-mail" name="email"
+                        id="inputEmail" required> -->
+                    <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" value="{{ user.email }}"
+                        required type="email" class="form-control" />
+                </div>
+                <div class="input-group w-75 set-margin">
+                    <input type="password" class="form-control" placeholder="Podaj hasło" name="password"
+                        id="inputPassword" required>
+                </div>
+                <div class="g-recaptcha margins center" data-sitekey=""></div>
+                <div class="submit"><button type="submit" class="btn btn-success">Zarejestruj się</button></div>
+            </form>
+        </div>
+    </div>
+</article>
+
+
+<!--
+<form method="post" action="/signup/create" id="formSignup">
+
+    <div class="form-group">
+        <label for="inputName">Name</label>
+        <input id="inputName" name="name" placeholder="Name" autofocus value="{{ user.name }}" required
+            class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}" required type="email"
+            class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" name="password" placeholder="Password" required
+            class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-default">Sign up</button>
+
+</form>
+-->
+
+{% endblock %}
