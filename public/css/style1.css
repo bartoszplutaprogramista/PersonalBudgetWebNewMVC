@@ -19,6 +19,12 @@ body
 	background-color: #373737;
 } */
 
+.errors-signup
+{
+	color: #cc6060;
+	font-size: 14px;
+}
+
 .table-center
 {
 	margin-left: auto;
