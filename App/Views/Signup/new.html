@@ -15,8 +15,7 @@
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2">
                     <div class="form-group w-75 set-margin">
-                        <input type="text" class="form-control" placeholder="Podaj nick" name="nameOfUser"
-                            id="inputName">
+                        <input type="text" class="form-control" placeholder="Podaj nick" name="name" id="inputName">
                         <p id="errorNameEmpty" class="errors-signup"></p>
                     </div>
                 </div>
@@ -33,6 +32,10 @@
                     <div class="form-group w-75 set-margin">
                         <input type="password" class="form-control" placeholder="Podaj hasło" name="password"
                             id="inputPassword">
+                        <p id="error4PasswordEmpty" class="errors-signup"></p>
+                        <p id="error5PasswordTooShort" class="errors-signup"></p>
+                        <p id="error6AtLeastOneLetter" class="errors-signup"></p>
+                        <p id="error7AtLeastOneNumber" class="errors-signup"></p>
                     </div>
                 </div>
                 <div class="g-recaptcha margins center" data-sitekey=""></div>

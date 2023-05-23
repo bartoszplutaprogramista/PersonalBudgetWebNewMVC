@@ -28,7 +28,7 @@ class User extends \Core\Model
     public $activation_token;
     public $remember_token;
     public $expiry_timestamp;
-  //  public $nameOfUser;
+    // public $nameOfUser;
 
 
     // public $hashed_token;
