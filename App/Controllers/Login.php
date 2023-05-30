@@ -78,6 +78,7 @@ class Login extends \Core\Controller
     {
         Flash::addMessage('Logout successful');
 
-        $this->redirect('/');
+      //  $this->redirect('/');
+        $this->redirect('/login');
     }
 }

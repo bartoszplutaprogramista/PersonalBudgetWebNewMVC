@@ -1,35 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'base_after_login.html' %}
 
-{% block title %}Strona startowa{% endblock %}
+{% block title %}Budżet Osobisty{% endblock %}
 
 {% block body %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <h2>Aplikacja Budżet Osobisty</h2>
+            <p class="p-content p-2">Budżet Osobisty pozwala na analizę tego jakie mamy przychody np. związane z
+                wynagrodzeniem, stypendium itd. oraz ile pieniędzy wydajemy na poszczególne rzeczy: opłaty związane z
+                mieszkaniem, kredytami, jedzeniem, rozrywką, remontami, wakacjami, ubezpieczeniami. Dzięki tej analizie
+                łatwiej jest nam zaoszczędzić pieniądze na nowy cel. np samochód. </p>
 
-<article>
-    <div class="row justify-content-center m-0 p-0">
-        <div class="col-sm-12 col-lg-4 col-xxl-3 log-in-or-register mt-3">
-            <form action="logIn.php" method="post">
-                <p class="p-2"> Masz już konto? </p>
-                <div class="input-group mb-3 w-75 set-margin">
-                    <input type="text" class="form-control" placeholder="Podaj login" name="username" required>
-                </div>
-                <div class="input-group w-75 set-margin">
-                    <input type="password" class="form-control" placeholder="Podaj hasło" name="password" required>
-                </div>
-                <div class="submit mt-3"><button type="submit" class="btn btn-warning">Zaloguj się</button></div>
-            </form>
-        </div>
-        <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
-            <!--         <form> -->
-
-            <p class="p-2"> Nie masz jeszcze konta? </p>
-            <div class="submit">
-                <button type="button" onclick="document.location='/signup/new'" class="btn btn-success ">Zarejestruj
-                    się</button>
-            </div>
-            <!--         </form> -->
-
+            <h2 class="mt-2">Jak działa Aplikacja Budżet Osobisty?</h2>
+            <p class="p-content p-2">Mamy do wyboru 4 główne opcje w aplikacji: dodaj przychód (możemy dodać np.:
+                wynagrodzenie, odsetki bankowe, sprzedaż na allegro, inne), dodaj wydatek (możemy dodać: sposób
+                płatności: gotówką, kartą debetową, kartą kredytową w następujących kategoriach: jedzenie, mieszkanie,
+                transport, telekomunikacja, opieka zdrowotna itp.), przeglądaj bilans (tutaj zaprezentowane jest
+                podsumowanie przychodów oraz wydatków w danym okresie dla danych kategorii) oraz ustawienia gdzie możemy
+                zmienić: adres e-mail lub hasło.</p>
         </div>
     </div>
-</article>
-
+</div>
 {% endblock %}
