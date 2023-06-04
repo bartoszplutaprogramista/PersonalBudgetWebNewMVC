@@ -21,7 +21,6 @@
 </head>
 
 <body>
-
     <div class="container-fluid">
         <header>
             <div class="row justify-content-center m-0 mb-2 p-0">
@@ -35,8 +34,19 @@
                     <p class="bo">Aplikacja do zarządzania budżetem osobistym</p>
                 </div>
             </div>
+
             <div class="row class-center col-xl-12 col-xxl-9 p-0">
-                <p class="display-right">Witaj hej
+                <div class="row class-center p-0">
+
+                    {% for message in flash_messages %}
+                    <!--          <div class="alert alert-{{ message.type }}"> -->
+                    <p class="display-center">
+                        {{ message.body }}
+                    </p>
+                    <!--        </div> -->
+                    {% endfor %}
+                </div>
+                <p class="display-right">Witaj
                     {{ current_user.name }}</p>
             </div>
             <div class="row justify-content-center m-0 p-0">
@@ -55,8 +65,8 @@
                                             class="icon-home"></i>Strona główna</a>
                                 </li>
                                 <li class="nav-item li-change-color">
-                                    <a class="nav-link active text-light py-3" aria-current="page" href="add-income"><i
-                                            class="icon-dollar"></i>Dodaj przychód</a>
+                                    <a class="nav-link active text-light py-3" aria-current="page"
+                                        href="/personalbudget/addincome"><i class="icon-dollar"></i>Dodaj przychód</a>
                                 </li>
                                 <li class="nav-item li-change-color">
                                     <a class="nav-link active text-light py-3" aria-current="page" href="add-expense"><i
@@ -94,6 +104,7 @@
         <main>
             <article>
                 {% block body2 %}
+
                 {% endblock %}
             </article>
         </main>
@@ -145,7 +156,7 @@
 
     <div class="container-fluid">
         <header>
-            <div class="row justify-content-center m-0 mb-4 p-0">
+            <div class="row justify-content-center m-0 mb-2 p-0">
                 <div class="col-xl-12 col-xxl-9">
                     <div class="p-0 mt-5 dispaly-as-flex">
                         <div class="text-center"><i class="icon-dollar-1"></i></div>
@@ -156,9 +167,19 @@
                     <p class="bo">Aplikacja do zarządzania budżetem osobistym</p>
                 </div>
             </div>
-            <div class="row class-center p-0">
-                <p class="display-center"></p>
+            <div class="row class-center col-xl-12 col-xxl-9 p-0">
+                <div class="row class-center p-0">
+
+                    {% for message in flash_messages %}
+                    <!--          <div class="alert alert-{{ message.type }}"> -->
+                    <p class="display-center">
+                        {{ message.body }}
+                    </p>
+                    <!--        </div> -->
+                    {% endfor %}
+                </div>
             </div>
+
         </header>
         <main>
             {% block body %}
