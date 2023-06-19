@@ -7,6 +7,7 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 
+#[\AllowDynamicProperties]
 /**
  * User model
  *
@@ -29,6 +30,11 @@ class User extends \Core\Model
     public $remember_token;
     public $expiry_timestamp;
     // public $nameOfUser;
+
+    // public $amountIncome;
+    // public $dateIncome;
+    // public $commentIncome;
+    // public $paymentCategoryIncomeName;
 
 
     // public $hashed_token;
@@ -122,6 +128,32 @@ class User extends \Core\Model
      *
      * @return boolean  True if the user was saved, false otherwise
      */
+
+//      public function getUserId()
+//      {
+ 
+//      //    $this->user = Auth::getUser();
+ 
+//    //      echo $this->user;
+ 
+//         //  $this->validate();
+ 
+//         //  $db = static::getDB();
+//         //  $queryId = $db->prepare('SELECT id FROM users WHERE email = :email');	
+//         //  $queryId->bindValue(':email', $this->email, PDO::PARAM_STR);
+//         //  $queryId->execute();
+     
+//         //  $userId = $queryId->fetch();
+ 
+//          echo "wartość emaila: ". $this->email;
+//          exit;
+//          // echo "user.email= ".$this->email;
+ 
+//   //       echo $userId['id'];
+ 
+
+//          return $userId;
+//      }
 
      public function save()
     {
