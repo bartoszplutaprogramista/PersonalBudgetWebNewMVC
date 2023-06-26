@@ -155,6 +155,19 @@ class User extends \Core\Model
 //          return $userId;
 //      }
 
+    public function getUserId($emailOfUser)
+    {
+
+        $db = static::getDB();
+        $queryId = $db->prepare('SELECT id FROM users WHERE email = :email');	
+        $queryId->bindValue(':email', $emailOfUser, PDO::PARAM_STR);
+        $queryId->execute();
+
+        $userId = $queryId->fetch();
+
+        return $userId['id'];
+    }
+
      public function save()
     {
 
