@@ -50,6 +50,11 @@ class personalBudget extends \Core\Controller
         View::renderTemplate('PersonalBudget/addIncome.html');
     }
 
+    public function addExpenseAction()
+    {
+        View::renderTemplate('PersonalBudget/addExpense.html');
+    }    
+
     public function newIncomeAction()
     {
     //     echo "Wartość email: ";
@@ -61,7 +66,7 @@ class personalBudget extends \Core\Controller
     //     // print_r($this->user, email);
     //     exit;
 
-    $this->user = Auth::getUser();  
+        $this->user = Auth::getUser();  
 
     // echo "Wartość email: ";
     // print_r ($this->user);
@@ -74,8 +79,22 @@ class personalBudget extends \Core\Controller
         }
     }
 
+    public function newExpenseAction()
+    {
+        $this->user = Auth::getUser();  
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->insertToExpenses($this->user)) {
+            $this->redirect('/personalbudget/successaddexpense');      
+        }
+    }
+
     public function successAddIncomeAction()
     {
         View::renderTemplate('PersonalBudget/successAddIncome.html');
+    }
+
+    public function successAddExpenseAction()
+    {
+        View::renderTemplate('PersonalBudget/successAddExpense.html');
     }
 }

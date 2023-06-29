@@ -220,4 +220,31 @@ class ModelPersonalBudget extends \Core\Model
         return false;
     }
 
+    public function insertToExpenses($user)
+    {
+        $array = get_object_vars($user);
+        $personalBudget = new ModelPersonalBudget($_POST);
+
+        $user = new User($_POST);
+        $userId = $user->getUserId($array['email']);
+
+        $paymentCategoryExpenseId = $personalBudget->getpaymentCategoryExpenseId($userId);
+
+        $db = static::getDB();
+
+        $amountExpense = $_POST['amountExpense'];
+        $dateExpense = $_POST['dateExpense'];
+        $commentExpense = $_POST['commentExpense'];
+
+        $queryExpense = $db->prepare('INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)');	
+		$queryExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+		$queryExpense->bindValue(':expense_category', $paymentCategoryExpenseId['id'], PDO::PARAM_INT);
+		$queryExpense->bindValue(':payment_method', $getPaymentId['id'], PDO::PARAM_INT);
+		$queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
+		$queryExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
+		$queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+		
+        return $queryExpense->execute();
+    }
+
 }
