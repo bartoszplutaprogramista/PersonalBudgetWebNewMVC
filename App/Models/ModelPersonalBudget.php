@@ -85,7 +85,7 @@ class ModelPersonalBudget extends \Core\Model
         $userId = $queryId->fetch();
     }
 
-    public static function queryIncomesNameDefault()
+    public static function getQueryIncomesNameDefault()
     {
         $db = static::getDB();
         $queryNameDefault = $db->prepare('SELECT name FROM incomes_category_default');	
@@ -96,12 +96,44 @@ class ModelPersonalBudget extends \Core\Model
         return $queryName;
     }
 
+    public static function getQueryExpensesNameDefault()
+    {
+        $db = static::getDB();
+        $queryNameExpenseCategoryDefault = $db->prepare('SELECT name FROM expenses_category_default');	
+        $queryNameExpenseCategoryDefault->execute();
+
+        $queryNameExpenses = $queryNameExpenseCategoryDefault->fetchAll();
+
+        return $queryNameExpenses;
+    }
+
+    // public static function getQueryNamePaymentMethodsDefault()
+    // {
+    //     $queryNamePaymentMethodsDefault = $db->prepare('SELECT name FROM payment_methods_default');	
+    //     $queryNamePaymentMethodsDefault->execute();
+
+    //     $queryNamePayment = $queryNamePaymentMethodsDefault->fetchAll();
+
+    //     return $queryNamePayment;
+    // }
+
+    public static function getQueryNamePaymentMethodsDefault()
+    {
+        $db = static::getDB();
+        $queryNamePaymentMethodsDefault = $db->prepare('SELECT name FROM payment_methods_default');	
+        $queryNamePaymentMethodsDefault->execute();
+
+        $queryNamePayment = $queryNamePaymentMethodsDefault->fetchAll();
+
+        return $queryNamePayment;
+    }   
+
     public function inserIncomesIntoIncomesCategoryAssignedToUsers($currentUserId)
     {
 
         $db = static::getDB();
 
-        $queryIncomesName = static::queryIncomesNameDefault();
+        $queryIncomesName = static::getQueryIncomesNameDefault();
 
         foreach ($queryIncomesName as $catName){
             $insertIntoAssignedToUsers = $db->prepare('INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:user_id, :name)');
@@ -110,6 +142,36 @@ class ModelPersonalBudget extends \Core\Model
             $insertIntoAssignedToUsers->execute();
         }
     }
+
+    public function insertExpensesIntoExpensesCategoryAssignedToUsers($currentUserId)
+    {
+
+        $db = static::getDB();
+
+        $queryExpensesName = static::getQueryExpensesNameDefault();
+        
+        foreach ($queryExpensesName as $catExpenseName){
+            $insertIntoExpensesCategoryAssignedToUsers = $db->prepare('INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:user_id, :name)');
+            $insertIntoExpensesCategoryAssignedToUsers->bindValue(':user_id', $currentUserId, PDO::PARAM_INT);
+            $insertIntoExpensesCategoryAssignedToUsers->bindValue(':name', "{$catExpenseName['name']}", PDO::PARAM_STR);
+            $insertIntoExpensesCategoryAssignedToUsers->execute();
+        }
+    }
+
+        ///////////////////
+    public function insertIntoPaymentMethodsAssignedToUsers($currentUserId) 
+    {
+        $db = static::getDB();
+
+        $queryPaymentName = static::getQueryNamePaymentMethodsDefault();
+
+        foreach ($queryPaymentName as $paymentMethods){
+            $insertIntoExpensesCategoryAssignedToUsers = $db->prepare('INSERT INTO payment_methods_assigned_to_users (user_id, name) VALUES (:user_id, :name)');
+            $insertIntoExpensesCategoryAssignedToUsers->bindValue(':user_id', $currentUserId, PDO::PARAM_INT);
+            $insertIntoExpensesCategoryAssignedToUsers->bindValue(':name', "{$paymentMethods['name']}", PDO::PARAM_STR);
+            $insertIntoExpensesCategoryAssignedToUsers->execute();
+        }   
+    }  
 
     // public function getUserId($emailOfUser)
     // {
@@ -220,6 +282,34 @@ class ModelPersonalBudget extends \Core\Model
         return false;
     }
 
+    public function getPaymentId($idOfUser)
+    {
+        $db = static::getDB();
+        $paymentName = $_POST['paymentMethod'];
+        $paymentMethod = $db->prepare('SELECT id FROM payment_methods_assigned_to_users WHERE name = :paymentName AND user_id = :userId');	
+		$paymentMethod->bindValue(':paymentName', $paymentName, PDO::PARAM_STR);
+		$paymentMethod->bindValue(':userId', $idOfUser, PDO::PARAM_INT);
+		$paymentMethod->execute();
+	
+		$getPaymentId = $paymentMethod->fetch();
+        
+        return $getPaymentId['id'];
+    }
+
+    public function getPaymentCategoryExpenseId($idOfUser)
+    {
+        $db = static::getDB();
+        $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
+        $queryPaymentCategoryExpense = $db->prepare('SELECT id FROM expenses_category_assigned_to_users WHERE name = :nameExpCat AND user_id = :userId');	
+		$queryPaymentCategoryExpense->bindValue(':nameExpCat', $paymentCategoryExpense, PDO::PARAM_STR);
+		$queryPaymentCategoryExpense->bindValue(':userId', $idOfUser, PDO::PARAM_INT);
+		$queryPaymentCategoryExpense->execute();
+
+		$paymentCategoryExpenseId  = $queryPaymentCategoryExpense -> fetch();
+        
+        return $paymentCategoryExpenseId['id'];
+    }
+
     public function insertToExpenses($user)
     {
         $array = get_object_vars($user);
@@ -228,7 +318,9 @@ class ModelPersonalBudget extends \Core\Model
         $user = new User($_POST);
         $userId = $user->getUserId($array['email']);
 
-        $paymentCategoryExpenseId = $personalBudget->getpaymentCategoryExpenseId($userId);
+        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId($userId);
+
+        $paymentId = $personalBudget->getPaymentId($userId);
 
         $db = static::getDB();
 
@@ -238,8 +330,8 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryExpense = $db->prepare('INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)');	
 		$queryExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
-		$queryExpense->bindValue(':expense_category', $paymentCategoryExpenseId['id'], PDO::PARAM_INT);
-		$queryExpense->bindValue(':payment_method', $getPaymentId['id'], PDO::PARAM_INT);
+		$queryExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
+		$queryExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
 		$queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
 		$queryExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
 		$queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);

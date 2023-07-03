@@ -60,6 +60,8 @@ class Signup extends \Core\Controller
             // echo "Wynosi: ".$array['email'];
             // exit;
             $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
+            $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
+            $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
 
             
 
