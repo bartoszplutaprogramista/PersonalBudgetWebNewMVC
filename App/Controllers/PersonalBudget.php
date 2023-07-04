@@ -53,7 +53,12 @@ class personalBudget extends \Core\Controller
     public function addExpenseAction()
     {
         View::renderTemplate('PersonalBudget/addExpense.html');
-    }    
+    } 
+
+    public function browseTheBalance()
+    {
+        View::renderTemplate('PersonalBudget/browseTheBalance.html');
+    }   
 
     public function newIncomeAction()
     {
@@ -87,6 +92,11 @@ class personalBudget extends \Core\Controller
             $this->redirect('/personalbudget/successaddexpense');      
         }
     }
+
+    public function newBrowseTheBalanceAction()
+    {
+        
+    }   
 
     public function successAddIncomeAction()
     {
