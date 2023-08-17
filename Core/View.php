@@ -2,6 +2,9 @@
 
 namespace Core;
 
+use \App\Auth;
+use \App\Models\User;
+
 /**
  * View
  *
@@ -56,15 +59,39 @@ class View
     {
         static $twig = null;
 
-        if ($twig === null) {
-            $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
-            $twig = new \Twig\Environment($loader);
-            //$loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/Views');
-            //$twig = new \Twig_Environment($loader);
-            $twig->addGlobal('current_user', \App\Auth::getUser());
-            $twig->addGlobal('flash_messages', \App\Flash::getMessages());
-        }
 
-        return $twig->render($template, $args);
+        $userValue = Auth::getUser();
+        // // if($mmm = Auth::getUser())
+        // // {
+
+            if($userValue !== null)
+            {
+                $array = get_object_vars($userValue);
+                $user_object = new User($_POST);
+                $userId = $user_object->getUserId($array['email']);
+            }
+
+        // print_r ($mmm);
+
+        
+
+        // $moja = \App\Models\ModelPersonalBudget::getQueryNameIncome($mmm);
+
+        // print_r ($moja);
+
+            if ($twig === null) {
+                $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
+                $twig = new \Twig\Environment($loader);
+                //$loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/Views');
+                //$twig = new \Twig_Environment($loader);
+                $twig->addGlobal('current_user', \App\Auth::getUser());
+                $twig->addGlobal('flash_messages', \App\Flash::getMessages());
+                if($userValue !== null){
+                    $twig->addGlobal('query_name_income', \App\Models\ModelPersonalBudget::getQueryNameIncome($userId));
+                }
+            }
+
+            return $twig->render($template, $args);
+        // }
     }
 }

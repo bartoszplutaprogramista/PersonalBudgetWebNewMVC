@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\ModelPersonalBudget;
+use \App\Models\User;
+
 
 
 use \App\Auth;
@@ -95,8 +97,36 @@ class personalBudget extends \Core\Controller
 
     public function newBrowseTheBalanceAction()
     {
+        $userValue = Auth::getUser();  
+        $array = get_object_vars($userValue);
+        $user_object = new User($_POST);
+        $userId = $user_object->getUserId($array['email']);
+
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->getQueryNameIncome($userId)) {
+            $this->redirect('/personalbudget/successbrowseselectedperiod');      
+        } 
+
+        // $array = get_object_vars($this->user);
+        // $user_object = new User($_POST);
+        // $userId = $user_object->getUserId($array['email']);
+
+        // echo "USER ID WYNOSI: ". $userId;
+
+
+        // $paymentMethod = $_POST['paymentMethod'];
         
-    }   
+        // if ($paymentMethod=='currentYear'){
+        //     if (\App\Models\ModelPersonalBudget::getQueryNameIncome($userId)) {
+        //         $this->redirect('/personalbudget/successbrowseselectedperiod');      
+        //     }       
+        // } 
+    }  
+
+    public function successBrowseSelectedPeriod()
+    {
+        View::renderTemplate('PersonalBudget/browseSelectedPeriod.html');
+    }
 
     public function successAddIncomeAction()
     {

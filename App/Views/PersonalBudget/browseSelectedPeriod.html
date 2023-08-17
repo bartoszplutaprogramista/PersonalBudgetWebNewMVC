@@ -3,19 +3,16 @@
 {% block title2 %}Dodaj przychód{% endblock %}
 
 {% block body2 %}
+
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS</h3>
             <div class="table-responsive">
-                <table class="table-center">
+                <table class="table-center my-table">
                     <thead>
                         <tr>
                             <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
-                                <?php 
-                                echo $dateFromTo;
-                            ?>
-
                             </th>
                         </tr>
                         <tr>
@@ -27,24 +24,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                            if($queryNameIncome->rowCount()>0){
-                            $i=1;
-                            foreach ($queryName as $incomesUser) {
-                                echo "<tr>
-                                        <td class=\"center-td\">$i</td>
-                                        <td>{$incomesUser['amount']}</td>
-                                        <td>{$incomesUser['date_of_income']}</td>
-                                        <td>{$incomesUser['name']}</td>
-                                        <td>{$incomesUser['income_comment']}</td>
-                                    </tr>";
-                                    $i++;
-                                }
-                            } else {
-                                echo "<tr><td colspan=\"6\" class=\"center-td\">
-                                Brak przychodów</td></tr>";											
-                            }
-                        ?>
+                        {% set myOrdinalNumber = 1 %}
+                        {% for income in query_name_income %}
+                        <tr>
+
+                            <td>{{ myOrdinalNumber }}</td>
+                            <td>{{ income.amount }}</td>
+                            <td>{{ income.date_of_income }}</td>
+                            <td>{{ income.name }}</td>
+                            <td>{{ income.income_comment }}</td>
+
+                        </tr>
+                        {% set myOrdinalNumber = myOrdinalNumber + 1 %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -53,10 +45,6 @@
                     <thead>
                         <tr>
                             <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
-                                <?php 
-                                echo $dateFromTo;
-                            ?>
-
                             </th>
                         </tr>
                         <tr>
@@ -69,26 +57,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                            if($queryNameExpense->rowCount()>0){
-                                $i=1;
-                                foreach ($queryExpense as $expensesUser) {
-                                    echo "<tr>
-                                            <td class=\"center-td\">$i</td>
-                                            <td>{$expensesUser['amn']}</td>
-                                            <td>{$expensesUser['dateExp']}</td>
-                                            <td>{$expensesUser['pay']}</td>
-                                            <td>{$expensesUser['excategory']}</td>
-                                            <td>{$expensesUser['comment']}</td>
-                                        </tr>";
-                                        $i++;
-                                }
-                            }else {
-                                echo "<tr><td colspan=\"6\" class=\"center-td\">
-                                Brak wydatków</td></tr>";								
-                            }
-                        
-                        ?>
+                        <tr>
+                            <td>$i</td>
+                            <td>{$expensesUser['amn']}</td>
+                            <td>{$expensesUser['dateExp']}</td>
+                            <td>{$expensesUser['pay']}</td>
+                            <td>{$expensesUser['excategory']}</td>
+                            <td>{$expensesUser['comment']}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -97,9 +73,6 @@
                     <thead>
                         <tr>
                             <th>Suma przychodów i wydatków w okresie od
-                                <?php 
-                                echo $dateFromTo;
-                            ?>
                             </th>
                         </tr>
                     </thead>
@@ -107,20 +80,13 @@
                         <tr>
                             <td>
                                 <p>Suma przychodów: <b>
-                                        <?php 
-                                    if($queryNameIncome->rowCount()>0)
-                                    echo $incomesSum['incSum'];
-                                    else echo "0";
-                                ?> zł</b></p>
+                                    </b></p>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <p>Suma wydatków: <b>
-                                        <?php
-                                    if($queryNameExpense->rowCount()>0) echo $expensesSum['expSum'];
-                                    else echo "0";
-                                ?> zł</b></p>
+                                    </b></p>
                             </td>
                         </tr>
                     </tbody>
