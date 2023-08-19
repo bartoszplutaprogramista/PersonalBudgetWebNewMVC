@@ -95,17 +95,35 @@ class personalBudget extends \Core\Controller
         }
     }
 
+    public static function dateFromToCurrentYear()
+    {
+        $dateCurrentYear = date("Y");
+        $currentDate=date("Y-m-d");
+        $dateFromTo = 	$dateCurrentYear."-01-01 do ".$currentDate;
+
+        return $dateFromTo;
+    }
+
     public function newBrowseTheBalanceAction()
     {
         $userValue = Auth::getUser();  
         $array = get_object_vars($userValue);
         $user_object = new User($_POST);
         $userId = $user_object->getUserId($array['email']);
+        $paymentMethod = $_POST['paymentMethod'];
 
-        $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->getQueryNameIncome($userId)) {
-            $this->redirect('/personalbudget/successbrowseselectedperiod');      
-        } 
+        // $personalBudget = new ModelPersonalBudget($_POST);
+        if ($paymentMethod=='currentYear'){
+
+            // $dateFromTo = personalBudget::dateFromToCurrentYear();
+
+            if ((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentYear($userId))) {
+                $this->redirect('/personalbudget/successbrowseselectedperiod');      
+            }
+            // elseif ($personalBudget->getQueryNameExpenseCurrentYear($userId)) {
+            //     $this->redirect('/personalbudget/successbrowseselectedperiod');      
+            // }
+        }
 
         // $array = get_object_vars($this->user);
         // $user_object = new User($_POST);

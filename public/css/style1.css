@@ -19,9 +19,24 @@ body
 	background-color: #373737;
 } */
 
+.ordinal-number
+{
+	width: 5%;
+}
+
+.column-incomes
+{
+	width: 23.75%;
+}
+
+.column-expenses
+{
+	width: 19%;
+}
+
 .my-table
 {
-	width: 80%;
+	width: 85%;
 }
 
 .errors-signup

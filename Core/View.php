@@ -87,7 +87,12 @@ class View
                 $twig->addGlobal('current_user', \App\Auth::getUser());
                 $twig->addGlobal('flash_messages', \App\Flash::getMessages());
                 if($userValue !== null){
-                    $twig->addGlobal('query_name_income', \App\Models\ModelPersonalBudget::getQueryNameIncome($userId));
+                    $twig->addGlobal('query_name_income_current_year', \App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentYear($userId));
+                    $twig->addGlobal('query_name_expense_current_year', \App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentYear($userId));
+                    $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSumCurrentYear($userId));
+                    $twig->addGlobal('query_name_expenses_sum_current_year', \App\Models\ModelPersonalBudget::expensesSumCurrentYear($userId));
+                    $twig->addGlobal('date_from_to_current_year', \App\Controllers\personalBudget::dateFromToCurrentYear());
+
                 }
             }
 

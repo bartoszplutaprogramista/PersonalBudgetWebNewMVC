@@ -13,29 +13,62 @@
                     <thead>
                         <tr>
                             <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
+                                {{ date_from_to_current_year }}
                             </th>
                         </tr>
                         <tr>
-                            <th>Lp</th>
-                            <th>Kwota (zł)</th>
-                            <th>Data</th>
-                            <th>Kategoria</th>
-                            <th>Komentarz</th>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-incomes">Kwota (zł)</th>
+                            <th class="column-incomes">Data</th>
+                            <th class="column-incomes">Kategoria</th>
+                            <th class="column-incomes">Komentarz</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% set myOrdinalNumber = 1 %}
-                        {% for income in query_name_income %}
+                        {% for income in query_name_income_current_year %}
                         <tr>
 
-                            <td>{{ myOrdinalNumber }}</td>
-                            <td>{{ income.amount }}</td>
-                            <td>{{ income.date_of_income }}</td>
-                            <td>{{ income.name }}</td>
-                            <td>{{ income.income_comment }}</td>
-
+                            <td class="ordinal-number">{{ myOrdinalNumber }}</td>
+                            <td class="column-incomes">{{ income.amount }}</td>
+                            <td class="column-incomes">{{ income.date_of_income }}</td>
+                            <td class="column-incomes">{{ income.name }}</td>
+                            <td class="column-incomes">{{ income.income_comment }}</td>
                         </tr>
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="table-center my-table">
+                    <thead>
+                        <tr>
+                            <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
+                                {{ date_from_to_current_year }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-expenses">Kwota (zł)</th>
+                            <th class="column-expenses">Data</th>
+                            <th class="column-expenses">Sposób płatności</th>
+                            <th class="column-expenses">Kategoria</th>
+                            <th class="column-expenses">Komentarz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set myOrdinalNumberExpenses_CurrentYear = 1 %}
+                        {% for expense in query_name_expense_current_year %}
+                        <tr>
+                            <td class="ordinal-number">{{ myOrdinalNumberExpenses_CurrentYear }}</td>
+                            <td class="column-expenses">{{ expense.amn }}</td>
+                            <td class="column-expenses">{{ expense.dateExp }}</td>
+                            <td class="column-expenses">{{ expense.pay }}</td>
+                            <td class="column-expenses">{{ expense.excategory }}</td>
+                            <td class="column-expenses">{{ expense.comment }}</td>
+                        </tr>
+                        {% set myOrdinalNumberExpenses_CurrentYear = myOrdinalNumberExpenses_CurrentYear + 1 %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -44,48 +77,20 @@
                 <table class="table-center">
                     <thead>
                         <tr>
-                            <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>Lp</th>
-                            <th>Kwota (zł)</th>
-                            <th>Data</th>
-                            <th>Sposób płatności</th>
-                            <th>Kategoria</th>
-                            <th>Komentarz</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>$i</td>
-                            <td>{$expensesUser['amn']}</td>
-                            <td>{$expensesUser['dateExp']}</td>
-                            <td>{$expensesUser['pay']}</td>
-                            <td>{$expensesUser['excategory']}</td>
-                            <td>{$expensesUser['comment']}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="table-responsive mt-4">
-                <table class="table-center">
-                    <thead>
-                        <tr>
-                            <th>Suma przychodów i wydatków w okresie od
+                            <th>Suma przychodów i wydatków w okresie od {{ date_from_to_current_year }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <p>Suma przychodów: <b>
+                                <p>Suma przychodów: {{ query_name_incomes_sum_current_year.incSum }}<b>
                                     </b></p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>Suma wydatków: <b>
+                                <p>Suma wydatków: {{ query_name_expenses_sum_current_year.expSum }}<b>
                                     </b></p>
                             </td>
                         </tr>
