@@ -95,6 +95,30 @@ class personalBudget extends \Core\Controller
         }
     }
 
+
+    public static function dateFromToCurrentMonth()
+    {
+        $dataHelpYearMonth = date("Y-m");
+        $currentDate=date("Y-m-d");
+
+        $dateFromTo = $dataHelpYearMonth."-01 do ".$currentDate; 
+
+        return $dateFromTo;
+    }
+
+    public static function dateFromToLastMonth()
+    {
+        $timeYear = date('Y', strtotime("-1 MONTH"));
+        $timeMonth = date('m', strtotime("-1 MONTH"));
+        $timeHowManyDays = date('t', strtotime("-1 MONTH"));
+
+        $dateFromTo = $timeYear."-".$timeMonth."-01 do ".$timeYear."-".$timeMonth."-".$timeHowManyDays;
+
+        return $dateFromTo;
+    }
+    
+
+
     public static function dateFromToCurrentYear()
     {
         $dateCurrentYear = date("Y");
@@ -103,6 +127,7 @@ class personalBudget extends \Core\Controller
 
         return $dateFromTo;
     }
+    
 
     public function newBrowseTheBalanceAction()
     {
@@ -113,12 +138,28 @@ class personalBudget extends \Core\Controller
         $paymentMethod = $_POST['paymentMethod'];
 
         // $personalBudget = new ModelPersonalBudget($_POST);
-        if ($paymentMethod=='currentYear'){
+
+        if($paymentMethod=='currentMonth'){
+            // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
+            {
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            }
+        }
+
+        elseif($paymentMethod=='lastMonth'){
+            // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
+            {
+                $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+            }
+        }
+
+        elseif ($paymentMethod=='currentYear'){
 
             // $dateFromTo = personalBudget::dateFromToCurrentYear();
 
-            if ((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentYear($userId))) {
-                $this->redirect('/personalbudget/successbrowseselectedperiod');      
+            // if ((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentYear($userId))) 
+            {
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');      
             }
             // elseif ($personalBudget->getQueryNameExpenseCurrentYear($userId)) {
             //     $this->redirect('/personalbudget/successbrowseselectedperiod');      
@@ -141,9 +182,19 @@ class personalBudget extends \Core\Controller
         // } 
     }  
 
-    public function successBrowseSelectedPeriod()
+    public function successBrowseSelectedPeriodCurrentMonth()
     {
-        View::renderTemplate('PersonalBudget/browseSelectedPeriod.html');
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html');
+    }
+
+    public function successBrowseSelectedPeriodLastMonth()
+    {
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodLastMonth.html');
+    }
+
+    public function successBrowseSelectedPeriodCurrentYear()
+    {
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentYear.html');
     }
 
     public function successAddIncomeAction()

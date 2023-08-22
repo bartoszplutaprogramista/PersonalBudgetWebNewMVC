@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title2 %}Dodaj przychód{% endblock %}
+{% block title2 %}Przeglądaj bilans dla bieżącego miesiąca{% endblock %}
 
 {% block body2 %}
 
@@ -13,7 +13,7 @@
                     <thead>
                         <tr>
                             <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
-                                {{ date_from_to_current_year }}
+                                {{ date_from_to_last_month }}
                             </th>
                         </tr>
                         <tr>
@@ -26,7 +26,7 @@
                     </thead>
                     <tbody>
                         {% set myOrdinalNumber = 1 %}
-                        {% for income in query_name_income_current_year %}
+                        {% for income in query_name_income_last_month %}
                         <tr>
 
                             <td class="ordinal-number">{{ myOrdinalNumber }}</td>
@@ -45,7 +45,7 @@
                     <thead>
                         <tr>
                             <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
-                                {{ date_from_to_current_year }}
+                                {{ date_from_to_last_month }}
                             </th>
                         </tr>
                         <tr>
@@ -58,18 +58,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% set myOrdinalNumberExpenses_CurrentYear = 1 %}
-                        {% for expense in query_name_expense_current_year %}
+                        {% if query_name_expense_last_month %}
+                        {% set myOrdinalNumberExpenses = 1 %}
+                        {% for expense in query_name_expense_last_month %}
                         <tr>
-                            <td class="ordinal-number">{{ myOrdinalNumberExpenses_CurrentYear }}</td>
+                            <td class="ordinal-number">{{ myOrdinalNumberExpenses }}</td>
                             <td class="column-expenses">{{ expense.amn }}</td>
                             <td class="column-expenses">{{ expense.dateExp }}</td>
                             <td class="column-expenses">{{ expense.pay }}</td>
                             <td class="column-expenses">{{ expense.excategory }}</td>
                             <td class="column-expenses">{{ expense.comment }}</td>
                         </tr>
-                        {% set myOrdinalNumberExpenses_CurrentYear = myOrdinalNumberExpenses_CurrentYear + 1 %}
+                        {% set myOrdinalNumberExpenses = myOrdinalNumberExpenses + 1 %}
                         {% endfor %}
+                        {% else %}
+                        Brak wydatków
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -77,20 +81,20 @@
                 <table class="table-center">
                     <thead>
                         <tr>
-                            <th>Suma przychodów i wydatków w okresie od {{ date_from_to_current_year }}
+                            <th>Suma przychodów i wydatków w okresie od {{ date_from_to_last_month }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <p>Suma przychodów: {{ query_name_incomes_sum_current_year.incSum }}<b>
+                                <p>Suma przychodów: {{ query_name_incomes_sum_last_month.incSum }}<b>
                                     </b></p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>Suma wydatków: {{ query_name_expenses_sum_current_year.expSum }}<b>
+                                <p>Suma wydatków: {{ query_name_expenses_sum_last_month.expSum }}<b>
                                     </b></p>
                             </td>
                         </tr>
