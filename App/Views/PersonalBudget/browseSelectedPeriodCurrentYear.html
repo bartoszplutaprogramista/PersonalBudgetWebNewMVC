@@ -25,6 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if query_name_income_current_year %}
                         {% set myOrdinalNumber = 1 %}
                         {% for income in query_name_income_current_year %}
                         <tr>
@@ -37,6 +38,11 @@
                         </tr>
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="center-td">Brak przychodów</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -58,6 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if query_name_expense_current_year %}
                         {% set myOrdinalNumberExpenses = 1 %}
                         {% for expense in query_name_expense_current_year %}
                         <tr>
@@ -70,6 +77,11 @@
                         </tr>
                         {% set myOrdinalNumberExpenses = myOrdinalNumberExpenses + 1 %}
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="center-td">Brak wydatków</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -84,14 +96,26 @@
                     <tbody>
                         <tr>
                             <td>
-                                <p>Suma przychodów: {{ query_name_incomes_sum_current_year.incSum }}<b>
-                                    </b></p>
+                                <p>Suma przychodów(zł):
+                                    {% if query_name_incomes_sum_current_year.incSum %}
+                                    <b> {{ query_name_incomes_sum_current_year.incSum }}
+                                    </b>
+                                    {% else %}
+                                    <b>0</b>
+                                    {% endif %}
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>Suma wydatków: {{ query_name_expenses_sum_current_year.expSum }}<b>
-                                    </b></p>
+                                <p>Suma wydatków (zł):
+                                    {% if query_name_expenses_sum_current_year.expSum %}
+                                    <b>{{ query_name_expenses_sum_current_year.expSum }}
+                                    </b>
+                                    {% else %}
+                                    <b>0</b>
+                                    {% endif %}
+                                </p>
                             </td>
                         </tr>
                     </tbody>

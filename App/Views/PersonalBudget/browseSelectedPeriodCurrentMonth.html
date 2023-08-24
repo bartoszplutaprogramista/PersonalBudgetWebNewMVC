@@ -25,6 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% if query_name_income_current_month %}
                         {% set myOrdinalNumber = 1 %}
                         {% for income in query_name_income_current_month %}
                         <tr>
@@ -37,6 +38,11 @@
                         </tr>
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="center-td">Brak przychodów</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -90,13 +96,19 @@
                     <tbody>
                         <tr>
                             <td>
-                                <p>Suma przychodów:<b> {{ query_name_incomes_sum_current_month.incSum }}
-                                    </b></p>
+                                <p>Suma przychodów (zł):
+                                    {% if query_name_incomes_sum_current_month.incSum %}
+                                    <b> {{ query_name_incomes_sum_current_month.incSum }}
+                                    </b>
+                                    {% else %}
+                                    <b>0</b>
+                                    {% endif %}
+                                </p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p>Suma wydatków:
+                                <p>Suma wydatków (zł):
                                     {% if query_name_expenses_sum_current_month.expSum %}
                                     <b>{{ query_name_expenses_sum_current_month.expSum }}
                                     </b>

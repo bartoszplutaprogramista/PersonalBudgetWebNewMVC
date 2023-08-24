@@ -143,6 +143,9 @@ class personalBudget extends \Core\Controller
             // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
             {
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+
+                // $variable= "currentMonth";
+                // return $variable;
             }
         }
 
