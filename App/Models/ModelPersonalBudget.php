@@ -208,6 +208,22 @@ class ModelPersonalBudget extends \Core\Model
         return $expensesSum;
     }
 
+    public static function dateFromToSelectedPeriodDate1()
+    {
+        $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
+
+        return $dateFdateSelectedPeriod1romTo;
+    }
+
+    public static function dateFromToSelectedPeriodDate2()
+    {
+        $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
+
+        return $dateSelectedPeriod2;
+    } 
+
+    
+
 
 
     //////////////////////////
@@ -686,137 +702,137 @@ class ModelPersonalBudget extends \Core\Model
         return $queryExpense->execute();
     }
     
-    public function displayCurrentMonth(){
-        $dateFromTo = $dataHelpYearMonth."-01 do ".$currentDate; 
+    // public function displayCurrentMonth(){
+    //     $dateFromTo = $dataHelpYearMonth."-01 do ".$currentDate; 
 
-		$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income ASC');
-		$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
-		$queryNameIncome->execute();
+	// 	$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income ASC');
+	// 	$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
+	// 	$queryNameIncome->execute();
 
-		$queryName = $queryNameIncome->fetchAll();
+	// 	$queryName = $queryNameIncome->fetchAll();
 
-		$queryNameExpense = $db->prepare('SELECT 
-		ex.amount AS amn,
-		ex.date_of_expense AS dateExp,
-		pay.name AS pay,
-		exCat.name AS excategory,
-		ex.expense_comment AS comment
-		FROM expenses_category_assigned_to_users AS exCat 
-		INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
-		INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
-		WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth 
-		ORDER BY date_of_expense ASC');
-		$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameExpense->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
-		$queryNameExpense->execute();
+	// 	$queryNameExpense = $db->prepare('SELECT 
+	// 	ex.amount AS amn,
+	// 	ex.date_of_expense AS dateExp,
+	// 	pay.name AS pay,
+	// 	exCat.name AS excategory,
+	// 	ex.expense_comment AS comment
+	// 	FROM expenses_category_assigned_to_users AS exCat 
+	// 	INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
+	// 	INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
+	// 	WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth 
+	// 	ORDER BY date_of_expense ASC');
+	// 	$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameExpense->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
+	// 	$queryNameExpense->execute();
 
-		$queryExpense = $queryNameExpense->fetchAll();
+	// 	$queryExpense = $queryNameExpense->fetchAll();
 
-		$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth');
-		$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumIncomes->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
-		$querySumIncomes->execute();
+	// 	$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth');
+	// 	$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumIncomes->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
+	// 	$querySumIncomes->execute();
 
-		$incomesSum = $querySumIncomes->fetch();
+	// 	$incomesSum = $querySumIncomes->fetch();
 
-		$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth');
-		$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumExpenses->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
-		$querySumExpenses->execute();
+	// 	$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth');
+	// 	$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumExpenses->bindValue(':dataHelpCurrentMonth', $dataHelpCurrentMonth, PDO::PARAM_STR);
+	// 	$querySumExpenses->execute();
 
-		$expensesSum = $querySumExpenses->fetch();
-    }
+	// 	$expensesSum = $querySumExpenses->fetch();
+    // }
 
-    public function displayLastMonth(){
-        $timeHowManyDays = date('t', strtotime("-1 MONTH"));
-		$timeMonth = date('m', strtotime("-1 MONTH"));
-		$timeYear = date('Y', strtotime("-1 MONTH"));
+    // public function displayLastMonth(){
+    //     $timeHowManyDays = date('t', strtotime("-1 MONTH"));
+	// 	$timeMonth = date('m', strtotime("-1 MONTH"));
+	// 	$timeYear = date('Y', strtotime("-1 MONTH"));
 
-		$dateFromTo = $timeYear."-".$timeMonth."-01 do ".$timeYear."-".$timeMonth."-".$timeHowManyDays;
+	// 	$dateFromTo = $timeYear."-".$timeMonth."-01 do ".$timeYear."-".$timeMonth."-".$timeHowManyDays;
 		
-		$fullDateLastMonth = $timeYear."-".$timeMonth."%";
+	// 	$fullDateLastMonth = $timeYear."-".$timeMonth."%";
 
-		$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpLastMonth ORDER BY date_of_income ASC');
-		$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameIncome->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
-		$queryNameIncome->execute();
+	// 	$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpLastMonth ORDER BY date_of_income ASC');
+	// 	$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameIncome->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
+	// 	$queryNameIncome->execute();
 
-		$queryName = $queryNameIncome->fetchAll();
+	// 	$queryName = $queryNameIncome->fetchAll();
 		
-		$queryNameExpense = $db->prepare('SELECT 
-		ex.amount AS amn,
-		ex.date_of_expense AS dateExp,
-		pay.name AS pay,
-		exCat.name AS excategory,
-		ex.expense_comment AS comment
-		FROM expenses_category_assigned_to_users AS exCat 
-		INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
-		INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
-		WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpLastMonth 
-		ORDER BY date_of_expense ASC');
-		$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameExpense->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
-		$queryNameExpense->execute();
+	// 	$queryNameExpense = $db->prepare('SELECT 
+	// 	ex.amount AS amn,
+	// 	ex.date_of_expense AS dateExp,
+	// 	pay.name AS pay,
+	// 	exCat.name AS excategory,
+	// 	ex.expense_comment AS comment
+	// 	FROM expenses_category_assigned_to_users AS exCat 
+	// 	INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
+	// 	INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
+	// 	WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpLastMonth 
+	// 	ORDER BY date_of_expense ASC');
+	// 	$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameExpense->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
+	// 	$queryNameExpense->execute();
 
-		$queryExpense = $queryNameExpense->fetchAll();
+	// 	$queryExpense = $queryNameExpense->fetchAll();
 
-		$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpLastMonth');
-		$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumIncomes->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
-		$querySumIncomes->execute();
+	// 	$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpLastMonth');
+	// 	$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumIncomes->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
+	// 	$querySumIncomes->execute();
 
-		$incomesSum = $querySumIncomes->fetch();
+	// 	$incomesSum = $querySumIncomes->fetch();
 
-		$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpLastMonth');
-		$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumExpenses->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
-		$querySumExpenses->execute();
+	// 	$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpLastMonth');
+	// 	$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumExpenses->bindValue(':dataHelpLastMonth', $fullDateLastMonth, PDO::PARAM_STR);
+	// 	$querySumExpenses->execute();
 
-		$expensesSum = $querySumExpenses->fetch();
-    }
+	// 	$expensesSum = $querySumExpenses->fetch();
+    // }
 
-    public function displayCurrentYear(){
-        $dateFromTo = 	$dateCurrentYear."-01-01 do ".$currentDate;
-		$fullDateCurrentYear = $dateCurrentYear."%";
+    // public function displayCurrentYear(){
+    //     $dateFromTo = 	$dateCurrentYear."-01-01 do ".$currentDate;
+	// 	$fullDateCurrentYear = $dateCurrentYear."%";
 
-		$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentYear ORDER BY date_of_income ASC');
-		$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameIncome->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
-		$queryNameIncome->execute();
+	// 	$queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentYear ORDER BY date_of_income ASC');
+	// 	$queryNameIncome->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameIncome->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
+	// 	$queryNameIncome->execute();
 
-		$queryName = $queryNameIncome->fetchAll();
+	// 	$queryName = $queryNameIncome->fetchAll();
 
-		$queryNameExpense = $db->prepare('SELECT 
-		ex.amount AS amn,
-		ex.date_of_expense AS dateExp,
-		pay.name AS pay,
-		exCat.name AS excategory,
-		ex.expense_comment AS comment
-		FROM expenses_category_assigned_to_users AS exCat 
-		INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
-		INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
-		WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentYear 
-		ORDER BY date_of_expense ASC');
-		$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$queryNameExpense->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
-		$queryNameExpense->execute();
+	// 	$queryNameExpense = $db->prepare('SELECT 
+	// 	ex.amount AS amn,
+	// 	ex.date_of_expense AS dateExp,
+	// 	pay.name AS pay,
+	// 	exCat.name AS excategory,
+	// 	ex.expense_comment AS comment
+	// 	FROM expenses_category_assigned_to_users AS exCat 
+	// 	INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
+	// 	INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
+	// 	WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentYear 
+	// 	ORDER BY date_of_expense ASC');
+	// 	$queryNameExpense->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$queryNameExpense->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
+	// 	$queryNameExpense->execute();
 
-		$queryExpense = $queryNameExpense->fetchAll();
+	// 	$queryExpense = $queryNameExpense->fetchAll();
 
-		$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpCurrentYear');
-		$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumIncomes->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
-		$querySumIncomes->execute();
+	// 	$querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpCurrentYear');
+	// 	$querySumIncomes->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumIncomes->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
+	// 	$querySumIncomes->execute();
 
-		$incomesSum = $querySumIncomes->fetch();
+	// 	$incomesSum = $querySumIncomes->fetch();
 
-		$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpCurrentYear');
-		$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
-		$querySumExpenses->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
-		$querySumExpenses->execute();
+	// 	$querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpCurrentYear');
+	// 	$querySumExpenses->bindValue(':userId', $_SESSION['userId'], PDO::PARAM_INT);
+	// 	$querySumExpenses->bindValue(':dataHelpCurrentYear', $fullDateCurrentYear, PDO::PARAM_STR);
+	// 	$querySumExpenses->execute();
 
-		$expensesSum = $querySumExpenses->fetch();
-    }
+	// 	$expensesSum = $querySumExpenses->fetch();
+    // }
 
 }

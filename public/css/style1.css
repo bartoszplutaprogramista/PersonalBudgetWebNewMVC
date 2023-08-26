@@ -126,6 +126,11 @@ td, th
 	margin-right: auto;
 }
 
+.choose-the-date
+{
+	font-size: 16px;
+}
+
 .success
 {
 	margin-top: 50px;

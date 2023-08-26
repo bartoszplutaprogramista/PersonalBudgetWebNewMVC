@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Dodaj przychód{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <h3>PRZEGLĄDAJ BILANS</h3>
+            <p><b>Wybierz okres czasu:</b></p>
+            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2">
+                <div class="bd-highlight balance-width">
+                    <!-- <p>Wybierz okres czasu:</p> -->
+                </div>
+                <div class="bd-highlight balance-width">
+                    <form action="/personalbudget/newbrowsethebalance" method="post">
+                        <div class="mb-3">
+                            <label for="theDate1" class="form-label choose-the-date">Początek okresu:</label>
+                            <input type="date" class="form-control" id="theDate1" min="2000-01-01"
+                                name="dateSelectedPeriod1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="theDate2" class="form-label choose-the-date">Koniec okresu:</label>
+                            <input type="date" class="form-control" id="theDate2" min="2000-01-01"
+                                name="dateSelectedPeriod2">
+                        </div>
+                        <div class="mt-4 submit">
+                            <button type="submit" class="btn btn-warning btn-lg">Wyświetl bilans</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

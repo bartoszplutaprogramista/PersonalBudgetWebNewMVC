@@ -22,6 +22,8 @@ use \App\Flash;
 class personalBudget extends \Core\Controller
 {
     public $user;
+    // public $paymentMethodPublic;
+    // public $paymentMethodBoolean;
 
     /**
      * Require the user to be authenticated before giving access to all methods in the controller
@@ -127,15 +129,77 @@ class personalBudget extends \Core\Controller
 
         return $dateFromTo;
     }
+
+    // public static function dateFromToSelectedPeriodDate1()
+    // {
+    //     $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
+
+    //     return $dateFdateSelectedPeriod1romTo;
+    // }
+
+    // public static function dateFromToSelectedPeriodDate2()
+    // {
+    //     $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
+
+    //     return $dateSelectedPeriod2;
+    // }
+
     
+
+
+   
+    // public function returnWhichPeriodOfTime()
+    // {
+    //     if (isset($paymentMethodPublic))
+    //         return $this->paymentMethodPublic;
+    // }
+
+    // public function setWhichMonth($value)
+    // {
+    //     $this->paymentMethodPublic = $value;
+
+        
+    //   //  $paymentMethod = $_POST['paymentMethod'];
+    //     // if($paymentMethod=='currentMonth') return true;
+    //     // else return false;
+        
+    // }
+
+    // public function returnPaymentMethodBoolean()
+    // {
+    //     return $this->paymentMethodBoolean;
+    // }
+
+
+    // public function setPaymentMethodBoolean($value)
+    // {
+    //     $this->paymentMethodBoolean = $value;
+    // }
 
     public function newBrowseTheBalanceAction()
     {
+        $wartosc = false;
         $userValue = Auth::getUser();  
         $array = get_object_vars($userValue);
         $user_object = new User($_POST);
         $userId = $user_object->getUserId($array['email']);
         $paymentMethod = $_POST['paymentMethod'];
+
+
+
+        // $personalBudget = new personalBudget($_POST);
+
+        // if($paymentMethod){
+        //     $wartosc = true;
+        //     $personalBudget->setPaymentMethodBoolean($wartosc);
+        // }
+
+        // $personalBudget->setWhichMonth($paymentMethod);
+
+        // if (isset($paymentMethodPublic))
+           
+        // echo "paymentMethodPublic: ".$personalBudget->paymentMethodPublic;
+        //     exit;
 
         // $personalBudget = new ModelPersonalBudget($_POST);
 
@@ -143,6 +207,12 @@ class personalBudget extends \Core\Controller
             // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
             {
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+
+               
+
+                // functionCurrentMonth($paymentMethod);
+
+          //      functionCurrentMonth();
 
                 // $variable= "currentMonth";
                 // return $variable;
@@ -168,6 +238,10 @@ class personalBudget extends \Core\Controller
             //     $this->redirect('/personalbudget/successbrowseselectedperiod');      
             // }
         }
+        elseif ($paymentMethod=='selectedPeriod'){
+            $this->redirect('/personalbudget/browseselectedperiodprocessing');
+        }
+        
 
         // $array = get_object_vars($this->user);
         // $user_object = new User($_POST);
@@ -199,6 +273,12 @@ class personalBudget extends \Core\Controller
     {
         View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentYear.html');
     }
+
+    public function browseselectedperiodprocessing()
+    {
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodProcessingChooseTheDate.html');
+    }
+    
 
     public function successAddIncomeAction()
     {
