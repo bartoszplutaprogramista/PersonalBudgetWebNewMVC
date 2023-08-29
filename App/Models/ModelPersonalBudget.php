@@ -208,19 +208,37 @@ class ModelPersonalBudget extends \Core\Model
         return $expensesSum;
     }
 
-    public static function dateFromToSelectedPeriodDate1()
-    {
-        $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
+    ///////////////////SELECTED PERIOD//////////////////
 
-        return $dateFdateSelectedPeriod1romTo;
+    public static function getStartDateSelectedPeriod()
+    {
+        if (isset($_SESSION['start_date']))
+        return $_SESSION['start_date'];
+    }
+    
+    public static function getEndDateSelectedPeriod()
+    {
+        if (isset($_SESSION['end_date']))
+        return $_SESSION['end_date'];
     }
 
-    public static function dateFromToSelectedPeriodDate2()
+    public static function getSelectedPeriodQueryNameIncome($userId)
     {
-        $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $queryNameSelectedPeriod = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2 ORDER BY date_of_income ASC');
+        $queryNameSelectedPeriod->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
+        $queryNameSelectedPeriod->execute();
 
-        return $dateSelectedPeriod2;
-    } 
+        $queryName = $queryNameSelectedPeriod->fetchAll();
+
+        return $queryName;
+    }
+
+
 
     
 

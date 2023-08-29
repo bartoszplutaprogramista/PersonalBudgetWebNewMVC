@@ -130,6 +130,20 @@ class personalBudget extends \Core\Controller
         return $dateFromTo;
     }
 
+    public static function dateFromToSelectedPeriodDate1()
+    {
+        $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
+
+        return $dateFdateSelectedPeriod1romTo;
+    }
+
+    public static function dateFromToSelectedPeriodDate2()
+    {
+        $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
+
+        return $dateSelectedPeriod2;
+    } 
+
     // public static function dateFromToSelectedPeriodDate1()
     // {
     //     $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
@@ -257,7 +271,18 @@ class personalBudget extends \Core\Controller
         //         $this->redirect('/personalbudget/successbrowseselectedperiod');      
         //     }       
         // } 
-    }  
+    } 
+    
+    public function newSelectedPeriod()
+    {
+        $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
+        $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
+
+        $_SESSION['start_date'] = $dateSelectedPeriod1;
+        $_SESSION['end_date'] = $dateSelectedPeriod2;
+
+        $this->redirect('/personalbudget/successselectedperiodchoosethedate');        
+    }
 
     public function successBrowseSelectedPeriodCurrentMonth()
     {
@@ -272,6 +297,11 @@ class personalBudget extends \Core\Controller
     public function successBrowseSelectedPeriodCurrentYear()
     {
         View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentYear.html');
+    }
+
+    public function successSelectedPeriodChooseTheDate()
+    {
+        View::renderTemplate('PersonalBudget/successSelectedPeriodChooseTheDate.html');
     }
 
     public function browseselectedperiodprocessing()
