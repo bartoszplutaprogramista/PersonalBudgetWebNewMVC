@@ -237,7 +237,63 @@ class ModelPersonalBudget extends \Core\Model
 
         return $queryName;
     }
+    public static function getSelectedPeriodQueryNameExpense($userId)
+    {
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $queryNameSelectedPeriodExpense = $db->prepare('SELECT 
+        ex.amount AS amn,
+        ex.date_of_expense AS dateExp,
+        pay.name AS pay,
+        exCat.name AS excategory,
+        ex.expense_comment AS comment
+        FROM expenses_category_assigned_to_users AS exCat 
+        INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
+        INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
+        WHERE ex.user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2
+        ORDER BY date_of_expense ASC');
+        $queryNameSelectedPeriodExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
+        $queryNameSelectedPeriodExpense->execute();
+    
+        $queryExpensePeriod = $queryNameSelectedPeriodExpense->fetchAll();
 
+        return $queryExpensePeriod;
+    }
+
+    public static function incomesSelectedPeriodSum($userId)
+    {
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2');
+        $querySumIncomes->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumIncomes->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $querySumIncomes->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
+        $querySumIncomes->execute();
+    
+        $incomesSum = $querySumIncomes->fetch();
+        
+        return $incomesSum;
+    }
+
+    public static function expensesSelectedPeriodSum($userId)
+    {
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2');
+        $querySumExpenses->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumExpenses->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $querySumExpenses->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
+        $querySumExpenses->execute();
+    
+        $expensesSum = $querySumExpenses->fetch();   
+        
+        return $expensesSum;
+    }
 
 
     

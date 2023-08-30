@@ -217,9 +217,10 @@ class personalBudget extends \Core\Controller
 
         // $personalBudget = new ModelPersonalBudget($_POST);
 
-        if($paymentMethod=='currentMonth'){
+        if($paymentMethod=='currentMonth')
             // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
             {
+                $_SESSION['currentMonth'] = "currentMonth";
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
 
                
@@ -231,11 +232,12 @@ class personalBudget extends \Core\Controller
                 // $variable= "currentMonth";
                 // return $variable;
             }
-        }
+
 
         elseif($paymentMethod=='lastMonth'){
             // if((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentMonth($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentMonth($userId)))
             {
+                $_SESSION['lastMonth'] = "lastMonth";
                 $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
             }
         }
@@ -246,6 +248,7 @@ class personalBudget extends \Core\Controller
 
             // if ((\App\Models\ModelPersonalBudget::getQueryNameIncomeCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::getQueryNameExpenseCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::incomesSumCurrentYear($userId))&&(\App\Models\ModelPersonalBudget::expensesSumCurrentYear($userId))) 
             {
+                $_SESSION['currentYear'] = "currentYear";
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');      
             }
             // elseif ($personalBudget->getQueryNameExpenseCurrentYear($userId)) {
@@ -278,6 +281,7 @@ class personalBudget extends \Core\Controller
         $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
         $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
 
+        $_SESSION['selectedPeriod'] = "selectedPeriod";
         $_SESSION['start_date'] = $dateSelectedPeriod1;
         $_SESSION['end_date'] = $dateSelectedPeriod2;
 

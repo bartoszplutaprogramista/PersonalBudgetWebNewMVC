@@ -66,9 +66,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if query_name_expense_current_year %}
+                        {% if query_name_expenses_selected_period %}
                         {% set myOrdinalNumberExpenses = 1 %}
-                        {% for expense in query_name_expense_current_year %}
+                        {% for expense in query_name_expenses_selected_period %}
                         <tr>
                             <td class="ordinal-number">{{ myOrdinalNumberExpenses }}</td>
                             <td class="column-expenses">{{ expense.amn }}</td>
@@ -100,8 +100,8 @@
                         <tr>
                             <td>
                                 <p>Suma przychodów(zł):
-                                    {% if query_name_incomes_sum_current_year.incSum %}
-                                    <b> {{ query_name_incomes_sum_current_year.incSum }}
+                                    {% if query_name_incomes_sum_selected_period.incSum %}
+                                    <b> {{ query_name_incomes_sum_selected_period.incSum }}
                                     </b>
                                     {% else %}
                                     <b>0</b>
@@ -112,12 +112,58 @@
                         <tr>
                             <td>
                                 <p>Suma wydatków (zł):
-                                    {% if query_name_expenses_sum_current_year.expSum %}
-                                    <b>{{ query_name_expenses_sum_current_year.expSum }}
+                                    {% if query_name_expenses_sum_selected_period.expSum %}
+                                    <b>{{ query_name_expenses_sum_selected_period.expSum }}
                                     </b>
                                     {% else %}
                                     <b>0</b>
                                     {% endif %}
+
+
+
+
+                                    <br>
+                                    income current month:
+                                    {% if query_name_income_current_month %}
+                                    {% for incometryCurrentMonth in query_name_income_current_month %}
+                                    {{ incometryCurrentMonth.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+                                    <br>
+                                    income last month
+                                    {% if query_name_income_last_month %}
+                                    {% for incometryLastMonth in query_name_income_last_month %}
+                                    {{ incometryLastMonth.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+                                    <br>
+                                    income current year
+                                    {% if query_name_income_current_year %}
+                                    {% for incometryCurrentYear in query_name_income_current_year %}
+                                    {{ incometryCurrentYear.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+
+                                    <br>
+                                    income selected period
+                                    {% if query_name_incomes_selected_period %}
+                                    {% for incometryCurrentYear in query_name_incomes_selected_period %}
+                                    {{ incometryCurrentYear.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+
                                 </p>
                             </td>
                         </tr>

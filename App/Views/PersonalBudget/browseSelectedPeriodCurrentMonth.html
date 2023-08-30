@@ -115,6 +115,39 @@
                                     {% else %}
                                     <b>0</b>
                                     {% endif %}
+
+
+
+
+                                    <br>
+                                    income current month:
+                                    {% if query_name_income_current_month %}
+                                    {% for incometryCurrentMonth in query_name_income_current_month %}
+                                    {{ incometryCurrentMonth.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+                                    <br>
+                                    income last month
+                                    {% if query_name_income_last_month %}
+                                    {% for incometryLastMonth in query_name_income_last_month %}
+                                    {{ incometryLastMonth.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
+
+                                    <br>
+                                    income current year
+                                    {% if query_name_income_current_year %}
+                                    {% for incometryCurrentYear in query_name_income_current_year %}
+                                    {{ incometryCurrentYear.amount }}
+                                    {% endfor %}
+                                    {% else %} nic
+                                    {% endif %}
+                                    <br>
                                 </p>
                             </td>
                         </tr>
