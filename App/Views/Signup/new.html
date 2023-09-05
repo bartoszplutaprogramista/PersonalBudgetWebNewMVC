@@ -11,12 +11,14 @@
                     class="btn btn-warning">Zaloguj się</div>
         </div>
         <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
-            <form method="post" action="/signup/create" id="formSignup" onsubmit="return check()" name="form">
+            <form method="post" action="/signup/create" id="formSignup" name="form">
+                <!-- <form method="post" action="/signup/create" id="formSignup" onsubmit="return check()" name="form"> -->
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2">
                     <div class="form-group w-75 set-margin">
                         <input type="text" class="form-control" placeholder="Podaj nick" name="name" id="inputName">
-                        <p id="errorNameEmpty" class="errors-signup"></p>
+                        <!-- <div class="error"></div> -->
+                        <!-- <p id="errorNameEmpty" class="errors-signup"></p> -->
                     </div>
                 </div>
                 <div class="input-group mb-2">
@@ -24,18 +26,22 @@
                         <!--            <input type="text" class="form-control" placeholder="Podaj adres e-mail" name="email"
                             id="inputEmail" required> -->
                         <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" class="form-control" />
-                        <p id="error2EmailEmpty" class="errors-signup"></p>
-                        <p id="error3IncorrectEmail" class="errors-signup"></p>
+                        <!-- <div class="error"></div> -->
+                        <!-- <p id="error2EmailEmpty" class="errors-signup"></p>
+                        <p id="error3IncorrectEmail" class="errors-signup"></p> -->
                     </div>
                 </div>
-                <div class="input-group">
-                    <div class="form-group w-75 set-margin">
-                        <input type="password" class="form-control" placeholder="Podaj hasło" name="password"
-                            id="inputPassword">
-                        <p id="error4PasswordEmpty" class="errors-signup"></p>
+                <!-- <div class="input-group"> -->
+                <div>
+                    <!-- <div class="form-group w-75 set-margin"> -->
+                    <div class="w-75 set-margin">
+                        <input type="password" class="form-control  login-field  login-field-password"
+                            placeholder="Podaj hasło" name="password" id="inputPassword">
+                        <!-- <div class="error"></div> -->
+                        <!-- <p id="error4PasswordEmpty" class="errors-signup"></p>
                         <p id="error5PasswordTooShort" class="errors-signup"></p>
                         <p id="error6AtLeastOneLetter" class="errors-signup"></p>
-                        <p id="error7AtLeastOneNumber" class="errors-signup"></p>
+                        <p id="error7AtLeastOneNumber" class="errors-signup"></p> -->
                     </div>
                 </div>
                 <div class="g-recaptcha margins center" data-sitekey=""></div>
@@ -50,7 +56,77 @@
 {% block footer %}
 <script src="/js/hideShowPassword.min.js"></script>
 <script src="/js/app.js"></script>
-<script src="/js/my.js"></script>
+<script>
+    $(document).ready(function () {
+
+        /**
+         * Validate the form
+         */
+        $('#formSignup').validate({
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/account/validate-email'
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    validPassword: true
+                }
+            },
+            messages: {
+                email: {
+                    remote: 'Email zajęty',
+                    required: 'Pole wymagane',
+                    email: 'Wprowadź poprawny email'
+                },
+                password: {
+                    required: 'Pole wymagane',
+                    minlength: 'Wprowadź minimum 6 znaków'
+                },
+                name: {
+                    required: 'Pole wymagane'
+                }
+            }
+            // errorElement: 'div',
+            // errorLabelContainer: '.error'
+        });
+
+
+        /**
+         * Show password toggle button
+         */
+        // $('#inputPassword').css({
+        //     'margin': '0',
+        //     'color': 'yellow'
+        // });
+
+        $('#inputPassword').hidePassword(true, {
+            toggle: {
+                verticalAlign: 'top'
+            }
+        });
+
+        // $('#inputPassword').showPassword('focus', {
+        //     toggle: {
+        //         className: 'my-toggle'
+        //     }
+        // });
+
+        // $('#inputPassword').hideShowPassword({
+        //     show: false,
+        //     toggle: {
+        //         verticalAlign: 'top'
+        //         // offset: 4
+        //     },
+        //     innerToggle: 'focus'
+        // });
+    });
+</script>
+
+<!-- <script src="/js/my.js"></script> -->
 
 
 
