@@ -158,6 +158,8 @@ a:active {
 
 .error
 {
+	margin-top: 5px;
+	/* margin-bottom: 0px;  */
 	color: #cc6060;
 	font-size: 14px;
 }
@@ -256,6 +258,12 @@ a:active {
 /* .sum
 {
 	width: 300px;
+} */
+
+/* input 
+{
+	margin: 0;
+	padding: 0;
 } */
 
 p

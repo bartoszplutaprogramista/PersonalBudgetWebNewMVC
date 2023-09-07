@@ -14,29 +14,33 @@
             <form method="post" action="/signup/create" id="formSignup" name="form">
                 <!-- <form method="post" action="/signup/create" id="formSignup" onsubmit="return check()" name="form"> -->
                 <p class="p-2"> Nie masz jeszcze konta? </p>
-                <div class="input-group mb-2">
-                    <div class="form-group w-75 set-margin">
-                        <input type="text" class="form-control" placeholder="Podaj nick" name="name" id="inputName">
+                <div class="input-group mb-2 mt-0">
+                    <div class="w-75 set-margin">
+                        <input type="text" class="form-control mt-0" placeholder="Podaj nick" name="name"
+                            id="inputName">
                         <!-- <div class="error"></div> -->
                         <!-- <p id="errorNameEmpty" class="errors-signup"></p> -->
                     </div>
                 </div>
-                <div class="input-group mb-2">
-                    <div class="form-group w-75 set-margin">
+                <div class="input-group mb-2 mt-0">
+                    <div class="w-75 set-margin">
                         <!--            <input type="text" class="form-control" placeholder="Podaj adres e-mail" name="email"
                             id="inputEmail" required> -->
-                        <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" class="form-control" />
+                        <input id="inputEmail" name="email" placeholder="Podaj adres e-mail"
+                            class="form-control mt-0" />
                         <!-- <div class="error"></div> -->
                         <!-- <p id="error2EmailEmpty" class="errors-signup"></p>
                         <p id="error3IncorrectEmail" class="errors-signup"></p> -->
                     </div>
                 </div>
-                <!-- <div class="input-group"> -->
-                <div>
+                <div class="input-group mb-2 mt-0">
+                    <!-- <div> -->
                     <!-- <div class="form-group w-75 set-margin"> -->
                     <div class="w-75 set-margin">
-                        <input type="password" class="form-control  login-field  login-field-password"
-                            placeholder="Podaj hasło" name="password" id="inputPassword">
+                        <!-- <input type="password" class="form-control  login-field  login-field-password"
+                            placeholder="Podaj hasło" name="password" id="inputPassword"> -->
+                        <input type="password" class="form-control" placeholder="Podaj hasło" name="password"
+                            id="inputPassword">
                         <!-- <div class="error"></div> -->
                         <!-- <p id="error4PasswordEmpty" class="errors-signup"></p>
                         <p id="error5PasswordTooShort" class="errors-signup"></p>
@@ -105,13 +109,15 @@
 
         $('#inputPassword').hidePassword(true, {
             toggle: {
-                verticalAlign: 'top'
+                verticalAlign: 'top',
             }
         });
 
         // $('#inputPassword').showPassword('focus', {
         //     toggle: {
-        //         className: 'my-toggle'
+        //         className: 'my-toggle',
+        //         verticalAlign: 'top',
+        //         offset: 6
         //     }
         // });
 
