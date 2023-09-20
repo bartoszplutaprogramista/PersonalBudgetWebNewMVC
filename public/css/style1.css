@@ -19,6 +19,11 @@ body
 	background-color: #373737;
 } */
 
+.margin-left-recaptcha
+{
+	margin-left: 40px;
+}
+
 .margin-zero
 {
 	margin: 0 !important;
@@ -156,18 +161,54 @@ a:active {
 	color: #FFF;
 }
 
+.margin-left-spacing
+{
+	margin-left: 40px;
+}
+
 .error
 {
-	margin-top: 5px;
+	/* margin: 0px !important;  */
+	margin-top: 6px;
+
+	/* margin-top: 0px;
+	padding-top: 0px; */
+	/* margin: 0;
+	padding: 0; */
 	/* margin-bottom: 0px;  */
-	color: #cc6060;
+	/* margin-top: 0px; */
+	color: #cc6060; 
 	font-size: 14px;
-}
+	/* margin-left: 20px; */
+} 
+
+.error2
+{
+	/* margin: 0px !important;  */
+	margin-top: 0px;
+
+	/* margin-top: 0px;
+	padding-top: 0px; */
+	/* margin: 0;
+	padding: 0; */
+	/* margin-bottom: 0px;  */
+	/* margin-top: 0px; */
+	color: #cc6060; 
+	font-size: 14px;
+} 
+
 .margins
 {
 	margin-top: 0px;
 	margin-bottom: 10px;
 }
+
+.margins-captcha
+{
+	margin-top: 0px;
+	margin-bottom: 0px;	
+}
+
 .margins-2
 {
 	margin-top: 10px;

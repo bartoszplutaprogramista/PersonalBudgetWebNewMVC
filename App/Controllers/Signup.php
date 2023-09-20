@@ -25,8 +25,40 @@ class Signup extends \Core\Controller
      *
      * @return void
      */
+
+
+
+    // public static function verify($response){
+    //     $ip = $_SERVER['REMOTE_ADDR'];
+    //     $key = "6LcGul0kAAAAABDtMLhJ6BGXm0JSlLSxOIm8ZTuv";
+    //     $url = 'https://www.google.com/recaptcha/api/siteverify';
+    //     $full_url = $url.'?secret='.$key.'&response='.$response.'&remoteip='.$ip;
+      
+    //     $data = json_decode(file_get_contents($full_url));
+    //     if(isset($data->success) && $data->success == true){
+    //        return true;
+    //     }
+    //     return false;
+    //   }
+
     public function newAction()
     {
+        // if(isset($_POST['g-recaptcha-response'])){
+        //     echo Signup::verify($_POST['g-recaptcha-response']);
+        // }
+        if(isset($_POST['g-recaptcha-response'])){
+            $secretKey = "";
+
+            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
+
+            $answer = json_decode($check);   
+            
+            if($answer->success==false){
+                $everythings_OK=false;
+                $_SESSION['e_bot']="Potwierdź, że nie jesteś botem!";
+            }
+        }
+
         View::renderTemplate('Signup/new.html');
     }
 

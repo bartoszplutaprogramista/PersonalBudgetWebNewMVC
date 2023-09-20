@@ -16,7 +16,7 @@
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2 mt-0">
                     <div class="w-75 set-margin">
-                        <input type="text" class="form-control mt-0" placeholder="Podaj nick" name="name"
+                        <input type="text" class="form-control mt-0 mb-0" placeholder="Podaj nick" name="name"
                             id="inputName">
                         <!-- <div class="error"></div> -->
                         <!-- <p id="errorNameEmpty" class="errors-signup"></p> -->
@@ -28,6 +28,8 @@
                             id="inputEmail" required> -->
                         <input id="inputEmail" name="email" placeholder="Podaj adres e-mail"
                             class="form-control mt-0" />
+                        <!-- <label id="inputEmail-error" style="color: red"> -->
+                        <!-- <label style="margin-top: 0px;"></label> -->
                         <!-- <div class="error"></div> -->
                         <!-- <p id="error2EmailEmpty" class="errors-signup"></p>
                         <p id="error3IncorrectEmail" class="errors-signup"></p> -->
@@ -39,7 +41,7 @@
                     <div class="w-75 set-margin">
                         <!-- <input type="password" class="form-control  login-field  login-field-password"
                             placeholder="Podaj hasło" name="password" id="inputPassword"> -->
-                        <input type="password" class="form-control" placeholder="Podaj hasło" name="password"
+                        <input type="password" class="form-control mb-0" placeholder="Podaj hasło" name="password"
                             id="inputPassword">
                         <!-- <div class="error"></div> -->
                         <!-- <p id="error4PasswordEmpty" class="errors-signup"></p>
@@ -48,8 +50,11 @@
                         <p id="error7AtLeastOneNumber" class="errors-signup"></p> -->
                     </div>
                 </div>
-                <div class="g-recaptcha margins center" data-sitekey=""></div>
-                <div class="submit"><button type="submit" class="btn btn-success">Zarejestruj się</button></div>
+                <div class="g-recaptcha margins-captcha center" data-sitekey="" id="reCaptcha" name="captcha"></div>
+                <div class="margin-left-spacing">
+                    <input type="hidden" name="captcha" id="hiddenRecaptcha">
+                </div>
+                <div class="submit"><button type="submit" class="btn btn-success mt-2">Zarejestruj się</button></div>
             </form>
         </div>
     </div>
@@ -61,12 +66,26 @@
 <script src="/js/hideShowPassword.min.js"></script>
 <script src="/js/app.js"></script>
 <script>
-    $(document).ready(function () {
+    // $("#hiddenRecaptcha-error").toggleClass("margin-left-recaptcha");
 
+    // $(function () {
+    //             $('#hiddenRecaptcha-error').hover(function () {
+    //                     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
+    //                 }
+    //             });
+    // let myEle = document.getElementById("hiddenRecaptcha-error");
+    // if (myEle) {
+    //     $(function () {
+    //         $('#hiddenRecaptcha-error').addClass('ml-3');
+    //     });
+    // }
+
+    $(document).ready(function () {
         /**
          * Validate the form
          */
         $('#formSignup').validate({
+            ignore: ".ignore",
             rules: {
                 name: 'required',
                 email: {
@@ -78,6 +97,15 @@
                     required: true,
                     minlength: 6,
                     validPassword: true
+                },
+                captcha: {
+                    required: function () {
+                        if (grecaptcha.getResponse() == '') {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
                 }
             },
             messages: {
@@ -92,44 +120,65 @@
                 },
                 name: {
                     required: 'Pole wymagane'
+                },
+                captcha: {
+                    required: 'Pole wymagane'
                 }
             }
-            // errorElement: 'div',
-            // errorLabelContainer: '.error'
+            // highlight: function (errorClass) {
+            //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
+            // },
+            // unhighlight: function () {
+            //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
+            // }
         });
-
-
-        /**
-         * Show password toggle button
-         */
-        // $('#inputPassword').css({
-        //     'margin': '0',
-        //     'color': 'yellow'
-        // });
-
-        $('#inputPassword').hidePassword(true, {
-            toggle: {
-                verticalAlign: 'top',
-            }
-        });
-
-        // $('#inputPassword').showPassword('focus', {
-        //     toggle: {
-        //         className: 'my-toggle',
-        //         verticalAlign: 'top',
-        //         offset: 6
-        //     }
-        // });
-
-        // $('#inputPassword').hideShowPassword({
-        //     show: false,
-        //     toggle: {
-        //         verticalAlign: 'top'
-        //         // offset: 4
-        //     },
-        //     innerToggle: 'focus'
-        // });
+        // errorElement: 'div',
+        // errorLabelContainer: '.error'
     });
+
+
+    /**
+     * Show password toggle button
+     */
+    // $('#inputPassword').css({
+    //     'margin': '0',
+    //     'color': 'yellow'
+    // });
+
+    $('#inputPassword').hidePassword(true, {
+        toggle: {
+            verticalAlign: 'top',
+        }
+    });
+
+    // $('#inputPassword').showPassword('focus', {
+    //     toggle: {
+    //         className: 'my-toggle',
+    //         verticalAlign: 'top',
+    //         offset: 6
+    //     }
+    // });
+
+    // $('#inputPassword').hideShowPassword({
+    //     show: false,
+    //     toggle: {
+    //         verticalAlign: 'top'
+    //         // offset: 4
+    //     },
+    //     innerToggle: 'focus'
+    // });
+    // });
+    // if (typeof inputEmail - error !== 'undefined') {
+
+    // let myVariable = document.getElementById("inputEmail-error");
+
+    // $(function () {
+    //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
+    // });
+
+    // if (myVariable) {
+    //     document.getElementById("inputEmail-error").style.color = "#cc6060";
+    // }
 </script>
 
 <!-- <script src="/js/my.js"></script> -->
