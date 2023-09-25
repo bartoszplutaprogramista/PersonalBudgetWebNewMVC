@@ -19,11 +19,15 @@
                     <input type="password" id="inputPassword" name="password" placeholder="Podaj hasło"
                         class="form-control" />
                 </div>
-                <div class="checkbox">
+                <div class="w-75 set-margin checkbox mt-2">
                     <label>
                         <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {% endif %} />
-                        Remember me
+                        Zapamiętaj mnie
                     </label>
+
+                </div>
+                <div class="w-75 set-margin checkbox mt-2">
+                    <a href="/password/forgot">Zapomniałeś hasło?</a>
                 </div>
                 <div class="submit mt-3"><button type="submit" class="btn btn-warning">Zaloguj się</button></div>
             </form>

@@ -1,64 +1,82 @@
 {% extends 'base.html' %}
 
-{% block title %}Reset password{% endblock %}
+{% block title %}Resetowanie hasła{% endblock %}
 
 {% block footer %}
-    <script src="/js/hideShowPassword.min.js"></script>
-    <script src="/js/app.js"></script>
+<script src="/js/hideShowPassword.min.js"></script>
+<script src="/js/app.js"></script>
 
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function () {
 
-            /**
-             * Validate the form
-             */
-            $('#formPassword').validate({
-                rules: {
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        validPassword: true
-                    }
+        /**
+         * Validate the form
+         */
+        $('#formPassword').validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 6,
+                    validPassword: true
                 }
-            });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
+            },
+            messages: {
+                password: {
+                    required: 'Pole wymagane',
+                    minlength: 'Wprowadź minimum 6 znaków'
+                }
+            }
         });
-    </script>
+
+
+        /**
+         * Show password toggle button
+         */
+        // $('#inputPassword').hideShowPassword({
+        //     show: false,
+        //     innerToggle: 'focus'
+        // });
+        $('#inputPassword').hidePassword(true, {
+            toggle: {
+                verticalAlign: 'top',
+            }
+        });
+    });
+</script>
 
 {% endblock %}
 
 {% block body %}
 
-    <h1>Reset password</h1>
+<h3 class="mt-3">Resetowanie hasła</h3>
 
-    {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% if user.errors is not empty %}
+<p>Błędy:</p>
+<ul>
+    {% for error in user.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
-    <form method="post" id="formPassword" action="/password/reset-password">
+<form method="post" id="formPassword" action="/password/reset-password">
+    <div class="row justify-content-center m-0 p-0">
+        <div class="col-xl-12 col-xxl-9 p-0">
+            <div class="div-form-buttons mx-auto">
+                <input type="hidden" name="token" value="{{ token }}" />
 
-        <input type="hidden" name="token" value="{{ token }}" />
-
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control" />
+                <div class="form-group">
+                    <label for="inputPassword">Hasło</label>
+                    <input type="password" id="inputPassword" name="password" placeholder="Hasło" required
+                        class="form-control" />
+                </div>
+                <div class="mt-3 submit">
+                    <button type="submit" class="btn btn-warning">Resetuj hasło</button>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <button type="submit" class="btn btn-default">Reset password</button>
-
-    </form>
+</form>
 
 {% endblock %}
