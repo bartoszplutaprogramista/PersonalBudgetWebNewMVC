@@ -1,59 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Edytuj dane{% endblock %}
-
-{% block footer %}
-<script src="/js/hideShowPassword.min.js"></script>
-<script src="/js/app.js"></script>
-
-<script>
-    $(document).ready(function () {
-
-        var userId = '{{ user.id }}';
-
-        /**
-         * Validate the form
-         */
-        $('#formProfile').validate({
-            rules: {
-                name: 'required',
-                email: {
-                    required: true,
-                    email: true,
-                    remote: {
-                        url: '/account/validate-email',
-                        data: {
-                            ignore_id: function () {
-                                return userId;
-                            }
-                        }
-                    }
-                },
-                password: {
-                    minlength: 6,
-                    validPassword: true
-                }
-            },
-            messages: {
-                email: {
-                    remote: 'Email zajęty'
-                }
-            }
-        });
-
-
-        /**
-         * Show password toggle button
-         */
-        $('#inputPassword').hidePassword(true, {
-            toggle: {
-                verticalAlign: 'top',
-            }
-        });
-    });
-</script>
-
-{% endblock %}
+{% block title2 %}Edytuj dane{% endblock %}
 
 {% block body2 %}
 
@@ -75,17 +22,17 @@
                 <form method="post" id="formProfile" action="/profile/update">
                     <div class="form-group">
                         <label for="inputName">Imię</label>
-                        <input id="inputName" name="name" placeholder="Name" value="{{ user.name }}" required
+                        <input id="inputName" name="name" placeholder="Imię" value="{{ user.name }}" required
                             class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail">Adres email</label>
-                        <input id="inputEmail" name="email" placeholder="email address" value="{{ user.email }}"
-                            required type="email" class="form-control" />
+                        <label for="inputEmail" class="mt-2">Adres email</label>
+                        <input id="inputEmail" name="email" placeholder="Adres email" value="{{ user.email }}" required
+                            type="email" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword">Hasło</label>
-                        <input type="password" id="inputPassword" name="password" placeholder="Password"
+                        <label for="inputPassword" class="mt-2">Hasło</label>
+                        <input type="password" id="inputPassword" name="password" placeholder="Hasło"
                             aria-describedby="helpBlock" class="form-control" />
                         <p class="keep-password mt-2">Pozostaw niezmienione jeśli chcesz zachować bieżące dane</p>
                     </div>
@@ -98,5 +45,69 @@
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block footer2 %}
+<script src="/js/hideShowPassword.min.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var userId = '{{ user.id }}';
+
+        /**
+         * Validate the form
+         */
+        $('#formProfile').validate({
+            // ignore: ".ignore",
+            rules: {
+                name: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    // remote: '/account/validate-email'
+                    remote: {
+                        url: '/account/validate-email',
+                        data: {
+                            ignore_id: function () {
+                                return userId;
+                            }
+                        }
+                    }
+                },
+                password: {
+                    // required: true,
+                    minlength: 6,
+                    validPassword: true
+                }
+            },
+            messages: {
+                email: {
+                    remote: 'Email zajęty',
+                    required: 'Pole wymagane',
+                    email: 'Wprowadź poprawny email'
+                },
+                name: {
+                    required: 'Pole wymagane'
+                },
+                password: {
+                    // required: 'Pole wymagane',
+                    minlength: 'Wprowadź minimum 6 znaków'
+                }
+            }
+        });
+
+        /**
+         * Show password toggle button
+         */
+        $('#inputPassword').hidePassword(true, {
+            toggle: {
+                verticalAlign: 'top',
+            }
+        });
+    });
+</script>
 
 {% endblock %}
