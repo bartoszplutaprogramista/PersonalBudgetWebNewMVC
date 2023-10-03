@@ -1,13 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title2 %}Przeglądaj bilans dla bieżącego roku{% endblock %}
+{% block title2 %}Przeglądaj bilans dla wybranego okresu{% endblock %}
 
 {% block body2 %}
 
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
-            <h3>PRZEGLĄDAJ BILANS NOWA</h3>
+            <h3>PRZEGLĄDAJ BILANS WYBRANY OKRES</h3>
+            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-3">
+                <div class="bd-highlight balance-width">
+                    <label class="p-input-radio mb-2 mt-1 w-100" for="paymentMethod">Wybierz okres czasu:</label>
+                </div>
+                <div class="bd-highlight balance-width">
+                    <form action="/personalbudget/newbrowsethebalance" method="post">
+                        <select class="form-select form-select-sm mb-0 mt-1" aria-label="sposob platnosci"
+                            name="paymentMethod" id="paymentMethodSelected">
+                            <option value="currentMonth">Bieżący miesiąc</option>
+                            <option value="lastMonth">Poprzedni miesiąc</option>
+                            <option value="currentYear">Bieżący rok</option>
+                            <option value="selectedPeriod" selected>Wybrany okres</option>
+                        </select>
+                </div>
+                <div class="bd-highlight balance-width submit2 small-text">
+                    <button type="submit" class="btn btn-warning">Przeglądaj</button>
+                </div>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table class="table-center my-table">
                     <thead>
@@ -91,7 +110,8 @@
                 <table class="table-center">
                     <thead>
                         <tr>
-                            <th>Suma przychodów i wydatków w okresie od {{ start_date_selected_period }} do
+                            <th class="center-td">Suma przychodów i wydatków w okresie od
+                                {{ start_date_selected_period }} do
                                 {{ end_date_selected_period }}
                             </th>
                         </tr>
