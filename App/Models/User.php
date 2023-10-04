@@ -235,30 +235,30 @@ class User extends \Core\Model
     {
         // Name
         if ($this->name == '') {
-            $this->errors[] = 'NEW Name is required';
+            $this->errors[] = 'Imię jest wymagane';
         }
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
-            $this->errors[] = 'NEW Invalid email';
+            $this->errors[] = 'Wprowadź poprawny email';
         }
         if (static::emailExists($this->email, $this->id ?? null)) {
-            $this->errors[] = 'NEW email already taken';
+            $this->errors[] = 'Email zajęty';
         }
 
         // Password
         if (isset($this->password)) {
 
             if (strlen($this->password) < 6) {
-                $this->errors[] = 'NEW Please enter at least 6 characters for the password';
+                $this->errors[] = 'Wprowadź minimum 6 znaków dla hasła';
             }
 
             if (preg_match('/.*[a-z]+.*/i', $this->password) == 0) {
-                $this->errors[] = 'NEW Password needs at least one letter';
+                $this->errors[] = 'Hasło musi zawierać przynajmniej jedną literę';
             }
 
             if (preg_match('/.*\d+.*/i', $this->password) == 0) {
-                $this->errors[] = 'NEW Password needs at least one number';
+                $this->errors[] = 'Hasło musi zawierać przynajmniej jedną cyfrę';
             }
 
         }
@@ -536,7 +536,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
-        Mail::send($this->email, 'Account activation', $text, $html);
+        Mail::send($this->email, 'Aktywacja konta', $text, $html);
     }
 
     /**

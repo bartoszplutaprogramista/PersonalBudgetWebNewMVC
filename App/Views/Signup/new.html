@@ -3,6 +3,22 @@
 {% block title %}ZAREJESTRUJ SIĘ{% endblock %}
 
 {% block body %}
+
+{% if user.errors is not empty %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
+        <!-- <div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0"> -->
+        <p>Błędy:</p>
+        <ul>
+            {% for error in user.errors %}
+            <li class="text-start errors-php">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
 <article>
     <div class="row justify-content-center m-0 p-0">
         <div class="col-sm-12 col-lg-4 col-xxl-3 log-in-or-register mt-3">
@@ -16,8 +32,8 @@
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2 mt-0">
                     <div class="w-75 set-margin">
-                        <input type="text" class="form-control mt-0 mb-0" placeholder="Podaj nick" name="name"
-                            id="inputName">
+                        <input type="text" class="form-control mt-0 mb-0" placeholder="Podaj imię" name="name"
+                            id="inputName" value="{{ user.name }}">
                         <!-- <div class="error"></div> -->
                         <!-- <p id="errorNameEmpty" class="errors-signup"></p> -->
                     </div>
@@ -26,8 +42,8 @@
                     <div class="w-75 set-margin">
                         <!--            <input type="text" class="form-control" placeholder="Podaj adres e-mail" name="email"
                             id="inputEmail" required> -->
-                        <input id="inputEmail" name="email" placeholder="Podaj adres e-mail"
-                            class="form-control mt-0" />
+                        <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" class="form-control mt-0"
+                            value="{{ user.email }}" />
                         <!-- <label id="inputEmail-error" style="color: red"> -->
                         <!-- <label style="margin-top: 0px;"></label> -->
                         <!-- <div class="error"></div> -->
@@ -54,7 +70,8 @@
                 <div class="margin-left-spacing">
                     <input type="hidden" name="captcha" id="hiddenRecaptcha">
                 </div>
-                <div class="submit"><button type="submit" class="btn btn-success mt-2">Zarejestruj się</button></div>
+                <div class="submit"><button type="submit" class="btn btn-success mt-2">Zarejestruj się</button>
+                </div>
             </form>
         </div>
     </div>
