@@ -9,25 +9,29 @@
         <div class="content mt-2 p-4">
 
             <h3>EDYTUJ DANE</h3>
-            <div class="div-form-buttons mx-auto text-center">
+            <div class="div-form-buttons mx-auto">
                 {% if user.errors is not empty %}
                 <p>Błędy:</p>
                 <ul>
                     {% for error in user.errors %}
-                    <li>{{ error }}</li>
+                    <li>
+                        <p class="errors-php text-start">{{ error }}</p>
+                    </li>
                     {% endfor %}
                 </ul>
                 {% endif %}
+            </div>
+            <div class="div-form-buttons mx-auto text-center">
 
                 <form method="post" id="formProfile" action="/profile/update">
                     <div class="form-group">
                         <label for="inputName">Imię</label>
-                        <input id="inputName" name="name" placeholder="Imię" value="{{ user.name }}" required
+                        <input id="inputName" name="name" placeholder="Imię" value="{{ user.name }}"
                             class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="inputEmail" class="mt-2">Adres email</label>
-                        <input id="inputEmail" name="email" placeholder="Adres email" value="{{ user.email }}" required
+                        <input id="inputEmail" name="email" placeholder="Adres email" value="{{ user.email }}"
                             type="email" class="form-control" />
                     </div>
                     <div class="form-group">

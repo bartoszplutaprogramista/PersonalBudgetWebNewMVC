@@ -484,6 +484,11 @@ h3
 		padding-left: 20px;
 		padding-right: 20px;
 	}
+	.margin-left-spacing
+	{
+		margin-left: 0px;
+		text-align: center;
+	}
 }
 
 @media (min-width: 1400px)
