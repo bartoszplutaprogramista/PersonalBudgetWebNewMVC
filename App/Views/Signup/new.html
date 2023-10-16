@@ -7,8 +7,6 @@
 {% if user.errors is not empty %}
 <div class="row justify-content-center m-0 p-0">
     <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
-        <!-- <div class="row justify-content-center m-0 p-0">
-    <div class="col-xl-12 col-xxl-9 p-0"> -->
         <p>Błędy:</p>
         <ul>
             {% for error in user.errors %}
@@ -28,42 +26,23 @@
         </div>
         <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
             <form method="post" action="/signup/create" id="formSignup" name="form">
-                <!-- <form method="post" action="/signup/create" id="formSignup" onsubmit="return check()" name="form"> -->
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2 mt-0">
                     <div class="w-75 set-margin">
                         <input type="text" class="form-control mt-0 mb-0" placeholder="Podaj imię" name="name"
                             id="inputName" value="{{ user.name }}">
-                        <!-- <div class="error"></div> -->
-                        <!-- <p id="errorNameEmpty" class="errors-signup"></p> -->
                     </div>
                 </div>
                 <div class="input-group mb-2 mt-0">
                     <div class="w-75 set-margin">
-                        <!--            <input type="text" class="form-control" placeholder="Podaj adres e-mail" name="email"
-                            id="inputEmail" required> -->
                         <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" class="form-control mt-0"
                             value="{{ user.email }}" />
-                        <!-- <label id="inputEmail-error" style="color: red"> -->
-                        <!-- <label style="margin-top: 0px;"></label> -->
-                        <!-- <div class="error"></div> -->
-                        <!-- <p id="error2EmailEmpty" class="errors-signup"></p>
-                        <p id="error3IncorrectEmail" class="errors-signup"></p> -->
                     </div>
                 </div>
                 <div class="input-group mb-2 mt-0">
-                    <!-- <div> -->
-                    <!-- <div class="form-group w-75 set-margin"> -->
                     <div class="w-75 set-margin">
-                        <!-- <input type="password" class="form-control  login-field  login-field-password"
-                            placeholder="Podaj hasło" name="password" id="inputPassword"> -->
                         <input type="password" class="form-control mb-0" placeholder="Podaj hasło" name="password"
                             id="inputPassword">
-                        <!-- <div class="error"></div> -->
-                        <!-- <p id="error4PasswordEmpty" class="errors-signup"></p>
-                        <p id="error5PasswordTooShort" class="errors-signup"></p>
-                        <p id="error6AtLeastOneLetter" class="errors-signup"></p>
-                        <p id="error7AtLeastOneNumber" class="errors-signup"></p> -->
                     </div>
                 </div>
                 <div class="g-recaptcha margins-captcha center" data-sitekey="" id="reCaptcha" name="captcha"></div>
@@ -83,24 +62,8 @@
 <script src="/js/hideShowPassword.min.js"></script>
 <script src="/js/app.js"></script>
 <script>
-    // $("#hiddenRecaptcha-error").toggleClass("margin-left-recaptcha");
-
-    // $(function () {
-    //             $('#hiddenRecaptcha-error').hover(function () {
-    //                     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
-    //                 }
-    //             });
-    // let myEle = document.getElementById("hiddenRecaptcha-error");
-    // if (myEle) {
-    //     $(function () {
-    //         $('#hiddenRecaptcha-error').addClass('ml-3');
-    //     });
-    // }
-
     $(document).ready(function () {
-        /**
-         * Validate the form
-         */
+
         $('#formSignup').validate({
             ignore: ".ignore",
             rules: {
@@ -142,25 +105,7 @@
                     required: 'Pole wymagane'
                 }
             }
-            // highlight: function (errorClass) {
-            //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
-            // },
-            // unhighlight: function () {
-            //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
-            // }
         });
-        // errorElement: 'div',
-        // errorLabelContainer: '.error'
-
-
-
-        /**
-         * Show password toggle button
-         */
-        // $('#inputPassword').css({
-        //     'margin': '0',
-        //     'color': 'yellow'
-        // });
 
         $('#inputPassword').hidePassword(true, {
             toggle: {
@@ -168,39 +113,5 @@
             }
         });
     });
-
-    // $('#inputPassword').showPassword('focus', {
-    //     toggle: {
-    //         className: 'my-toggle',
-    //         verticalAlign: 'top',
-    //         offset: 6
-    //     }
-    // });
-
-    // $('#inputPassword').hideShowPassword({
-    //     show: false,
-    //     toggle: {
-    //         verticalAlign: 'top'
-    //         // offset: 4
-    //     },
-    //     innerToggle: 'focus'
-    // });
-    // });
-    // if (typeof inputEmail - error !== 'undefined') {
-
-    // let myVariable = document.getElementById("inputEmail-error");
-
-    // $(function () {
-    //     $('#hiddenRecaptcha-error').addClass('margin-left-recaptcha');
-    // });
-
-    // if (myVariable) {
-    //     document.getElementById("inputEmail-error").style.color = "#cc6060";
-    // }
 </script>
-
-<!-- <script src="/js/my.js"></script> -->
-
-
-
 {% endblock %}

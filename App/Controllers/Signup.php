@@ -7,45 +7,14 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\User;
 use \App\Models\ModelPersonalBudget;
-// use \App\Models\User;
 
-/**
- * Signup controller
- *
- * PHP version 7.0
- */
 #[\AllowDynamicProperties]
 class Signup extends \Core\Controller
 {
     public $user;
-    // public $userCurrent;
-
-    /**
-     * Show the signup page
-     *
-     * @return void
-     */
-
-
-
-    // public static function verify($response){
-    //     $ip = $_SERVER['REMOTE_ADDR'];
-    //     $key = "6LcGul0kAAAAABDtMLhJ6BGXm0JSlLSxOIm8ZTuv";
-    //     $url = 'https://www.google.com/recaptcha/api/siteverify';
-    //     $full_url = $url.'?secret='.$key.'&response='.$response.'&remoteip='.$ip;
-      
-    //     $data = json_decode(file_get_contents($full_url));
-    //     if(isset($data->success) && $data->success == true){
-    //        return true;
-    //     }
-    //     return false;
-    //   }
 
     public function newAction()
     {
-        // if(isset($_POST['g-recaptcha-response'])){
-        //     echo Signup::verify($_POST['g-recaptcha-response']);
-        // }
         if(isset($_POST['g-recaptcha-response'])){
             $secretKey = "";
 
@@ -62,11 +31,6 @@ class Signup extends \Core\Controller
         View::renderTemplate('Signup/new.html');
     }
 
-    /**
-     * Sign up a new user
-     *
-     * @return void
-     */
     public function createAction()
     {
         $user = new User($_POST);
@@ -75,28 +39,12 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
             $emailOfUser = $_POST['email']; 
-            // echo "email wynosi: ".$emailOfUser;   
-            // exit;
-
-            // $userId = $personalBudget->getRegisteredUser();
-            // $userId = $personalBudget->getUserId($emailOfUser);
             $userId = $user->getUserId($emailOfUser);
 
-            // $this->user = Auth::getUser(); 
-
-            // print_r($this->user);
-            // exit;
-
-            // $array = get_object_vars($this->user);   
-
-            // echo "Wynosi: ".$array['email'];
-            // exit;
             $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
             $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
             $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
-
             
-
             $user->sendActivationEmail();
 
             $this->redirect('/signup/success');
@@ -109,22 +57,11 @@ class Signup extends \Core\Controller
 
         } 
     }
-
-    /**
-     * Show the signup success page
-     *
-     * @return void
-     */
     public function successAction()
     {
         View::renderTemplate('Signup/success.html');
     }
 
-    /**
-     * Activate a new account
-     *
-     * @return void
-     */
     public function activateAction()
     {
         User::activate($this->route_params['token']);
@@ -132,11 +69,6 @@ class Signup extends \Core\Controller
         $this->redirect('/signup/activated');
     }
 
-    /**
-     * Show the activation success page
-     *
-     * @return void
-     */
     public function activatedAction()
     {
         View::renderTemplate('Signup/activated.html');

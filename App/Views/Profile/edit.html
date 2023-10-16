@@ -61,17 +61,12 @@
 
         var userId = '{{ user.id }}';
 
-        /**
-         * Validate the form
-         */
         $('#formProfile').validate({
-            // ignore: ".ignore",
             rules: {
                 name: 'required',
                 email: {
                     required: true,
                     email: true,
-                    // remote: '/account/validate-email'
                     remote: {
                         url: '/account/validate-email',
                         data: {
@@ -82,7 +77,6 @@
                     }
                 },
                 password: {
-                    // required: true,
                     minlength: 6,
                     validPassword: true
                 }
@@ -97,15 +91,11 @@
                     required: 'Pole wymagane'
                 },
                 password: {
-                    // required: 'Pole wymagane',
                     minlength: 'Wprowadź minimum 6 znaków'
                 }
             }
         });
 
-        /**
-         * Show password toggle button
-         */
         $('#inputPassword').hidePassword(true, {
             toggle: {
                 verticalAlign: 'top',

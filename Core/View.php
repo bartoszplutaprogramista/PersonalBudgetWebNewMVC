@@ -6,29 +6,15 @@ use \App\Auth;
 use \App\Models\User;
 use \App\Models\ModelPersonalBudget;
 use \App\Controllers\personalBudget;
-// use \App\Controllers\personalBudget;
 
-/**
- * View
- *
- * PHP version 7.0
- */
 class View
 {
 
-    /**
-     * Render a view file
-     *
-     * @param string $view  The view file
-     * @param array $args  Associative array of data to display in the view (optional)
-     *
-     * @return void
-     */
     public static function render($view, $args = [])
     {
         extract($args, EXTR_SKIP);
 
-        $file = dirname(__DIR__) . "/App/Views/$view";  // relative to Core directory
+        $file = dirname(__DIR__) . "/App/Views/$view";  
 
         if (is_readable($file)) {
             require $file;
@@ -37,35 +23,17 @@ class View
         }
     }
 
-    /**
-     * Render a view template using Twig
-     *
-     * @param string $template  The template file
-     * @param array $args  Associative array of data to display in the view (optional)
-     *
-     * @return void
-     */
     public static function renderTemplate($template, $args = [])
     {
         echo static::getTemplate($template, $args);
     }
 
-    /**
-     * Get the contents of a view template using Twig
-     *
-     * @param string $template  The template file
-     * @param array $args  Associative array of data to display in the view (optional)
-     *
-     * @return string
-     */
     public static function getTemplate($template, $args = [])
     {
         static $twig = null;
 
 
         $userValue = Auth::getUser();
-        // // if($mmm = Auth::getUser())
-        // // {
 
             if($userValue !== null)
             {
@@ -73,14 +41,6 @@ class View
                 $user_object = new User($_POST);
                 $userId = $user_object->getUserId($array['email']);
             }
-
-        // print_r ($mmm);
-
-        
-
-        // $moja = \App\Models\ModelPersonalBudget::getQueryNameIncome($mmm);
-
-        // print_r ($moja);
 
             if ($twig === null) {
                 $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/App/Views');
@@ -146,6 +106,5 @@ class View
             }
 
             return $twig->render($template, $args);
-        // }
     }
 }

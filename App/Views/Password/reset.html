@@ -8,10 +8,6 @@
 
 <script>
     $(document).ready(function () {
-
-        /**
-         * Validate the form
-         */
         $('#formPassword').validate({
             rules: {
                 password: {
@@ -27,15 +23,6 @@
                 }
             }
         });
-
-
-        /**
-         * Show password toggle button
-         */
-        // $('#inputPassword').hideShowPassword({
-        //     show: false,
-        //     innerToggle: 'focus'
-        // });
         $('#inputPassword').hidePassword(true, {
             toggle: {
                 verticalAlign: 'top',

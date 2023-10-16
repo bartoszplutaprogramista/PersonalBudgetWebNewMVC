@@ -6,20 +6,10 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 
-/**
- * Profile controller
- *
- * PHP version 7.0
- */
 class Profile extends Authenticated
 {
     public $user;
 
-    /**
-     * Before filter - called before each action method
-     *
-     * @return void
-     */
     protected function before()
     {
         parent::before();
@@ -27,11 +17,6 @@ class Profile extends Authenticated
         $this->user = Auth::getUser();
     }
 
-    /**
-     * Show the profile
-     *
-     * @return void
-     */
     public function showAction()
     {
         View::renderTemplate('Profile/show.html', [
@@ -39,11 +24,6 @@ class Profile extends Authenticated
         ]);
     }
 
-    /**
-     * Show the form for editing the profile
-     *
-     * @return void
-     */
     public function editAction()
     {
         View::renderTemplate('Profile/edit.html', [
@@ -51,11 +31,6 @@ class Profile extends Authenticated
         ]);
     }
 
-    /**
-     * Update the profile
-     *
-     * @return void
-     */
     public function updateAction()
     {
         if ($this->user->updateProfile($_POST)) {
