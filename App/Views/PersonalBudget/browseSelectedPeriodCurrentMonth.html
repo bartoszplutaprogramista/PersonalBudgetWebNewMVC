@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Przeglądaj bilans dla bieżącego miesiąca{% endblock %}
+
+{% block body2 %}
+
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <h3>PRZEGLĄDAJ BILANS BIEŻĄCY MIESIĄC</h3>
+            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-3">
+                <div class="bd-highlight balance-width">
+                    <label class="p-input-radio mb-2 mt-1 w-100" for="paymentMethod">Wybierz okres czasu:</label>
+                </div>
+                <div class="bd-highlight balance-width">
+                    <form action="/personalbudget/newbrowsethebalance" method="post">
+                        <select class="form-select form-select-sm mb-0 mt-1" aria-label="sposob platnosci"
+                            name="paymentMethod" id="paymentMethodSelected">
+                            <option value="currentMonth" selected>Bieżący miesiąc</option>
+                            <option value="lastMonth">Poprzedni miesiąc</option>
+                            <option value="currentYear">Bieżący rok</option>
+                            <option value="selectedPeriod">Wybrany okres</option>
+                        </select>
+                </div>
+                <div class="bd-highlight balance-width submit2 small-text">
+                    <button type="submit" class="btn btn-warning">Przeglądaj</button>
+                </div>
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table-center my-table">
+                    <thead>
+                        <tr>
+                            <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
+                                {{ date_from_to_current_month }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-incomes">Kwota (zł)</th>
+                            <th class="column-incomes">Data</th>
+                            <th class="column-incomes">Kategoria</th>
+                            <th class="column-incomes">Komentarz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if query_name_income_current_month %}
+                        {% set myOrdinalNumber = 1 %}
+                        {% for income in query_name_income_current_month %}
+                        <tr>
+
+                            <td class="ordinal-number">{{ myOrdinalNumber }}</td>
+                            <td class="column-incomes">{{ income.amount }}</td>
+                            <td class="column-incomes">{{ income.date_of_income }}</td>
+                            <td class="column-incomes">{{ income.name }}</td>
+                            <td class="column-incomes">{{ income.income_comment }}</td>
+                        </tr>
+                        {% set myOrdinalNumber = myOrdinalNumber + 1 %}
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="center-td">Brak przychodów</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="table-center my-table">
+                    <thead>
+                        <tr>
+                            <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
+                                {{ date_from_to_current_month }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-expenses">Kwota (zł)</th>
+                            <th class="column-expenses">Data</th>
+                            <th class="column-expenses">Sposób płatności</th>
+                            <th class="column-expenses">Kategoria</th>
+                            <th class="column-expenses">Komentarz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if query_name_expense_current_month %}
+                        {% set myOrdinalNumberExpenses = 1 %}
+                        {% for expense in query_name_expense_current_month %}
+                        <tr>
+                            <td class="ordinal-number">{{ myOrdinalNumberExpenses }}</td>
+                            <td class="column-expenses">{{ expense.amn }}</td>
+                            <td class="column-expenses">{{ expense.dateExp }}</td>
+                            <td class="column-expenses">{{ expense.pay }}</td>
+                            <td class="column-expenses">{{ expense.excategory }}</td>
+                            <td class="column-expenses">{{ expense.comment }}</td>
+                        </tr>
+                        {% set myOrdinalNumberExpenses = myOrdinalNumberExpenses + 1 %}
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="center-td">Brak wydatków</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="table-center">
+                    <thead>
+                        <tr>
+                            <th>Suma przychodów i wydatków w okresie od {{ date_from_to_current_month }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p>Suma przychodów (zł):
+                                    {% if query_name_incomes_sum_current_month.incSum %}
+                                    <b> {{ query_name_incomes_sum_current_month.incSum }}
+                                    </b>
+                                    {% else %}
+                                    <b>0</b>
+                                    {% endif %}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>Suma wydatków (zł):
+                                    {% if query_name_expenses_sum_current_month.expSum %}
+                                    <b>{{ query_name_expenses_sum_current_month.expSum }}
+                                    </b>
+                                    {% else %}
+                                    <b>0</b>
+                                    {% endif %}
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

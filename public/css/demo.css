@@ -1,0 +1,109 @@
+
+
+.my-toggle {
+  background: transparent;
+  border: 0;
+  border-radius: 0.25em;
+  color: #888;
+  cursor: pointer;
+  font-size: 0.75em;
+  font-weight: bold;
+  margin-right: 0.5em;
+  padding: 0.5em;
+  text-transform: uppercase;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.my-toggle:hover,
+.my-toggle:focus {
+  background-color: #eee;
+  color: #555;
+  outline: transparent;
+}
+
+.login,
+.login-field {
+  border-radius: 0.25em;
+}
+
+.login-label,
+.login-field {
+  display: block;
+}
+
+
+
+.login-field {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  margin: 0;
+  padding: 0.75em;
+  position: relative;
+  width: 100%;
+  /* height: 100%; */
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.login-field:focus {
+  border-color: #0088cc;
+  outline: transparent;
+  z-index: 2;
+}
+
+/* .inputplaceholder .login-field-username {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: -2px;
+}
+
+.inputplaceholder .login-field-password {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.login-footer {
+  padding: 0.25em 0.5em 0.5em;
+}
+
+.hideShowPassword-toggle,
+.my-toggle {
+  z-index: 3;
+}
+
+.btns {
+  list-style: none;
+  margin: 0 0 1.5em;
+  padding: 0;
+}
+
+.btns li {
+  display: inline-block;
+  margin-left: 0.5em;
+}
+
+.btns li:first-child {
+  margin-left: 0;
+}
+
+.btn {
+  background: #0088cc; */
+  /* border-radius: 0.25em;
+  color: #fff;
+  display: inline-block;
+  padding: 0.5em 1em;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: #0077b3;
+  outline: transparent;
+}
+
+.byline {
+  color: #999;
+  border-top: 3px solid #e6e6e6;
+  font-size: 0.875em;
+  padding-top: 1em;
+} */

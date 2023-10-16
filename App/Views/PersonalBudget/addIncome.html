@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Dodaj przychód{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <h3>DODAJ PRZYCHÓD</h3>
+            <div class="div-form-buttons mx-auto">
+                <form method="post" action="/personalbudget/newIncomeAction">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Kwota (zł):</label>
+                        <input type="number" class="form-control" min="0" step="0.01" id="amount" value="1"
+                            name="amountIncome" onkeypress="return onlyNumberKey(event)">
+                    </div>
+                    <div class="mb-3">
+                        <label for="theDate" class="form-label">Data:</label>
+                        <input type="date" class="form-control" id="theDate" min="2000-01-01" name="dateIncome">
+                    </div>
+                    <label class="p-input-radio mb-2" for="paymentCategoryIncomeId">Kategoria płatności:</label>
+                    <select class="form-select form-select-sm" aria-label="kategoria platnosci"
+                        name="paymentCategoryIncomeName" id="paymentCategoryIncomeId">
+                        <option value="Salary">Wynagrodzenie</option>
+                        <option value="Interest">Odsetki</option>
+                        <option value="Allegro">Allegro</option>
+                        <option value="Another">Inne</option>
+                    </select>
+                    <div class="mt-3 mb-3">
+                        <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
+                        <textarea class="form-control" id="comment" rows="2" name="commentIncome"></textarea>
+                    </div>
+                    <div class="mt-4 submit">
+                        <button type="submit" class="btn btn-warning btn-lg">Dodaj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
