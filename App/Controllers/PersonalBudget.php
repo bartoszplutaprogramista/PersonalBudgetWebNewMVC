@@ -29,7 +29,20 @@ class personalBudget extends \Core\Controller
     public function browseTheBalance()
     {
         View::renderTemplate('PersonalBudget/browseTheBalance.html');
-    }   
+    } 
+
+    public function successDeletedExpenseAction()
+    {
+        View::renderTemplate('PersonalBudget/successDeletedExpense.html');
+    }
+
+    public function deleteFromExpenses()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->deleteExpense()) {
+            $this->redirect('/personalbudget/successdeletedexpenseaction');
+        }
+    }
 
     public function newIncomeAction()
     {
@@ -176,4 +189,5 @@ class personalBudget extends \Core\Controller
     {
         View::renderTemplate('PersonalBudget/successAddExpense.html');
     }
+    
 }

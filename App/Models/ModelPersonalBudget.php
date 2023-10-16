@@ -18,6 +18,16 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
+    public function deleteExpense()
+    {
+        $db = static::getDB();
+        $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id=10');
+        // $queryNameIncome->bindValue(':deleteExpenseId', $userId, PDO::PARAM_INT);
+        $queryDeleteExpense->execute();
+
+        return $queryDeleteExpense;
+    }
+
     public function getRegisteredUser()
     {
 
@@ -95,12 +105,13 @@ class ModelPersonalBudget extends \Core\Model
         ex.date_of_expense AS dateExp,
         pay.name AS pay,
         exCat.name AS excategory,
-        ex.expense_comment AS comment
+        ex.expense_comment AS comment,
+        ex.id AS exID
         FROM expenses_category_assigned_to_users AS exCat 
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth 
-        ORDER BY date_of_expense ASC');
+        ORDER BY date_of_expense DESC');
         $queryNameExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
         $queryNameExpense->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
         $queryNameExpense->execute();

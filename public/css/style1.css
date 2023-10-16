@@ -386,6 +386,13 @@ h3
 	border-radius: 15px;
 }
 
+.content3
+{
+	background-color: #272020;	
+	min-height: 50px;
+	border-radius: 15px;
+}
+
 .top-bar
 {
 	background-color: #140303;
