@@ -21,7 +21,7 @@ class ModelPersonalBudget extends \Core\Model
     public function deleteExpense()
     {
         $db = static::getDB();
-        $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id=10');
+        $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id=19');
         // $queryNameIncome->bindValue(':deleteExpenseId', $userId, PDO::PARAM_INT);
         $queryDeleteExpense->execute();
 
