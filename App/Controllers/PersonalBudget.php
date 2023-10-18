@@ -39,7 +39,12 @@ class personalBudget extends \Core\Controller
     public function deleteFromExpenses()
     {
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->deleteExpense()) {
+        if(isset($_POST['deleteRow'])) {
+            $id = $_POST['deleteRow'];
+            // echo "Id wynosi: ".$id;
+            // exit;
+        }
+        if ($personalBudget->deleteExpense($id)) {
             $this->redirect('/personalbudget/successdeletedexpenseaction');
         }
     }

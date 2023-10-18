@@ -18,14 +18,17 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
-    public function deleteExpense()
+    public function deleteExpense($id)
     {
         $db = static::getDB();
-        $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id=19');
-        // $queryNameIncome->bindValue(':deleteExpenseId', $userId, PDO::PARAM_INT);
+        $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id = :idOfRow');
+        $queryDeleteExpense->bindValue(':idOfRow', $id, PDO::PARAM_INT);
         $queryDeleteExpense->execute();
 
+        // echo "Id wynosi: ".$id;
+
         return $queryDeleteExpense;
+        // return $id;
     }
 
     public function getRegisteredUser()
