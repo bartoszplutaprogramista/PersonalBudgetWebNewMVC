@@ -100,7 +100,31 @@ class View
                         unset($_SESSION['start_date']);
                         unset($_SESSION['end_date']);
                     }
-                   
+                    if(isset($_SESSION['idExpensesDelete'])){
+                        $twig->addGlobal('id_expenses_delete', $_SESSION['idExpensesDelete']);
+                    } 
+
+                    if(isset($_SESSION['whichPeriod'])){
+
+                        // echo "WYNOSI: ".$_SESSION['whichPeriod'];
+                        // exit;
+
+                        $twig->addGlobal('which_period', $_SESSION['whichPeriod']);
+                        // unset($_SESSION['whichPeriod']);
+
+                        // if(($_SESSION['whichPeriod'])=='currentMonth'){
+                        //     $twig->addGlobal('which_period', $_SESSION['whichPeriod']);
+                        //     unset($_SESSION['whichPeriod']);
+                        // } 
+                        // elseif(($_SESSION['whichPeriod'])=='lastMonth'){
+                        //     $twig->addGlobal('which_period', $_SESSION['whichPeriod']);
+                        //     unset($_SESSION['whichPeriod']);
+                        // } 
+                        // elseif(($_SESSION['whichPeriod'])=='currentYear'){
+                        //     $twig->addGlobal('which_period', $_SESSION['whichPeriod']);
+                        //     unset($_SESSION['whichPeriod']);
+                        // } 
+                    }
 
                 }
             }

@@ -36,16 +36,32 @@ class personalBudget extends \Core\Controller
         View::renderTemplate('PersonalBudget/successDeletedExpense.html');
     }
 
+    public function successAreyouSuredeleteFromExpenses()
+    {
+        View::renderTemplate('PersonalBudget/successAreyouSuredeleteFromExpenses.html');
+    }    
+
+    public function areYouSureDeleteFromExpenses()
+    {
+        if(isset($_POST['deleteRow'])) {
+            $_SESSION['idExpensesDelete'] = $_POST['deleteRow'];
+
+            // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
+            // exit;
+        }
+        $this->redirect('/personalbudget/successareyousuredeletefromexpenses');
+    }
+
     public function deleteFromExpenses()
     {
         $personalBudget = new ModelPersonalBudget($_POST);
-        if(isset($_POST['deleteRow'])) {
-            $id = $_POST['deleteRow'];
+        // if(isset($_POST['deleteRow'])) {
+        //     $id = $_POST['deleteRow'];
             // echo "Id wynosi: ".$id;
             // exit;
-        }
-        if ($personalBudget->deleteExpense($id)) {
-            $this->redirect('/personalbudget/successdeletedexpenseaction');
+        // }
+        if ($personalBudget->deleteExpense($_SESSION['idExpensesDelete'])) {
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
         }
     }
 
@@ -125,6 +141,8 @@ class personalBudget extends \Core\Controller
         if($paymentMethod=='currentMonth')
             {
                 $_SESSION['currentMonth'] = "currentMonth";
+                $_SESSION['whichPeriod'] = "currentMonth";
+
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
             }
 
@@ -132,6 +150,7 @@ class personalBudget extends \Core\Controller
         elseif($paymentMethod=='lastMonth'){
             {
                 $_SESSION['lastMonth'] = "lastMonth";
+                $_SESSION['whichPeriod'] = "lastMonth";
                 $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
             }
         }
@@ -139,6 +158,7 @@ class personalBudget extends \Core\Controller
         elseif ($paymentMethod=='currentYear'){
             {
                 $_SESSION['currentYear'] = "currentYear";
+                $_SESSION['whichPeriod'] = "currentYear";
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');      
             }
         }

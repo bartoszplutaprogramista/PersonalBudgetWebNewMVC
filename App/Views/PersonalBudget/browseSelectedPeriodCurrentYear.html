@@ -106,8 +106,8 @@
                                 </form>
                             </td>
                             <td class="ordinal-number text-center">
-                                <form method="post" action="/personalbudget/deleteFromExpenses" id="formDeleteExpanse"
-                                    name="formDelete">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
+                                    id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
                                     <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
                                     <button type="submit" class="btn btn-secondary">
