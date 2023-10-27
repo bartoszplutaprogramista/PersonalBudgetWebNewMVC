@@ -59,7 +59,7 @@ class View
                         $twig->addGlobal('query_name_incomes_sum_current_month', \App\Models\ModelPersonalBudget::incomesSum($userId, $dateCurrentMonth));
                         $twig->addGlobal('query_name_expenses_sum_current_month', \App\Models\ModelPersonalBudget::expensesSum($userId, $dateCurrentMonth));
 
-                        unset($_SESSION['currentMonth']);
+                        // unset($_SESSION['currentMonth']);
                     }
 
                     if(isset($_SESSION['lastMonth'])){
@@ -84,7 +84,7 @@ class View
                         $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSum($userId, $dateCurrentYear));
                         $twig->addGlobal('query_name_expenses_sum_current_year', \App\Models\ModelPersonalBudget::expensesSum($userId, $dateCurrentYear));
 
-                        unset($_SESSION['currentYear']);
+                        // unset($_SESSION['currentYear']);
                     }
                     
                     if(isset($_SESSION['selectedPeriod'])){

@@ -61,7 +61,14 @@ class personalBudget extends \Core\Controller
             // exit;
         // }
         if ($personalBudget->deleteExpense($_SESSION['idExpensesDelete'])) {
-            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            //  echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
+            // exit;
+            if ($_SESSION['paymentMethod'] == "currentMonth"){
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            } elseif ($_SESSION['paymentMethod'] == "currentYear"){
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            }
+            unset($_SESSION['paymentMethod']);
         }
     }
 
@@ -137,6 +144,15 @@ class personalBudget extends \Core\Controller
         $user_object = new User($_POST);
         $userId = $user_object->getUserId($array['email']);
         $paymentMethod = $_POST['paymentMethod'];
+        $_SESSION['paymentMethod'] = $paymentMethod;
+
+        // echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
+        // exit;
+
+
+        if(isset($_SESSION['whichPeriod'])){
+            unset($_SESSION['whichPeriod']);
+        }
 
         if($paymentMethod=='currentMonth')
             {
