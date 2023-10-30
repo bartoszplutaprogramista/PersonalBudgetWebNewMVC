@@ -41,6 +41,16 @@ class personalBudget extends \Core\Controller
         View::renderTemplate('PersonalBudget/successAreyouSuredeleteFromExpenses.html');
     }    
 
+    public function successEditExpenses()
+    {
+        View::renderTemplate('PersonalBudget/editExpense.html');
+    }
+
+    public function editExpenses()
+    {
+        $this->redirect('/personalbudget/successeditexpenses');
+    }
+
     public function areYouSureDeleteFromExpenses()
     {
         if(isset($_POST['deleteRow'])) {
