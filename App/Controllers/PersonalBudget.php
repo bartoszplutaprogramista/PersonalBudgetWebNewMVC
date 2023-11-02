@@ -48,6 +48,11 @@ class personalBudget extends \Core\Controller
 
     public function editExpenses()
     {
+        if(isset($_POST['editRow'])) {
+            $_SESSION['idExpensesEditRow'] = $_POST['editRow'];
+        }
+        // echo "Edit expenses id wynosi: ".$_SESSION['idExpensesEditRow'];
+        // exit;
         $this->redirect('/personalbudget/successeditexpenses');
     }
 
@@ -163,6 +168,17 @@ class personalBudget extends \Core\Controller
         if(isset($_SESSION['whichPeriod'])){
             unset($_SESSION['whichPeriod']);
         }
+        if(isset($_SESSION['currentMonth'])){
+            unset($_SESSION['currentMonth']);
+        }
+        if(isset($_SESSION['lastMonth'])){
+            unset($_SESSION['lastMonth']);
+        }
+        if(isset($_SESSION['currentYear'])){
+            unset($_SESSION['currentYear']);
+        }
+
+
 
         if($paymentMethod=='currentMonth')
             {

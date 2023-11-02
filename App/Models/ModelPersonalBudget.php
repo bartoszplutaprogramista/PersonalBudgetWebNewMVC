@@ -18,6 +18,27 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
+    public static function selectAllFromExpensesToEdit($id)
+    {
+        $db = static::getDB();
+        $queryEditExpenses = $db->prepare('SELECT 
+        ex.amount AS amn,
+        ex.date_of_expense AS dateExp,
+        pay.name AS pay,
+        exCat.name AS excategory,
+        ex.expense_comment AS comment,
+        ex.id AS exID      
+        FROM expenses_category_assigned_to_users AS exCat 
+        INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
+        INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
+        WHERE ex.id = :id');
+        $queryEditExpenses->bindValue(':id', $id, PDO::PARAM_INT);
+        $queryEditExpenses->execute();
+
+        $queryName = $queryEditExpenses->fetchAll();   
+        return $queryName;
+    }
+
     public function deleteExpense($id)
     {
         $db = static::getDB();

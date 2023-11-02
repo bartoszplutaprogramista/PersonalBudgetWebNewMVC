@@ -104,6 +104,17 @@ class View
                         $twig->addGlobal('id_expenses_delete', $_SESSION['idExpensesDelete']);
                     } 
 
+                    if(isset($_SESSION['idExpensesEditRow'])){
+                        $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        $twig->addGlobal('expenses_edit_values', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesEditRow']));
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                    } 
+
+
+
                     if(isset($_SESSION['whichPeriod'])){
 
                         // echo "WYNOSI: ".$_SESSION['whichPeriod'];
