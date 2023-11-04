@@ -46,6 +46,31 @@ class personalBudget extends \Core\Controller
         View::renderTemplate('PersonalBudget/editExpense.html');
     }
 
+    public function updateExpenseAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        // $allFromExpenses = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesEditRow']);
+        // print_r ($allFromExpenses);
+
+        // foreach($allFromExpenses as $row)
+        // {
+        //     echo "<br>";
+        //     echo "Ilość ".$row['amn'] . "<br>";
+        //     echo "Data ".$row['dateExp'] . "<br>";
+        //     echo "pay ".$row['pay'] . PHP_EOL;
+        // }
+        // exit;
+        // if(isset($_POST['deleteRow'])) {
+        //     $id = $_POST['deleteRow'];
+            // echo "Id wynosi: ".$id;
+            // exit;
+        // }
+        if ($personalBudget->updateExpenses()) {
+            Flash::addMessage('Zakończono edycję');
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+        }
+    }
+
     public function editExpenses()
     {
         if(isset($_POST['editRow'])) {
@@ -81,6 +106,7 @@ class personalBudget extends \Core\Controller
             if ($_SESSION['paymentMethod'] == "currentMonth"){
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
             } elseif ($_SESSION['paymentMethod'] == "currentYear"){
+                Flash::addMessage('Pomyślnie usunięto rekord');
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
             }
             unset($_SESSION['paymentMethod']);

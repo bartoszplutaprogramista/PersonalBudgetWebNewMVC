@@ -40,6 +40,7 @@ class View
                 $array = get_object_vars($userValue);
                 $user_object = new User($_POST);
                 $userId = $user_object->getUserId($array['email']);
+                $_SESSION['userIdSession'] = $userId;
             }
 
             if ($twig === null) {

@@ -18,6 +18,48 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
+    public function updateExpenses()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        $db = static::getDB();
+        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId($_SESSION['userIdSession']);
+        $paymentId = $personalBudget->getPaymentId($_SESSION['userIdSession']);
+        $amountExpense = $_POST['amountExpense'];
+        $dateExpense = $_POST['dateExpense'];
+        $commentExpense = $_POST['commentExpense'];
+
+        $queryEditExpense = $db->prepare('UPDATE expenses 
+            SET expense_category_assigned_to_user_id = :expense_category,  
+            payment_method_assigned_to_user_id = :payment_method,
+            amount = :amount,
+            date_of_expense = :dateExpense,
+            expense_comment = :commentExpense
+            WHERE id=:expenseEditId');
+		$queryEditExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
+		$queryEditExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
+		$queryEditExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
+		$queryEditExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
+		$queryEditExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+        $queryEditExpense->bindValue(':expenseEditId', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
+        
+        return $queryEditExpense->execute();
+
+
+        
+
+        // $amountExpense = $_POST['amountExpense'];
+        // $dateExpense = $_POST['dateExpense'];
+        // $commentExpense = $_POST['commentExpense'];
+
+        // $queryExpense = $db->prepare('INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)');	
+		// $queryExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+		// $queryExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
+		// $queryExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
+		// $queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
+		// $queryExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
+		// $queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+    }
+
     public static function selectAllFromExpensesToEdit($id)
     {
         $db = static::getDB();

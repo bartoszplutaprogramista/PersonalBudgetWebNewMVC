@@ -15,7 +15,7 @@
                 {{ ex_edit.excategory }}
                 {{ ex_edit.pay }}
                 {{ ex_edit.comment }}
-                <form method="post" action="/personalbudget/newExpenseAction">
+                <form method="post" action="/personalbudget/updateExpenseAction">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
                         <input type="number" class="form-control" min="0" step="0.01" id="amountOfExpanse"
@@ -23,7 +23,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="theDate" class="form-label">Data:</label>
-                        <input type="date" class="form-control" id="theDate3" name="dateExpense3" min="2000-01-01"
+                        <input type="date" class="form-control" id="theDate3" name="dateExpense" min="2000-01-01"
                             value="{{ ex_edit.dateExp }}">
                     </div>
                     <label class="p-input-radio mb-2" for="paymentMethodId">Sposób płatności:</label>
