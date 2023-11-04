@@ -55,10 +55,10 @@ class View
                         $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
                         
                         $twig->addGlobal('date_from_to_current_month', \App\Controllers\personalBudget::dateFromToCurrentMonth());
-                        $twig->addGlobal('query_name_income_current_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($userId, $dateCurrentMonth));
-                        $twig->addGlobal('query_name_expense_current_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($userId, $dateCurrentMonth));
-                        $twig->addGlobal('query_name_incomes_sum_current_month', \App\Models\ModelPersonalBudget::incomesSum($userId, $dateCurrentMonth));
-                        $twig->addGlobal('query_name_expenses_sum_current_month', \App\Models\ModelPersonalBudget::expensesSum($userId, $dateCurrentMonth));
+                        $twig->addGlobal('query_name_income_current_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentMonth));
+                        $twig->addGlobal('query_name_expense_current_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentMonth));
+                        $twig->addGlobal('query_name_incomes_sum_current_month', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentMonth));
+                        $twig->addGlobal('query_name_expenses_sum_current_month', \App\Models\ModelPersonalBudget::expensesSum($dateCurrentMonth));
 
                         // unset($_SESSION['currentMonth']);
                     }
@@ -67,10 +67,10 @@ class View
                         $dateLastMonth = \App\Models\ModelPersonalBudget::getDateLastMonth();
 
                         $twig->addGlobal('date_from_to_last_month', \App\Controllers\personalBudget::dateFromToLastMonth());
-                        $twig->addGlobal('query_name_income_last_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($userId, $dateLastMonth));
-                        $twig->addGlobal('query_name_expense_last_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($userId, $dateLastMonth));
-                        $twig->addGlobal('query_name_incomes_sum_last_month', \App\Models\ModelPersonalBudget::incomesSum($userId, $dateLastMonth));
-                        $twig->addGlobal('query_name_expenses_sum_last_month', \App\Models\ModelPersonalBudget::expensesSum($userId, $dateLastMonth));
+                        $twig->addGlobal('query_name_income_last_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateLastMonth));
+                        $twig->addGlobal('query_name_expense_last_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateLastMonth));
+                        $twig->addGlobal('query_name_incomes_sum_last_month', \App\Models\ModelPersonalBudget::incomesSum($dateLastMonth));
+                        $twig->addGlobal('query_name_expenses_sum_last_month', \App\Models\ModelPersonalBudget::expensesSum($dateLastMonth));
 
                         unset($_SESSION['lastMonth']);
                     }
@@ -80,10 +80,10 @@ class View
                         $dateCurrentYear = \App\Models\ModelPersonalBudget::getDateCurrentYear();
 
                         $twig->addGlobal('date_from_to_current_year', \App\Controllers\personalBudget::dateFromToCurrentYear());
-                        $twig->addGlobal('query_name_income_current_year', \App\Models\ModelPersonalBudget::getQueryNameIncome($userId, $dateCurrentYear));
-                        $twig->addGlobal('query_name_expense_current_year', \App\Models\ModelPersonalBudget::getQueryNameExpense($userId, $dateCurrentYear));
-                        $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSum($userId, $dateCurrentYear));
-                        $twig->addGlobal('query_name_expenses_sum_current_year', \App\Models\ModelPersonalBudget::expensesSum($userId, $dateCurrentYear));
+                        $twig->addGlobal('query_name_income_current_year', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentYear));
+                        $twig->addGlobal('query_name_expense_current_year', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentYear));
+                        $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentYear));
+                        $twig->addGlobal('query_name_expenses_sum_current_year', \App\Models\ModelPersonalBudget::expensesSum($dateCurrentYear));
 
                         // unset($_SESSION['currentYear']);
                     }
@@ -92,10 +92,10 @@ class View
                         $twig->addGlobal('start_date_selected_period', \App\Models\ModelPersonalBudget::getStartDateSelectedPeriod()); 
                         $twig->addGlobal('end_date_selected_period', \App\Models\ModelPersonalBudget::getEndDateSelectedPeriod()); 
             
-                        $twig->addGlobal('query_name_incomes_selected_period', \App\Models\ModelPersonalBudget::getSelectedPeriodQueryNameIncome($userId));
-                        $twig->addGlobal('query_name_expenses_selected_period', \App\Models\ModelPersonalBudget::getSelectedPeriodQueryNameExpense($userId));
-                        $twig->addGlobal('query_name_incomes_sum_selected_period', \App\Models\ModelPersonalBudget::incomesSelectedPeriodSum($userId));
-                        $twig->addGlobal('query_name_expenses_sum_selected_period', \App\Models\ModelPersonalBudget::expensesSelectedPeriodSum($userId));
+                        $twig->addGlobal('query_name_incomes_selected_period', \App\Models\ModelPersonalBudget::getSelectedPeriodQueryNameIncome());
+                        $twig->addGlobal('query_name_expenses_selected_period', \App\Models\ModelPersonalBudget::getSelectedPeriodQueryNameExpense());
+                        $twig->addGlobal('query_name_incomes_sum_selected_period', \App\Models\ModelPersonalBudget::incomesSelectedPeriodSum());
+                        $twig->addGlobal('query_name_expenses_sum_selected_period', \App\Models\ModelPersonalBudget::expensesSelectedPeriodSum());
 
                         unset($_SESSION['selectedPeriod']);
                         unset($_SESSION['start_date']);

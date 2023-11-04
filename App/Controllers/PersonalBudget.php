@@ -179,11 +179,11 @@ class personalBudget extends \Core\Controller
 
     public function newBrowseTheBalanceAction()
     {
-        $wartosc = false;
-        $userValue = Auth::getUser();  
-        $array = get_object_vars($userValue);
-        $user_object = new User($_POST);
-        $userId = $user_object->getUserId($array['email']);
+        // $wartosc = false;
+        // $userValue = Auth::getUser();  
+        // $array = get_object_vars($userValue);
+        // $user_object = new User($_POST);
+        // $userId = $user_object->getUserId($array['email']);
         $paymentMethod = $_POST['paymentMethod'];
         $_SESSION['paymentMethod'] = $paymentMethod;
 

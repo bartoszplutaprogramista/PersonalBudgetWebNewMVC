@@ -14,7 +14,7 @@ class ModelPersonalBudget extends \Core\Model
     public $amountIncome;
     public $dateIncome;
     public $commentIncome;
-    public $userId;
+    // public $userId;
     public $email;
     public $paymentCategoryIncomeName;
  
@@ -22,8 +22,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $personalBudget = new ModelPersonalBudget($_POST);
         $db = static::getDB();
-        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId($_SESSION['userIdSession']);
-        $paymentId = $personalBudget->getPaymentId($_SESSION['userIdSession']);
+        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId();
+        $paymentId = $personalBudget->getPaymentId();
         $amountExpense = $_POST['amountExpense'];
         $dateExpense = $_POST['dateExpense'];
         $commentExpense = $_POST['commentExpense'];
@@ -94,15 +94,15 @@ class ModelPersonalBudget extends \Core\Model
         // return $id;
     }
 
-    public function getRegisteredUser()
-    {
+    // public function getRegisteredUser()
+    // {
 
-        $queryId = $db->prepare('SELECT id FROM users WHERE name = :userName');	
-        $queryId->bindValue(':userName', $nick, PDO::PARAM_STR);
-        $queryId->execute();
+    //     $queryId = $db->prepare('SELECT id FROM users WHERE name = :userName');	
+    //     $queryId->bindValue(':userName', $nick, PDO::PARAM_STR);
+    //     $queryId->execute();
     
-        $userId = $queryId->fetch();
-    }
+    //     $userId = $queryId->fetch();
+    // }
 
     public static function getQueryIncomesNameDefault()
     {
@@ -152,18 +152,18 @@ class ModelPersonalBudget extends \Core\Model
         return $fullDateCurrentYear;
     }
 
-    public static function getQueryNameIncome($userId, $dataHelp)
+    public static function getQueryNameIncome($dataHelp)
     {
         $db = static::getDB();
         $queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income ASC');
-        $queryNameIncome->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
         $queryNameIncome->execute();
 
         $queryName = $queryNameIncome->fetchAll();   
         return $queryName;
     }
-    public static function getQueryNameExpense($userId, $dataHelp)
+    public static function getQueryNameExpense($dataHelp)
     {
         $db = static::getDB();
         $queryNameExpense = $db->prepare('SELECT 
@@ -178,7 +178,7 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth 
         ORDER BY date_of_expense DESC');
-        $queryNameExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameExpense->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
         $queryNameExpense->execute();
 
@@ -187,11 +187,11 @@ class ModelPersonalBudget extends \Core\Model
         return $queryExpense;
     }
 
-    public static function incomesSum($userId, $dataHelp)
+    public static function incomesSum($dataHelp)
     {
         $db = static::getDB();
         $querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth');
-        $querySumIncomes->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumIncomes->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumIncomes->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
         $querySumIncomes->execute();
 
@@ -200,11 +200,11 @@ class ModelPersonalBudget extends \Core\Model
         return $incomesSum;
     }
 
-    public static function expensesSum($userId, $dataHelp)
+    public static function expensesSum($dataHelp)
     {
         $db = static::getDB();
         $querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth');
-        $querySumExpenses->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumExpenses->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
         $querySumExpenses->execute();
 
@@ -225,13 +225,13 @@ class ModelPersonalBudget extends \Core\Model
         return $_SESSION['end_date'];
     }
 
-    public static function getSelectedPeriodQueryNameIncome($userId)
+    public static function getSelectedPeriodQueryNameIncome()
     {
         $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $db = static::getDB();
         $queryNameSelectedPeriod = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2 ORDER BY date_of_income ASC');
-        $queryNameSelectedPeriod->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameSelectedPeriod->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
         $queryNameSelectedPeriod->execute();
@@ -240,7 +240,7 @@ class ModelPersonalBudget extends \Core\Model
 
         return $queryName;
     }
-    public static function getSelectedPeriodQueryNameExpense($userId)
+    public static function getSelectedPeriodQueryNameExpense()
     {
         $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
@@ -256,7 +256,7 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2
         ORDER BY date_of_expense ASC');
-        $queryNameSelectedPeriodExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryNameSelectedPeriodExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
         $queryNameSelectedPeriodExpense->execute();
@@ -266,13 +266,13 @@ class ModelPersonalBudget extends \Core\Model
         return $queryExpensePeriod;
     }
 
-    public static function incomesSelectedPeriodSum($userId)
+    public static function incomesSelectedPeriodSum()
     {
         $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $db = static::getDB();
         $querySumIncomes = $db->prepare('SELECT SUM(amount) AS incSum FROM incomes WHERE user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2');
-        $querySumIncomes->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumIncomes->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumIncomes->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $querySumIncomes->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
         $querySumIncomes->execute();
@@ -282,13 +282,13 @@ class ModelPersonalBudget extends \Core\Model
         return $incomesSum;
     }
 
-    public static function expensesSelectedPeriodSum($userId)
+    public static function expensesSelectedPeriodSum()
     {
         $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $db = static::getDB();
         $querySumExpenses = $db->prepare('SELECT SUM(amount) AS expSum FROM expenses WHERE user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2');
-        $querySumExpenses->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $querySumExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumExpenses->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $querySumExpenses->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
         $querySumExpenses->execute();
@@ -367,13 +367,13 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryIncomeId['id'];
     }
 
-    public function getpaymentCategoryIncomeId($userId){
+    public function getpaymentCategoryIncomeId(){
 
         $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
         $db = static::getDB();
         $queryPaymentCategoryIncome = $db->prepare('SELECT id FROM incomes_category_assigned_to_users WHERE name = :nameIncomeCategory AND user_id = :userId');	
         $queryPaymentCategoryIncome->bindValue(':nameIncomeCategory', $paymentCategoryIncomeName, PDO::PARAM_STR);
-        $queryPaymentCategoryIncome->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $queryPaymentCategoryIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryPaymentCategoryIncome->execute();  
         
         $paymentCategoryIncomeId  = $queryPaymentCategoryIncome->fetch();
@@ -386,15 +386,15 @@ class ModelPersonalBudget extends \Core\Model
 
         if (empty($this->errors)){
 
-            $array = get_object_vars($user);
+            // $array = get_object_vars($user);
 
             $personalBudget = new ModelPersonalBudget($_POST);
 
-            $user = new User($_POST);
+            // $user = new User($_POST);
 
-            $userId = $user->getUserId($array['email']);
+            // $userId = $user->getUserId($array['email']);
 
-            $paymentCategoryIncomeId = $personalBudget->getpaymentCategoryIncomeId($userId);
+            $paymentCategoryIncomeId = $personalBudget->getpaymentCategoryIncomeId();
 
             $amountIncome = $_POST['amountIncome'];
 		    $dateIncome = $_POST['dateIncome'];
@@ -404,7 +404,7 @@ class ModelPersonalBudget extends \Core\Model
             $db = static::getDB();
 
             $queryIncome = $db->prepare('INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) VALUES (:userId, :paymentCategoryIncome, :amount, :dateIncome, :commentIncome)');	
-            $queryIncome->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $queryIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
             $queryIncome->bindValue(':paymentCategoryIncome', $paymentCategoryIncomeId, PDO::PARAM_INT);
             $queryIncome->bindValue(':amount', $amountIncome, PDO::PARAM_STR);
             $queryIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
@@ -415,13 +415,13 @@ class ModelPersonalBudget extends \Core\Model
         return false;
     }
 
-    public function getPaymentId($idOfUser)
+    public function getPaymentId()
     {
         $db = static::getDB();
         $paymentName = $_POST['paymentMethod'];
         $paymentMethod = $db->prepare('SELECT id FROM payment_methods_assigned_to_users WHERE name = :paymentName AND user_id = :userId');	
 		$paymentMethod->bindValue(':paymentName', $paymentName, PDO::PARAM_STR);
-		$paymentMethod->bindValue(':userId', $idOfUser, PDO::PARAM_INT);
+		$paymentMethod->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
 		$paymentMethod->execute();
 	
 		$getPaymentId = $paymentMethod->fetch();
@@ -429,13 +429,13 @@ class ModelPersonalBudget extends \Core\Model
         return $getPaymentId['id'];
     }
 
-    public function getPaymentCategoryExpenseId($idOfUser)
+    public function getPaymentCategoryExpenseId()
     {
         $db = static::getDB();
         $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
         $queryPaymentCategoryExpense = $db->prepare('SELECT id FROM expenses_category_assigned_to_users WHERE name = :nameExpCat AND user_id = :userId');	
 		$queryPaymentCategoryExpense->bindValue(':nameExpCat', $paymentCategoryExpense, PDO::PARAM_STR);
-		$queryPaymentCategoryExpense->bindValue(':userId', $idOfUser, PDO::PARAM_INT);
+		$queryPaymentCategoryExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
 		$queryPaymentCategoryExpense->execute();
 
 		$paymentCategoryExpenseId  = $queryPaymentCategoryExpense -> fetch();
@@ -445,15 +445,15 @@ class ModelPersonalBudget extends \Core\Model
 
     public function insertToExpenses($user)
     {
-        $array = get_object_vars($user);
+        // $array = get_object_vars($user);
         $personalBudget = new ModelPersonalBudget($_POST);
 
-        $user = new User($_POST);
-        $userId = $user->getUserId($array['email']);
+        // $user = new User($_POST);
+        // $userId = $user->getUserId($array['email']);
 
-        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId($userId);
+        $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId();
 
-        $paymentId = $personalBudget->getPaymentId($userId);
+        $paymentId = $personalBudget->getPaymentId();
 
         $db = static::getDB();
 
@@ -462,7 +462,7 @@ class ModelPersonalBudget extends \Core\Model
         $commentExpense = $_POST['commentExpense'];
 
         $queryExpense = $db->prepare('INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)');	
-		$queryExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
+		$queryExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
 		$queryExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
 		$queryExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
 		$queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
