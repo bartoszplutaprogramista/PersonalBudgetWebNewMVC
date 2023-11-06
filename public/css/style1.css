@@ -54,7 +54,9 @@ body
 
 .my-table
 {
-	width: 85%;
+	/* width: 85%; */
+	width: 1000px;
+
 }
 
 .errors-signup
@@ -529,5 +531,10 @@ h3
 	{
 		flex-direction: column;
 	}
+	/* .my-table
+	{
+		/* width: 85%; */
+		/* width: 600px;
+	} */ 
 }
 

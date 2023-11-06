@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Usunąć wiersz z przychodu?{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content2 mt-2">
+            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o id {{ id_incomes_delete }}</p>
+            <div class="submit">
+                <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse" name="formDelete">
+                    <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="icon-trash-empty"></i>
+                    </button>
+                </form>
+                KTÓRY OKRES: {{ which_period }}
+                <form action="/personalbudget/newbrowsethebalance" method="post">
+                    <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
+                    <button type="submit" class="btn btn-warning">Anuluj</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -18,6 +18,30 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
+    public function updateIncomes()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        $db = static::getDB();
+        $catIncomeId = $personalBudget->getpaymentCategoryIncomeId();
+        $amountIncome = $_POST['amountIncome'];
+        $dateIncome = $_POST['dateIncome'];
+        $commentIncome = $_POST['commentIncome'];
+
+        $queryEditIncome = $db->prepare('UPDATE incomes 
+            SET income_category_assigned_to_user_id  = :income_category,  
+            amount = :amount,
+            date_of_income = :dateIncome,
+            income_comment  = :commentIncome
+            WHERE id=:incomeEditId');
+		$queryEditIncome->bindValue(':income_category', $catIncomeId, PDO::PARAM_INT);
+		$queryEditIncome->bindValue(':amount', $amountIncome, PDO::PARAM_STR);
+		$queryEditIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
+		$queryEditIncome->bindValue(':commentIncome', $commentIncome, PDO::PARAM_STR);
+        $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        
+        return $queryEditIncome->execute();
+    }
+
     public function updateExpenses()
     {
         $personalBudget = new ModelPersonalBudget($_POST);
@@ -60,7 +84,26 @@ class ModelPersonalBudget extends \Core\Model
 		// $queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
     }
 
-    public static function selectAllFromExpensesToEdit($id)
+    public static function selectAllFromIncomesToEdit()
+    {
+        $db = static::getDB();
+        $queryEditIncome = $db->prepare('SELECT 
+        inc.amount AS amn,
+        inc.date_of_income AS dateInc,
+        incCat.name AS incCategory,
+        inc.income_comment AS comment,
+        inc.id AS incID
+        FROM incomes_category_assigned_to_users AS incCat
+        INNER JOIN incomes AS inc ON incCat.id = inc.income_category_assigned_to_user_id 
+        WHERE inc.id = :id');
+        $queryEditIncome->bindValue(':id', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        $queryEditIncome->execute();
+
+        $queryName = $queryEditIncome->fetchAll();   
+        return $queryName;        
+    }
+
+    public static function selectAllFromExpensesToEdit()
     {
         $db = static::getDB();
         $queryEditExpenses = $db->prepare('SELECT 
@@ -74,18 +117,31 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.id = :id');
-        $queryEditExpenses->bindValue(':id', $id, PDO::PARAM_INT);
+        $queryEditExpenses->bindValue(':id', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
         $queryEditExpenses->execute();
 
         $queryName = $queryEditExpenses->fetchAll();   
         return $queryName;
     }
 
-    public function deleteExpense($id)
+    public function deleteIncome()
+    {
+        $db = static::getDB();
+        $queryDeleteIncome = $db->prepare('DELETE FROM incomes WHERE id = :idOfRow');
+        $queryDeleteIncome->bindValue(':idOfRow', $_SESSION['idIncomesDelete'], PDO::PARAM_INT);
+        $queryDeleteIncome->execute();
+
+        // echo "Id wynosi: ".$id;
+
+        return $queryDeleteIncome;
+        // return $id;
+    }
+
+    public function deleteExpense()
     {
         $db = static::getDB();
         $queryDeleteExpense = $db->prepare('DELETE FROM expenses WHERE id = :idOfRow');
-        $queryDeleteExpense->bindValue(':idOfRow', $id, PDO::PARAM_INT);
+        $queryDeleteExpense->bindValue(':idOfRow', $_SESSION['idExpensesDelete'], PDO::PARAM_INT);
         $queryDeleteExpense->execute();
 
         // echo "Id wynosi: ".$id;
@@ -152,17 +208,39 @@ class ModelPersonalBudget extends \Core\Model
         return $fullDateCurrentYear;
     }
 
+    // public static function getQueryNameIncome($dataHelp)
+    // {
+    //     $db = static::getDB();
+    //     $queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income DESC');
+    //     $queryNameIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+    //     $queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
+    //     $queryNameIncome->execute();
+
+    //     $queryName = $queryNameIncome->fetchAll();   
+    //     return $queryName;
+    // }
+
     public static function getQueryNameIncome($dataHelp)
     {
         $db = static::getDB();
-        $queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income ASC');
+        $queryNameIncome = $db->prepare('SELECT 
+        inc.amount AS amn,
+        inc.date_of_income AS dateInc,
+        incCat.name AS incCategory,
+        inc.income_comment AS comment,
+        inc.id AS incID
+        FROM incomes_category_assigned_to_users AS incCat
+        INNER JOIN incomes AS inc ON incCat.id = inc.income_category_assigned_to_user_id 
+        WHERE inc.user_id = :userId AND date_of_income LIKE :dataHelp 
+        ORDER BY date_of_income DESC');
         $queryNameIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
-        $queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
+        $queryNameIncome->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
         $queryNameIncome->execute();
 
         $queryName = $queryNameIncome->fetchAll();   
         return $queryName;
     }
+
     public static function getQueryNameExpense($dataHelp)
     {
         $db = static::getDB();
@@ -176,10 +254,10 @@ class ModelPersonalBudget extends \Core\Model
         FROM expenses_category_assigned_to_users AS exCat 
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
-        WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelpCurrentMonth 
+        WHERE ex.user_id = :userId AND date_of_expense LIKE :dataHelp 
         ORDER BY date_of_expense DESC');
         $queryNameExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
-        $queryNameExpense->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
+        $queryNameExpense->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
         $queryNameExpense->execute();
 
         $queryExpense = $queryNameExpense->fetchAll();

@@ -51,7 +51,7 @@ class View
                 $twig->addGlobal('flash_messages', \App\Flash::getMessages());
                 if($userValue !== null){
 
-                    if(isset($_SESSION['currentMonth'])){
+                    if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='currentMonth')){
                         $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
                         
                         $twig->addGlobal('date_from_to_current_month', \App\Controllers\personalBudget::dateFromToCurrentMonth());
@@ -63,7 +63,7 @@ class View
                         // unset($_SESSION['currentMonth']);
                     }
 
-                    if(isset($_SESSION['lastMonth'])){
+                    else if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='lastMonth')){
                         $dateLastMonth = \App\Models\ModelPersonalBudget::getDateLastMonth();
 
                         $twig->addGlobal('date_from_to_last_month', \App\Controllers\personalBudget::dateFromToLastMonth());
@@ -72,11 +72,11 @@ class View
                         $twig->addGlobal('query_name_incomes_sum_last_month', \App\Models\ModelPersonalBudget::incomesSum($dateLastMonth));
                         $twig->addGlobal('query_name_expenses_sum_last_month', \App\Models\ModelPersonalBudget::expensesSum($dateLastMonth));
 
-                        unset($_SESSION['lastMonth']);
+                        // unset($_SESSION['lastMonth']);
                     }
                     
 
-                    if(isset($_SESSION['currentYear'])){
+                    else if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='currentYear')){
                         $dateCurrentYear = \App\Models\ModelPersonalBudget::getDateCurrentYear();
 
                         $twig->addGlobal('date_from_to_current_year', \App\Controllers\personalBudget::dateFromToCurrentYear());
@@ -105,9 +105,22 @@ class View
                         $twig->addGlobal('id_expenses_delete', $_SESSION['idExpensesDelete']);
                     } 
 
+                    if(isset($_SESSION['idIncomesDelete'])){
+                        $twig->addGlobal('id_incomes_delete', $_SESSION['idIncomesDelete']);
+                    } 
+
                     if(isset($_SESSION['idExpensesEditRow'])){
-                        $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
-                        $twig->addGlobal('expenses_edit_values', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesEditRow']));
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        $twig->addGlobal('expenses_edit_values', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit());
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                    } 
+
+                    if(isset($_SESSION['idIncomesEditRow'])){
+                        // $twig->addGlobal('id_incomes_edit', $_SESSION['idIncomesEditRow']);
+                        $twig->addGlobal('incomes_edit_values', \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit());
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
@@ -116,12 +129,12 @@ class View
 
 
 
-                    if(isset($_SESSION['whichPeriod'])){
+                    if(isset($_SESSION['paymentMethod'])){
 
                         // echo "WYNOSI: ".$_SESSION['whichPeriod'];
                         // exit;
 
-                        $twig->addGlobal('which_period', $_SESSION['whichPeriod']);
+                        $twig->addGlobal('which_period', $_SESSION['paymentMethod']);
                         // unset($_SESSION['whichPeriod']);
 
                         // if(($_SESSION['whichPeriod'])=='currentMonth'){
