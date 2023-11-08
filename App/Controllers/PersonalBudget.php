@@ -88,7 +88,11 @@ class personalBudget extends \Core\Controller
         // }
         if ($personalBudget->updateIncomes()) {
             Flash::addMessage('Pomyślnie zakończono edycję');
-            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            if($_SESSION['paymentMethod'] == "currentMonth"){
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            } else if ($_SESSION['paymentMethod'] == "currentYear"){         
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            }
         }
     }
 
@@ -113,8 +117,14 @@ class personalBudget extends \Core\Controller
         // }
         if ($personalBudget->updateExpenses()) {
             Flash::addMessage('Pomyślnie zakończono edycję');
-            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            if($_SESSION['paymentMethod'] == "currentMonth"){
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            } else if ($_SESSION['paymentMethod'] == "currentYear"){
+                // Flash::addMessage('Pomyślnie zakończono edycję');
+                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            }
         }
+        unset($_SESSION['paymentMethod']);
     }
 
     public function editIncomes()
@@ -180,10 +190,10 @@ class personalBudget extends \Core\Controller
         if ($personalBudget->deleteExpense()) {
             //  echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
             // exit;
+            Flash::addMessage('Pomyślnie usunięto rekord');
             if ($_SESSION['paymentMethod'] == "currentMonth"){
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
             } elseif ($_SESSION['paymentMethod'] == "currentYear"){
-                Flash::addMessage('Pomyślnie usunięto rekord');
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
             }
             unset($_SESSION['paymentMethod']);
