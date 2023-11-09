@@ -31,16 +31,19 @@
                 <table class="table-center my-table">
                     <thead>
                         <tr>
-                            <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
+                            <th colspan="8" class="center-td">Zestawienie przychodów w okresie od
                                 {{ date_from_to_last_month }}
                             </th>
                         </tr>
                         <tr>
+                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
                             <th class="column-incomes">Kwota (zł)</th>
                             <th class="column-incomes">Data</th>
                             <th class="column-incomes">Kategoria</th>
                             <th class="column-incomes">Komentarz</th>
+                            <th class="column-expenses">Edytuj</th>
+                            <th class="column-expenses">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,18 +51,37 @@
                         {% set myOrdinalNumber = 1 %}
                         {% for income in query_name_income_last_month %}
                         <tr>
-
+                            <td class="ordinal-number">{{ income.incID }}</td>
                             <td class="ordinal-number">{{ myOrdinalNumber }}</td>
-                            <td class="column-incomes">{{ income.amount }}</td>
-                            <td class="column-incomes">{{ income.date_of_income }}</td>
-                            <td class="column-incomes">{{ income.name }}</td>
-                            <td class="column-incomes">{{ income.income_comment }}</td>
+                            <td class="column-incomes">{{ income.amn }}</td>
+                            <td class="column-incomes">{{ income.dateInc }}</td>
+                            <td class="column-incomes">{{ income.incCategory }}</td>
+                            <td class="column-incomes">{{ income.comment }}</td>
+                            <td class="ordinal-number text-center">
+                                <form method="post" action="/personalbudget/editIncomes" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="editRowIncomes" value="{{ income.incID }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
+                                        <i class="icon-pencil"></i></button>
+                                </form>
+                            </td>
+                            <td class="ordinal-number text-center">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
+                                    id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
+                                    <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
+                                        <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
                         </tr>
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="5" class="center-td">Brak przychodów</td>
+                            <td colspan="8" class="center-td">Brak przychodów</td>
                         </tr>
                         {% endif %}
                     </tbody>
@@ -69,17 +91,20 @@
                 <table class="table-center my-table">
                     <thead>
                         <tr>
-                            <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
+                            <th colspan="9" class="center-td">Zestawienie wydatków w okresie od
                                 {{ date_from_to_last_month }}
                             </th>
                         </tr>
                         <tr>
+                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
                             <th class="column-expenses">Kwota (zł)</th>
                             <th class="column-expenses">Data</th>
                             <th class="column-expenses">Sposób płatności</th>
                             <th class="column-expenses">Kategoria</th>
                             <th class="column-expenses">Komentarz</th>
+                            <th class="column-expenses">Edytuj</th>
+                            <th class="column-expenses">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,18 +112,38 @@
                         {% set myOrdinalNumberExpenses = 1 %}
                         {% for expense in query_name_expense_last_month %}
                         <tr>
+                            <td class="ordinal-number">{{ expense.exID }}</td>
                             <td class="ordinal-number">{{ myOrdinalNumberExpenses }}</td>
                             <td class="column-expenses">{{ expense.amn }}</td>
                             <td class="column-expenses">{{ expense.dateExp }}</td>
                             <td class="column-expenses">{{ expense.pay }}</td>
                             <td class="column-expenses">{{ expense.excategory }}</td>
                             <td class="column-expenses">{{ expense.comment }}</td>
+                            <td class="ordinal-number text-center">
+                                <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="editRow" value="{{ expense.exID }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
+                                        <i class="icon-pencil"></i></button>
+                                </form>
+                            </td>
+                            <td class="ordinal-number text-center">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
+                                    id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
+                                    <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
+                                        <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
                         </tr>
                         {% set myOrdinalNumberExpenses = myOrdinalNumberExpenses + 1 %}
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="6" class="center-td">Brak wydatków</td>
+                            <td colspan="9" class="center-td">Brak wydatków</td>
                         </tr>
                         {% endif %}
                     </tbody>

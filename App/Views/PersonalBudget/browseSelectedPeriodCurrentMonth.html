@@ -120,9 +120,11 @@
                             <td class="column-expenses">{{ expense.excategory }}</td>
                             <td class="column-expenses">{{ expense.comment }}</td>
                             <td class="ordinal-number text-center">
-                                <form method="post" action="/personalbudget/deleteFromExpenses" id="formDeleteExpanse"
+                                <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
                                     name="formDelete">
-                                    <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}">
+                                    <input type="hidden" name="editRow" value="{{ expense.exID }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
@@ -131,7 +133,8 @@
                                     id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
                                     <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
-                                    <button type="submit" class="btn btn-secondary">
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-trash-empty"></i></button>
                                 </form>
                             </td>

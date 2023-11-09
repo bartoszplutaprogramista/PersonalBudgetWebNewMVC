@@ -67,6 +67,26 @@ class personalBudget extends \Core\Controller
         $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
 
+    // public static function redirectToChosenPeriod(){
+    //     if($_SESSION['paymentMethod'] == "currentMonth"){
+    //         personalBudget::redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+    //     } else if ($_SESSION['paymentMethod'] == "currentYear"){         
+    //         personalBudget::redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+    //     } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+    //         personalBudget::redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+    //     }
+    // }
+
+    public function redirectToChosenPeriod(){
+        if($_SESSION['paymentMethod'] == "currentMonth"){
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+        } else if ($_SESSION['paymentMethod'] == "currentYear"){         
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+        } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+            $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+        }
+    }
+
     public function updateIncomeAction()
     {
         $personalBudget = new ModelPersonalBudget($_POST);
@@ -88,11 +108,16 @@ class personalBudget extends \Core\Controller
         // }
         if ($personalBudget->updateIncomes()) {
             Flash::addMessage('Pomyślnie zakończono edycję');
-            if($_SESSION['paymentMethod'] == "currentMonth"){
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
-            } else if ($_SESSION['paymentMethod'] == "currentYear"){         
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
-            }
+            $this->redirectToChosenPeriod();
+            // personalBudget::redirectToChosenPeriod();
+
+            // if($_SESSION['paymentMethod'] == "currentMonth"){
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            // } else if ($_SESSION['paymentMethod'] == "currentYear"){         
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            // } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+            // }
         }
     }
 
@@ -117,12 +142,16 @@ class personalBudget extends \Core\Controller
         // }
         if ($personalBudget->updateExpenses()) {
             Flash::addMessage('Pomyślnie zakończono edycję');
-            if($_SESSION['paymentMethod'] == "currentMonth"){
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
-            } else if ($_SESSION['paymentMethod'] == "currentYear"){
-                // Flash::addMessage('Pomyślnie zakończono edycję');
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
-            }
+            $this->redirectToChosenPeriod();
+            // if($_SESSION['paymentMethod'] == "currentMonth"){
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            // } else if ($_SESSION['paymentMethod'] == "currentYear"){
+            //     // Flash::addMessage('Pomyślnie zakończono edycję');
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            // } else if ($_SESSION['paymentMethod'] == "lastMonth"){
+            //     // Flash::addMessage('Pomyślnie zakończono edycję');
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+            // }
         }
         unset($_SESSION['paymentMethod']);
     }
@@ -169,12 +198,15 @@ class personalBudget extends \Core\Controller
         if ($personalBudget->deleteIncome($_SESSION['idIncomesDelete'])) {
             //  echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
             // exit;
-            if ($_SESSION['paymentMethod'] == "currentMonth"){
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
-            } elseif ($_SESSION['paymentMethod'] == "currentYear"){
-                Flash::addMessage('Pomyślnie usunięto rekord');
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
-            }
+            Flash::addMessage('Pomyślnie usunięto rekord');
+            $this->redirectToChosenPeriod();
+            // if ($_SESSION['paymentMethod'] == "currentMonth"){
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            // } elseif ($_SESSION['paymentMethod'] == "currentYear"){           
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            // } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+            // }
             unset($_SESSION['paymentMethod']);
         }
     }
@@ -191,11 +223,14 @@ class personalBudget extends \Core\Controller
             //  echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
             // exit;
             Flash::addMessage('Pomyślnie usunięto rekord');
-            if ($_SESSION['paymentMethod'] == "currentMonth"){
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
-            } elseif ($_SESSION['paymentMethod'] == "currentYear"){
-                $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
-            }
+            $this->redirectToChosenPeriod();
+            // if ($_SESSION['paymentMethod'] == "currentMonth"){
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+            // } elseif ($_SESSION['paymentMethod'] == "currentYear"){
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+            // } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+            //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+            // }
             unset($_SESSION['paymentMethod']);
         }
     }
