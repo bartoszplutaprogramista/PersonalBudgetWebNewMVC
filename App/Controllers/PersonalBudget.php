@@ -84,6 +84,8 @@ class personalBudget extends \Core\Controller
             $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
         } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
             $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+        } else {
+            $this->redirect('/personalbudget/successselectedperiodchoosethedate');
         }
     }
 
@@ -207,7 +209,7 @@ class personalBudget extends \Core\Controller
             // } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
             //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
             // }
-            unset($_SESSION['paymentMethod']);
+            // unset($_SESSION['paymentMethod']);
         }
     }
 
@@ -231,7 +233,7 @@ class personalBudget extends \Core\Controller
             // } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
             //     $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
             // }
-            unset($_SESSION['paymentMethod']);
+            // unset($_SESSION['paymentMethod']);
         }
     }
 
@@ -366,7 +368,16 @@ class personalBudget extends \Core\Controller
         $_SESSION['start_date'] = $dateSelectedPeriod1;
         $_SESSION['end_date'] = $dateSelectedPeriod2;
 
-        $this->redirect('/personalbudget/successselectedperiodchoosethedate');        
+        if($_SESSION['start_date']>$_SESSION['end_date']){
+            $this->redirect('/personalbudget/choosecorrectdate');
+        } else {
+            $this->redirect('/personalbudget/successselectedperiodchoosethedate');  
+        }      
+    }
+
+    public function choosecorrectdate()
+    {
+        View::renderTemplate('PersonalBudget/chooseCorrectDate.html');
     }
 
     public function successBrowseSelectedPeriodCurrentMonth()

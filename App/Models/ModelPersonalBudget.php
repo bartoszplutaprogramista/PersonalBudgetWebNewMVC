@@ -308,7 +308,14 @@ class ModelPersonalBudget extends \Core\Model
         $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $db = static::getDB();
-        $queryNameSelectedPeriod = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2 ORDER BY date_of_income ASC');
+        $queryNameSelectedPeriod = $db->prepare('SELECT 
+        inc.amount AS amn,
+        inc.date_of_income AS dateInc,
+        incCat.name AS incCategory,
+        inc.income_comment AS comment,
+        inc.id AS incID
+        FROM incomes_category_assigned_to_users AS incCat
+        INNER JOIN incomes AS inc ON incCat.id = inc.income_category_assigned_to_user_id WHERE inc.user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2 ORDER BY date_of_income DESC');
         $queryNameSelectedPeriod->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $queryNameSelectedPeriod->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
@@ -328,7 +335,8 @@ class ModelPersonalBudget extends \Core\Model
         ex.date_of_expense AS dateExp,
         pay.name AS pay,
         exCat.name AS excategory,
-        ex.expense_comment AS comment
+        ex.expense_comment AS comment,
+        ex.id AS exID
         FROM expenses_category_assigned_to_users AS exCat 
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Dodaj przychód{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content3 mt-2">
+            <p class="p-content text-center pt-4 pb-1">Wybierz właściwy zakres</p>
+            <p class="p-content text-center pb-2">(Początek okresu musi być starszy niż koniec okresu)</p>
+
+            <div class="div-form-buttons mx-auto text-center">
+
+                <form method="post" id="formProfile" action="/personalbudget/browseselectedperiodprocessing">
+                    <div class="pb-4">
+                        <button type="submit" class="btn btn-warning">Popraw daty</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

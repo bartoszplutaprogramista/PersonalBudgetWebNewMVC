@@ -97,9 +97,9 @@ class View
                         $twig->addGlobal('query_name_incomes_sum_selected_period', \App\Models\ModelPersonalBudget::incomesSelectedPeriodSum());
                         $twig->addGlobal('query_name_expenses_sum_selected_period', \App\Models\ModelPersonalBudget::expensesSelectedPeriodSum());
 
-                        unset($_SESSION['selectedPeriod']);
-                        unset($_SESSION['start_date']);
-                        unset($_SESSION['end_date']);
+                        // unset($_SESSION['selectedPeriod']);
+                        // unset($_SESSION['start_date']);
+                        // unset($_SESSION['end_date']);
                     }
                     if(isset($_SESSION['idExpensesDelete'])){
                         $twig->addGlobal('id_expenses_delete', $_SESSION['idExpensesDelete']);
