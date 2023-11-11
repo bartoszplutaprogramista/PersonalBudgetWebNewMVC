@@ -27,6 +27,11 @@ body
 	font-style: italic;
 }
 
+.margin-top-gap
+{
+	margin-top: 0px;
+}
+
 .margin-left-recaptcha
 {
 	margin-left: 40px;
@@ -238,7 +243,7 @@ a:active {
 .balance-width-percent
 {
 	/* width: 33.33%; width: 33.33%; */
-	width: 33.33%;
+	width: 200px;
 }
 
 .balance-width
@@ -259,7 +264,7 @@ a:active {
 
 .div-balance-buttons-choose-period
 {
-	width: 650px;
+	width: 250px;
 }
 
 .div-balance-buttons
@@ -502,20 +507,31 @@ h3
 	{
 		width: 250px;
 	}
-	.balance-width
+	.balance-width,
+	.balance-width2,
+	.balance-width3
 	{
 		width: 100%;
 	}
+	.margin-top-gap
+	{
+		margin-top: 10px;
+	}
 	.small-text
 	{
-		text-align: center;
-		margin-left: 0px;
+		/* text-align: center;*/
+		
+		margin-left: 0; 
 		margin-top: 20px;
 	}
 	.p-input-radio
 	{
 		text-align: center;
 	}
+	/* .div-balance-buttons-choose-period
+	{
+		width: 100%;
+	} */
 }
 
 @media (max-width: 991px)

@@ -84,7 +84,7 @@ class ModelPersonalBudget extends \Core\Model
 		// $queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
     }
 
-    public static function selectAllFromIncomesToEdit()
+    public static function selectAllFromIncomesToEdit($idIncomesEdit)
     {
         $db = static::getDB();
         $queryEditIncome = $db->prepare('SELECT 
@@ -96,14 +96,14 @@ class ModelPersonalBudget extends \Core\Model
         FROM incomes_category_assigned_to_users AS incCat
         INNER JOIN incomes AS inc ON incCat.id = inc.income_category_assigned_to_user_id 
         WHERE inc.id = :id');
-        $queryEditIncome->bindValue(':id', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':id', $idIncomesEdit, PDO::PARAM_INT);
         $queryEditIncome->execute();
 
         $queryName = $queryEditIncome->fetchAll();   
         return $queryName;        
     }
 
-    public static function selectAllFromExpensesToEdit()
+    public static function selectAllFromExpensesToEdit($idExpensesEdit)
     {
         $db = static::getDB();
         $queryEditExpenses = $db->prepare('SELECT 
@@ -117,7 +117,7 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.id = :id');
-        $queryEditExpenses->bindValue(':id', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
+        $queryEditExpenses->bindValue(':id', $idExpensesEdit, PDO::PARAM_INT);
         $queryEditExpenses->execute();
 
         $queryName = $queryEditExpenses->fetchAll();   

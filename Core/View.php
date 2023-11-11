@@ -103,15 +103,17 @@ class View
                     }
                     if(isset($_SESSION['idExpensesDelete'])){
                         $twig->addGlobal('id_expenses_delete', $_SESSION['idExpensesDelete']);
+                        $twig->addGlobal('data_to_are_you_sure_table_expenses', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesDelete']));
                     } 
 
                     if(isset($_SESSION['idIncomesDelete'])){
                         $twig->addGlobal('id_incomes_delete', $_SESSION['idIncomesDelete']);
+                        $twig->addGlobal('data_to_are_you_sure_table_incomes', \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesDelete']));
                     } 
 
                     if(isset($_SESSION['idExpensesEditRow'])){
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
-                        $twig->addGlobal('expenses_edit_values', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit());
+                        $twig->addGlobal('expenses_edit_values', \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesEditRow']));
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
@@ -120,7 +122,7 @@ class View
 
                     if(isset($_SESSION['idIncomesEditRow'])){
                         // $twig->addGlobal('id_incomes_edit', $_SESSION['idIncomesEditRow']);
-                        $twig->addGlobal('incomes_edit_values', \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit());
+                        $twig->addGlobal('incomes_edit_values', \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesEditRow']));
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);

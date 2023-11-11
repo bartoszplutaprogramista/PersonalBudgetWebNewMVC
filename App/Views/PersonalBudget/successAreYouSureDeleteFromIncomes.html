@@ -19,21 +19,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if query_name_income_current_year %}
-                        {% for income in query_name_income_current_year %}
+                        {% if data_to_are_you_sure_table_incomes %}
+                        {% for income_are_you_sure in data_to_are_you_sure_table_incomes %}
                         <tr>
-                            <td class="ordinal-number">{{ income.incID }}</td>
-                            <td class="column-incomes">{{ income.amn }}</td>
-                            <td class="column-incomes">{{ income.dateInc }}</td>
-                            <td class="column-incomes">{{ income.incCategory }}</td>
-                            <td class="column-incomes">{{ income.comment }}</td>
+                            <td class="ordinal-number">{{ income_are_you_sure.incID }}</td>
+                            <td class="column-incomes">{{ income_are_you_sure.amn }}</td>
+                            <td class="column-incomes">{{ income_are_you_sure.dateInc }}</td>
+                            <td class="column-incomes">{{ income_are_you_sure.incCategory }}</td>
+                            <td class="column-incomes">{{ income_are_you_sure.comment }}</td>
                         </tr>
                         {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
             </div>
-            <div class="submit">
+            <div class="submit mt-4">
                 <div class="d-flex flex-row justify-content-center pb-4">
                     <div class="me-2">
                         <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse"
