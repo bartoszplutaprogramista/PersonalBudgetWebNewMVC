@@ -56,17 +56,6 @@ class personalBudget extends \Core\Controller
         View::renderTemplate('PersonalBudget/editExpense.html');
     }
 
-    public function areYouSureDeleteFromIncomes()
-    {
-        if(isset($_POST['deleteRowIncomes'])) {
-            $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
-
-            // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
-            // exit;
-        }
-        $this->redirect('/personalbudget/successareyousuredeletefromincomes');
-    }
-
     // public static function redirectToChosenPeriod(){
     //     if($_SESSION['paymentMethod'] == "currentMonth"){
     //         personalBudget::redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
@@ -178,6 +167,17 @@ class personalBudget extends \Core\Controller
         $this->redirect('/personalbudget/successeditexpenses');
     }
 
+    public function areYouSureDeleteFromIncomes()
+    {
+        if(isset($_POST['deleteRowIncomes'])) {
+            $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
+
+            // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
+            // exit;
+        }
+        $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+    }
+    
     public function areYouSureDeleteFromExpenses()
     {
         if(isset($_POST['deleteRow'])) {
@@ -197,7 +197,7 @@ class personalBudget extends \Core\Controller
             // echo "Id wynosi: ".$id;
             // exit;
         // }
-        if ($personalBudget->deleteIncome($_SESSION['idIncomesDelete'])) {
+        if ($personalBudget->deleteIncome()) {
             //  echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
             // exit;
             Flash::addMessage('Pomyślnie usunięto rekord');

@@ -235,15 +235,41 @@ a:active {
 	justify-content: center;
 }
 
+.balance-width-percent
+{
+	/* width: 33.33%; width: 33.33%; */
+	width: 33.33%;
+}
 
 .balance-width
 {
-	width: 33.33%;
+	/* width: 33.33%; width: 33.33%; */
+	width: 200px;
+}
+.balance-width2
+{
+	/* width: 33.33%; */
+	 width: 165px;
+}
+.balance-width3
+{
+	/* width: 33.33%; */
+	 width: 105px;
+}
+
+.div-balance-buttons-choose-period
+{
+	width: 650px;
 }
 
 .div-balance-buttons
 {
-	width: 650px;
+	width: 500px;
+}
+
+.div-form-buttons-show
+{
+	width: 400px;
 }
 
 .div-form-buttons
@@ -345,6 +371,12 @@ p
 	color: white;
 	text-align: left;
 }
+
+/* .p-input-radio-browse
+{
+	color: white;
+	text-align: left;
+} */
 
 .bo
 {
