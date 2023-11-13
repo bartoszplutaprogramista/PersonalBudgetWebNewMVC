@@ -129,7 +129,23 @@ class View
                         // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
                     } 
 
+                    if(isset($_SESSION['myOrdinalNumberDeleteIncomesVar'])){
+                        // $twig->addGlobal('id_incomes_edit', $_SESSION['idIncomesEditRow']);
+                        $twig->addGlobal('ordinal_delete_incomes_number', $_SESSION['myOrdinalNumberDeleteIncomesVar']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                    }  
 
+                    if(isset($_SESSION['myOrdinalNumberDeleteExpensesVar'])){
+                        // $twig->addGlobal('id_incomes_edit', $_SESSION['idIncomesEditRow']);
+                        $twig->addGlobal('ordinal_delete_expenses_number', $_SESSION['myOrdinalNumberDeleteExpensesVar']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                        // $twig->addGlobal('id_expenses_edit', $_SESSION['idExpensesEditRow']);
+                    } 
 
                     if(isset($_SESSION['paymentMethod'])){
 

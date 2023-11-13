@@ -12,6 +12,7 @@
                     <thead>
                         <tr>
                             <th class="ordinal-number">ID</th>
+                            <th class="ordinal-number">Lp</th>
                             <th class="column-incomes">Kwota (zł)</th>
                             <th class="column-incomes">Data</th>
                             <th class="column-incomes">Kategoria</th>
@@ -23,6 +24,7 @@
                         {% for income_are_you_sure in data_to_are_you_sure_table_incomes %}
                         <tr>
                             <td class="ordinal-number">{{ income_are_you_sure.incID }}</td>
+                            <td class="ordinal-number">{{ ordinal_delete_incomes_number }}</td>
                             <td class="column-incomes">{{ income_are_you_sure.amn }}</td>
                             <td class="column-incomes">{{ income_are_you_sure.dateInc }}</td>
                             <td class="column-incomes">{{ income_are_you_sure.incCategory }}</td>

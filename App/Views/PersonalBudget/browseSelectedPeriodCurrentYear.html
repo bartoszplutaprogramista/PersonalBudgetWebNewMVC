@@ -72,6 +72,8 @@
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
                                     id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
+                                    <input type="hidden" name="myOrdinalNumberDeleteIncomes"
+                                        value="{{ myOrdinalNumber }}" />
                                     <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
                                         <!-- <button type="submit" class="btn btn-light"> -->
@@ -135,6 +137,8 @@
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
                                     id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
+                                    <input type="hidden" name="myOrdinalNumberDeleteExpenses"
+                                        value="{{ myOrdinalNumberExpenses }}" />
                                     <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
                                         <!-- <button type="submit" class="btn btn-light"> -->

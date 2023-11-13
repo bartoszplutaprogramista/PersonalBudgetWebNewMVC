@@ -175,6 +175,14 @@ class personalBudget extends \Core\Controller
             // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
             // exit;
         }
+
+        if(isset($_POST['myOrdinalNumberDeleteIncomes'])) {
+
+            $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteIncomes'];
+
+            // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
+            // exit;
+        }
         $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
     
@@ -186,6 +194,15 @@ class personalBudget extends \Core\Controller
             // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
             // exit;
         }
+
+        if(isset($_POST['myOrdinalNumberDeleteExpenses'])) {
+            
+            $_SESSION['myOrdinalNumberDeleteExpensesVar'] = $_POST['myOrdinalNumberDeleteExpenses'];
+
+            // echo "Id wynosi: ".$_SESSION['idExpensesDelete'];
+            // exit;
+        }
+
         $this->redirect('/personalbudget/successareyousuredeletefromexpenses');
     }
 
