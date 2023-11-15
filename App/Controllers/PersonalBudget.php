@@ -372,6 +372,7 @@ class personalBudget extends \Core\Controller
             }
         }
         elseif ($paymentMethod=='selectedPeriod'){
+            // $this->redirect('/personalbudget/browseselectedperiodprocessing');
             $this->redirect('/personalbudget/browseselectedperiodprocessing');
         }
     } 
