@@ -308,7 +308,7 @@ class personalBudget extends \Core\Controller
     {
         $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
 
-        return $dateFdateSelectedPeriod1romTo;
+        return $dateSelectedPeriod1;
     }
 
     public static function dateFromToSelectedPeriodDate2()
@@ -327,6 +327,9 @@ class personalBudget extends \Core\Controller
         // $userId = $user_object->getUserId($array['email']);
         $paymentMethod = $_POST['paymentMethod'];
         $_SESSION['paymentMethod'] = $paymentMethod;
+
+        // echo "Payment method wynosi:".$_SESSION['paymentMethod'];
+        // exit;
 
         // echo "SESSION PAYMENT METHOD: ".$_SESSION['paymentMethod'];
         // exit;
