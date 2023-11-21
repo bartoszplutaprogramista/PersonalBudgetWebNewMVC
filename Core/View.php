@@ -84,6 +84,7 @@ class View
                         $twig->addGlobal('query_name_expense_current_year', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentYear));
                         $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentYear));
                         $twig->addGlobal('query_name_expenses_sum_current_year', \App\Models\ModelPersonalBudget::expensesSum($dateCurrentYear));
+                        $twig->addGlobal('chart_incomes_current_year', \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentYear));
 
                         // unset($_SESSION['currentYear']);
                     }
@@ -168,6 +169,8 @@ class View
                         //     unset($_SESSION['whichPeriod']);
                         // } 
                     }
+
+                    
 
                 }
             }

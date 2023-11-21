@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head%}
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+
+{% endblock %}
+
 {% block title2 %}Przeglądaj bilans dla bieżącego roku{% endblock %}
 
 {% block body2 %}
@@ -30,7 +37,7 @@
                 </form>
             </div>
             <div class="table-responsive">
-                <table class="table-center my-table">
+                <table class="table-center my-table mb-4">
                     <thead>
                         <tr>
                             <th colspan="8" class="center-td">Zestawienie przychodów w okresie od
@@ -90,9 +97,18 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                {% if chart_incomes_current_year %}
+                {% for chart_income in chart_incomes_current_year %}
+                {{ chart_income.incNameSum }} <br>
+                <a href="#" data-entry-id="{{ chart_income.incNameSum }}" id="some-link-1"></a>
+                {{ chart_income.catName }}<br>
+                <a href="#" data-entry-id="{{ chart_income.catName }}" id="some-link-2"></a>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class="table-responsive mt-4">
-                <table class="table-center my-table">
+                <table class="table-center my-table mb-4">
                     <thead>
                         <tr>
                             <th colspan="9" class="center-td">Zestawienie wydatków w okresie od
@@ -157,6 +173,14 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <div id="chartContainerExpenses" style="height: 370px; max-width: 920px; margin: 0px auto;"
+                    class="mb-2"></div>
+                {% if chart_incomes_current_year %}
+                {% for chart_income in chart_incomes_current_year %}
+                <a href="#" data-entry-id="{{ chart_income.incNameSum }}" id="some-link-1"></a>
+                <a href="#" data-entry-id="{{ chart_income.catName }}" id="some-link-2"></a>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class="table-responsive mt-4">
                 <table class="table-center">
@@ -197,4 +221,255 @@
         </div>
     </div>
 </div>
+<script>
+    // let id = $('#some-link-1').data('id');
+    // id = document.querySelector('#some-link-1').dataset.id;
+    // console.log("id wynosi: ", id);
+    // console.log("First = ", myVar);
+    // console.log("Second = ", myVar2);
+    ///////////////////////////////////////////////////
+    // const $entryIds = Object.create(null);
+    // const $entryIds = Object.create(null);
+
+    // const entryIds = Object.create(null);
+
+
+    // document.addEventListener('DOMContentLoaded', () => {
+
+    //     // Select elements by their data attribute
+    //     const entryElements =
+    //         document.querySelectorAll('[data-entry-id]');
+
+    //     // Map over each element and extract the data value
+    //     const entryIds =
+    //         Array.from(entryElements).map(
+    //             item => item.dataset.entryId
+    //         );
+
+    //     // You'll now have an array containing string values
+    //     console.log(entryIds); // eg: ["1", "2", "3"]
+    // });
+
+    // console.log("TO ENRY IDS GLOBAL: ", entryIds);
+
+    // function myFunc() {
+    //     // const $entryIds = null;
+    //     $(() => {
+
+    //         // Select elements by their data attribute
+    //         let $entryElements = $('[data-entry-id]');
+
+    //         // Map over each element and extract the data value
+    //         let $entryIds =
+    //             $.map($entryElements, item => $(item).data('entryId'));
+
+    //         // function myFunc() {
+    //         //     return $entryIds;
+    //         // }
+
+
+    //         // You'll now have array containing string values
+    //         // console.log($entryIds); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[0]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[1]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[2]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[3]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[4]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds[5]); // eg: ["1", "2", "3"]
+    //         // console.log($entryIds.length); // eg: ["1", "2", "3"]
+
+    //         // return $entryIds;
+
+    //     });
+    //     // return $entryIds;
+    // }
+
+    // console.log("TO ENRY IDS GLOBAL: ", $entryIds);
+
+    const $entryElements = $('[data-entry-id]');
+
+    // Map over each element and extract the data value
+    const $entryIds =
+        $.map($entryElements, item => $(item).data('entryId'));
+
+    // function myFunc() {
+    //     // const $entryIds = null;
+    // $(() => {
+
+    //     // Select elements by their data attribute
+    //     const $entryElements = $('[data-entry-id]');
+
+    //     // Map over each element and extract the data value
+    //     const $entryIds =
+    //         $.map($entryElements, item => $(item).data('entryId'));
+
+    //     // function myFunc() {
+    //     //     return $entryIds;
+    //     // }
+
+
+    //     // You'll now have array containing string values
+    //     console.log($entryIds); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[0]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[1]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[2]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[3]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[4]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds[5]); // eg: ["1", "2", "3"]
+    //     // console.log($entryIds.length); // eg: ["1", "2", "3"]
+
+    //     // return $entryIds;
+
+    // });
+    //     // return $entryIds;
+    // }
+
+    console.log("TO ENRY IDS GLOBAL: ", $entryIds);
+
+    console.log("TO ENRY IDS GLOBAL[0]: ", $entryIds[0]);
+    console.log("TO ENRY IDS GLOBAL[1]: ", $entryIds[1]);
+    console.log("TO ENRY IDS GLOBAL[2]: ", $entryIds[2]);
+    console.log("TO ENRY IDS GLOBAL[3]: ", $entryIds[3]);
+
+
+    // const $myHelp = myFunc();
+
+    // console.log("TO TA: ", $myHelp);
+
+    // $(document).ready(function () {
+    //     const $myHelp = myFunc();
+
+    //     console.log("TO TA: ", $myHelp);
+    // });
+    // const $myHelp = myFunc();
+
+    // console.log("TO TA: ", $myHelp);
+
+    /////////////////////////////////
+
+    // var fg = $.parseJSON('{{ chart_income.incNameSum  | json_encode | raw }}');
+    // for (k in fg) {
+    //     console.log("chart_income.incNameSum : ", fg[k].id);
+    // }
+
+    let help = Number($entryIds[0]) + Number($entryIds[2]) + Number($entryIds[4]);
+
+    console.log("help", help);
+
+    let entrtyIds1 = $entryIds[0] / help;
+
+    entrtyIds1 = entrtyIds1.toFixed(4) * 100;
+
+    console.log("entrtyIds1 ", entrtyIds1);
+
+    let entrtyIds2 = $entryIds[2] / help;
+
+    entrtyIds2 = entrtyIds2.toFixed(4) * 100;
+
+    let entrtyIds3 = $entryIds[4] / help;
+
+    entrtyIds3 = entrtyIds3.toFixed(4) * 100;
+
+
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Zestawienie przychodów od {{ date_from_to_current_year }}"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 25,
+                toolTipContent: "<b>{label}</b>: {y}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {y}%",
+                dataPoints: [{
+                        y: entrtyIds1,
+                        label: $entryIds[1]
+                    },
+                    {
+                        y: entrtyIds2,
+                        label: $entryIds[3]
+                    },
+                    {
+                        y: entrtyIds3,
+                        label: $entryIds[5]
+                    }
+                    // {
+                    //     y: 5.02,
+                    //     label: "Another"
+                    // },
+                    // {
+                    //     y: 4.07,
+                    //     label: "Safari"
+                    // },
+                    // {
+                    //     y: 1.22,
+                    //     label: "Opera"
+                    // },
+                    // {
+                    //     y: 0.44,
+                    //     label: "Others"
+                    // }
+                ]
+            }]
+        });
+        chart.render();
+
+
+        var chart = new CanvasJS.Chart("chartContainerExpenses", {
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Zestawienie przychodów od {{ date_from_to_current_year }}"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 25,
+                toolTipContent: "<b>{label}</b>: {y}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {y}%",
+                dataPoints: [{
+                        y: entrtyIds1,
+                        label: $entryIds[1]
+                    },
+                    {
+                        y: entrtyIds2,
+                        label: $entryIds[3]
+                    },
+                    {
+                        y: entrtyIds3,
+                        label: $entryIds[5]
+                    }
+                    // {
+                    //     y: 5.02,
+                    //     label: "Another"
+                    // },
+                    // {
+                    //     y: 4.07,
+                    //     label: "Safari"
+                    // },
+                    // {
+                    //     y: 1.22,
+                    //     label: "Opera"
+                    // },
+                    // {
+                    //     y: 0.44,
+                    //     label: "Others"
+                    // }
+                ]
+            }]
+        });
+        chart.render();
+    }
+</script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 {% endblock %}

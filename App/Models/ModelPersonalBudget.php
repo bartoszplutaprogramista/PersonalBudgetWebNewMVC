@@ -265,6 +265,27 @@ class ModelPersonalBudget extends \Core\Model
         return $queryExpense;
     }
 
+    public static function sumOfNamesFromIncomesToChart($dataHelp)
+    {
+        $db = static::getDB();
+        $querySumIncomes = $db->prepare('SELECT 
+        income_category_assigned_to_user_id AS inc_assigned_id, 
+        SUM(amount) AS incNameSum, 
+        inc_cat.name AS catName
+        FROM incomes AS inc
+        INNER JOIN incomes_category_assigned_to_users AS inc_cat ON inc_cat.id = inc.income_category_assigned_to_user_id
+        WHERE inc.user_id = :userId AND date_of_income LIKE :dataHelp
+        GROUP BY income_category_assigned_to_user_id
+        ORDER BY amount DESC');
+        $querySumIncomes->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $querySumIncomes->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
+        $querySumIncomes->execute();
+
+        $incomesSumToChart = $querySumIncomes->fetchAll();
+        
+        return $incomesSumToChart;
+    }
+
     public static function incomesSum($dataHelp)
     {
         $db = static::getDB();
