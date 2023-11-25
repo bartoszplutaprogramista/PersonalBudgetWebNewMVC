@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head%}
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
 
 
 {% endblock %}
@@ -101,9 +100,9 @@
                 {% if chart_incomes_current_year %}
                 {% for chart_income in chart_incomes_current_year %}
                 {{ chart_income.incNameSum }} <br>
-                <a href="#" data-entry-id="{{ chart_income.incNameSum }}" id="some-link-1"></a>
+                <a href='#' data-entry-id='{{ chart_income.incNameSum }}' id='chart_icome_1'></a>
                 {{ chart_income.catName }}<br>
-                <a href="#" data-entry-id="{{ chart_income.catName }}" id="some-link-2"></a>
+                <a href="#" data-entry-id="{{ chart_income.catName }}" id="chart_icome_1"></a>
                 {% endfor %}
                 {% endif %}
             </div>
@@ -177,8 +176,8 @@
                     class="mb-2"></div>
                 {% if chart_incomes_current_year %}
                 {% for chart_income in chart_incomes_current_year %}
-                <a href="#" data-entry-id="{{ chart_income.incNameSum }}" id="some-link-1"></a>
-                <a href="#" data-entry-id="{{ chart_income.catName }}" id="some-link-2"></a>
+                <a href="#" data-entry-id="{{ chart_income.incNameSum }}" id="some_link_3"></a>
+                <a href="#" data-entry-id="{{ chart_income.catName }}" id="some_link_4"></a>
                 {% endfor %}
                 {% endif %}
             </div>
@@ -221,154 +220,90 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script>
-    // let id = $('#some-link-1').data('id');
-    // id = document.querySelector('#some-link-1').dataset.id;
-    // console.log("id wynosi: ", id);
-    // console.log("First = ", myVar);
-    // console.log("Second = ", myVar2);
-    ///////////////////////////////////////////////////
-    // const $entryIds = Object.create(null);
-    // const $entryIds = Object.create(null);
+    function myFunc() {
+        const $entryElementsIncomes = $('#chart_icome_1[data-entry-id]');
 
-    // const entryIds = Object.create(null);
+        // console.log("Goła wartość: ", $entryElements4);
 
+        const $entryDispalyArrayElementsIncome = $.map($entryElementsIncomes, item => $(item).data('entryId'));
 
-    // document.addEventListener('DOMContentLoaded', () => {
-
-    //     // Select elements by their data attribute
-    //     const entryElements =
-    //         document.querySelectorAll('[data-entry-id]');
-
-    //     // Map over each element and extract the data value
-    //     const entryIds =
-    //         Array.from(entryElements).map(
-    //             item => item.dataset.entryId
-    //         );
-
-    //     // You'll now have an array containing string values
-    //     console.log(entryIds); // eg: ["1", "2", "3"]
-    // });
-
-    // console.log("TO ENRY IDS GLOBAL: ", entryIds);
-
-    // function myFunc() {
-    //     // const $entryIds = null;
-    //     $(() => {
-
-    //         // Select elements by their data attribute
-    //         let $entryElements = $('[data-entry-id]');
-
-    //         // Map over each element and extract the data value
-    //         let $entryIds =
-    //             $.map($entryElements, item => $(item).data('entryId'));
-
-    //         // function myFunc() {
-    //         //     return $entryIds;
-    //         // }
+        console.log("moje jest: ", $entryDispalyArrayElementsIncome);
+        console.log("moje jest poj: ", $entryDispalyArrayElementsIncome[0]);
+        console.log("długość: ", $entryDispalyArrayElementsIncome.length);
 
 
-    //         // You'll now have array containing string values
-    //         // console.log($entryIds); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[0]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[1]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[2]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[3]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[4]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds[5]); // eg: ["1", "2", "3"]
-    //         // console.log($entryIds.length); // eg: ["1", "2", "3"]
 
-    //         // return $entryIds;
+        let valueOfDataPoints = [];
 
-    //     });
-    //     // return $entryIds;
-    // }
+        let sumChartIncomes = 0;
 
-    // console.log("TO ENRY IDS GLOBAL: ", $entryIds);
+        let lastVal = 0;
 
-    const $entryElements = $('[data-entry-id]');
+        let singleVal = 0;
 
-    // Map over each element and extract the data value
-    const $entryIds =
-        $.map($entryElements, item => $(item).data('entryId'));
+        let sumSingleVal = 0;
 
-    // function myFunc() {
-    //     // const $entryIds = null;
-    // $(() => {
-
-    //     // Select elements by their data attribute
-    //     const $entryElements = $('[data-entry-id]');
-
-    //     // Map over each element and extract the data value
-    //     const $entryIds =
-    //         $.map($entryElements, item => $(item).data('entryId'));
-
-    //     // function myFunc() {
-    //     //     return $entryIds;
-    //     // }
+        for (let i = 0; i < $entryDispalyArrayElementsIncome.length - 1; i = i + 2) {
+            sumChartIncomes += Number($entryDispalyArrayElementsIncome[i]);
+            // if (i = $entryDispalyArrayElementsIncome.length - 2) {
+            //     lastVal = 100 - sumChartIncomes;
+            // }
+        }
 
 
-    //     // You'll now have array containing string values
-    //     console.log($entryIds); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[0]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[1]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[2]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[3]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[4]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds[5]); // eg: ["1", "2", "3"]
-    //     // console.log($entryIds.length); // eg: ["1", "2", "3"]
 
-    //     // return $entryIds;
+        console.log("lastVal ", lastVal);
+        console.log("sumChartIncomes ", sumChartIncomes);
 
-    // });
-    //     // return $entryIds;
-    // }
+        // for (let i = 0; i < $entryDispalyArrayElementsIncome.length - 1; i = i + 2) {
+        //     sumChartIncomes += Number($entryDispalyArrayElementsIncome[i]);
+        // }
 
-    console.log("TO ENRY IDS GLOBAL: ", $entryIds);
+        for (let i = 0; i < $entryDispalyArrayElementsIncome.length - 1; i = i + 2) {
 
-    console.log("TO ENRY IDS GLOBAL[0]: ", $entryIds[0]);
-    console.log("TO ENRY IDS GLOBAL[1]: ", $entryIds[1]);
-    console.log("TO ENRY IDS GLOBAL[2]: ", $entryIds[2]);
-    console.log("TO ENRY IDS GLOBAL[3]: ", $entryIds[3]);
+            // if ($entryDispalyArrayElementsIncome.length > 2) &&
+
+            if (i == $entryDispalyArrayElementsIncome.length - 2) {
+                lastVal = 100 - sumSingleVal;
+                singleVal = lastVal;
+
+                console.log(singleVal);
+            } else {
+                singleVal = Math.ceil((Number($entryDispalyArrayElementsIncome[i]) / sumChartIncomes) * 10000) / 100;
+                sumSingleVal += singleVal;
+                console.log("singleVal ", singleVal);
+            }
+
+            valueOfDataPoints.push({
+                y: singleVal,
+                label: $entryDispalyArrayElementsIncome[i + 1]
+            });
+        }
+        return valueOfDataPoints;
+    }
 
 
-    // const $myHelp = myFunc();
+    // let help = Number($entryIds[0]) + Number($entryIds[2]) + Number($entryIds[4]);
 
-    // console.log("TO TA: ", $myHelp);
+    // console.log("help", help);
 
-    // $(document).ready(function () {
-    //     const $myHelp = myFunc();
+    // let entrtyIds1 = $entryIds[0] / help;
 
-    //     console.log("TO TA: ", $myHelp);
-    // });
-    // const $myHelp = myFunc();
+    // entrtyIds1 = entrtyIds1.toFixed(4) * 100;
 
-    // console.log("TO TA: ", $myHelp);
+    // console.log("entrtyIds1 ", entrtyIds1);
 
-    /////////////////////////////////
+    // let entrtyIds2 = $entryIds[2] / help;
 
-    // var fg = $.parseJSON('{{ chart_income.incNameSum  | json_encode | raw }}');
-    // for (k in fg) {
-    //     console.log("chart_income.incNameSum : ", fg[k].id);
-    // }
+    // entrtyIds2 = entrtyIds2.toFixed(4) * 100;
 
-    let help = Number($entryIds[0]) + Number($entryIds[2]) + Number($entryIds[4]);
+    // let entrtyIds3 = $entryIds[4] / help;
 
-    console.log("help", help);
-
-    let entrtyIds1 = $entryIds[0] / help;
-
-    entrtyIds1 = entrtyIds1.toFixed(4) * 100;
-
-    console.log("entrtyIds1 ", entrtyIds1);
-
-    let entrtyIds2 = $entryIds[2] / help;
-
-    entrtyIds2 = entrtyIds2.toFixed(4) * 100;
-
-    let entrtyIds3 = $entryIds[4] / help;
-
-    entrtyIds3 = entrtyIds3.toFixed(4) * 100;
+    // entrtyIds3 = entrtyIds3.toFixed(4) * 100;
 
 
     window.onload = function () {
@@ -388,39 +323,11 @@
                 legendText: "{label}",
                 indexLabelFontSize: 16,
                 indexLabel: "{label} - {y}%",
-                dataPoints: [{
-                        y: entrtyIds1,
-                        label: $entryIds[1]
-                    },
-                    {
-                        y: entrtyIds2,
-                        label: $entryIds[3]
-                    },
-                    {
-                        y: entrtyIds3,
-                        label: $entryIds[5]
-                    }
-                    // {
-                    //     y: 5.02,
-                    //     label: "Another"
-                    // },
-                    // {
-                    //     y: 4.07,
-                    //     label: "Safari"
-                    // },
-                    // {
-                    //     y: 1.22,
-                    //     label: "Opera"
-                    // },
-                    // {
-                    //     y: 0.44,
-                    //     label: "Others"
-                    // }
-                ]
+                // dataPoints: valueOfDataPoints
+                dataPoints: myFunc()
             }]
         });
         chart.render();
-
 
         var chart = new CanvasJS.Chart("chartContainerExpenses", {
             theme: "light2", // "light1", "light2", "dark1", "dark2"
@@ -438,16 +345,16 @@
                 indexLabelFontSize: 16,
                 indexLabel: "{label} - {y}%",
                 dataPoints: [{
-                        y: entrtyIds1,
-                        label: $entryIds[1]
+                        y: 25,
+                        label: "Moje1"
                     },
                     {
-                        y: entrtyIds2,
-                        label: $entryIds[3]
+                        y: 50,
+                        label: "Moje2"
                     },
                     {
-                        y: entrtyIds3,
-                        label: $entryIds[5]
+                        y: 25,
+                        label: "Moje3"
                     }
                     // {
                     //     y: 5.02,
@@ -469,6 +376,7 @@
             }]
         });
         chart.render();
+
     }
 </script>
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
