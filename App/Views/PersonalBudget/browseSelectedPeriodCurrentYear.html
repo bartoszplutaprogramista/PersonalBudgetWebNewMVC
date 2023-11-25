@@ -1,11 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head%}
-
-
-
-{% endblock %}
-
 {% block title2 %}Przeglądaj bilans dla bieżącego roku{% endblock %}
 
 {% block body2 %}
@@ -221,8 +215,10 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"
-    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> -->
+{% endblock %}
+{% block footer2 %}
 <script>
     function myFunc() {
         const $entryElementsIncomes = $('#chart_icome_1[data-entry-id]');
