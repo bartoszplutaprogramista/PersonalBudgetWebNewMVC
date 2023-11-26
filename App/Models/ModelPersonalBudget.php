@@ -276,7 +276,7 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN incomes_category_assigned_to_users AS inc_cat ON inc_cat.id = inc.income_category_assigned_to_user_id
         WHERE inc.user_id = :userId AND date_of_income LIKE :dataHelp
         GROUP BY income_category_assigned_to_user_id
-        ORDER BY amount DESC');
+        ORDER BY incNameSum DESC');
         $querySumIncomes->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumIncomes->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
         $querySumIncomes->execute();
@@ -284,6 +284,27 @@ class ModelPersonalBudget extends \Core\Model
         $incomesSumToChart = $querySumIncomes->fetchAll();
         
         return $incomesSumToChart;
+    }
+
+    public static function sumOfNamesFromExpensesToChart($dataHelp)
+    {
+        $db = static::getDB();
+        $querySumExpenses = $db->prepare('SELECT 
+        expense_category_assigned_to_user_id AS exp_assigned_id, 
+        SUM(amount) AS expNameSum, 
+        exp_cat.name AS catName
+        FROM expenses AS exp
+        INNER JOIN expenses_category_assigned_to_users AS exp_cat ON exp_cat.id = exp.expense_category_assigned_to_user_id
+        WHERE exp.user_id = :userId AND date_of_expense LIKE :dataHelp
+        GROUP BY expense_category_assigned_to_user_id
+        ORDER BY expNameSum DESC');
+        $querySumExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $querySumExpenses->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
+        $querySumExpenses->execute();
+
+        $expensesSumToChart = $querySumExpenses->fetchAll();
+        
+        return $expensesSumToChart;
     }
 
     public static function incomesSum($dataHelp)
