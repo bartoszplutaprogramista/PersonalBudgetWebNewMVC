@@ -90,17 +90,15 @@
                         {% endif %}
                     </tbody>
                 </table>
-                <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
-                {% if chart_incomes_current_year %}
-                {% for chart_income in chart_incomes_current_year %}
-                {{ chart_income.incNameSum }} <br>
-                <a href='#' data-entry-id='{{ chart_income.incNameSum }}' id='chart_icome_1'></a>
-                {{ chart_income.catName }}<br>
-                <a href="#" data-entry-id="{{ chart_income.catName }}" id="chart_icome_1"></a>
-                {% endfor %}
-                {% endif %}
             </div>
-            <div class="table-responsive mt-4">
+            <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4"></div>
+            {% if chart_incomes_current_year %}
+            {% for chart_income in chart_incomes_current_year %}
+            <a href='#' data-entry-id='{{ chart_income.incNameSum }}' id='chart_icome_1'></a>
+            <a href="#" data-entry-id="{{ chart_income.catName }}" id="chart_icome_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
                 <table class="table-center my-table mb-4">
                     <thead>
                         <tr>
@@ -166,16 +164,16 @@
                         {% endif %}
                     </tbody>
                 </table>
-                <div id="chartContainerExpenses" style="height: 370px; max-width: 920px; margin: 0px auto;"
-                    class="mb-2"></div>
-                {% if chart_expenses_current_year %}
-                {% for chart_expense in chart_expenses_current_year %}
-                <a href="#" data-entry-id="{{ chart_expense.expNameSum }}" id="chart_expense_1"></a>
-                <a href="#" data-entry-id="{{ chart_expense.catName }}" id="chart_expense_1"></a>
-                {% endfor %}
-                {% endif %}
             </div>
-            <div class="table-responsive mt-4">
+            <div id="chartContainerExpenses" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4">
+            </div>
+            {% if chart_expenses_current_year %}
+            {% for chart_expense in chart_expenses_current_year %}
+            <a href="#" data-entry-id="{{ chart_expense.expNameSum }}" id="chart_expense_1"></a>
+            <a href="#" data-entry-id="{{ chart_expense.catName }}" id="chart_expense_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
                 <table class="table-center">
                     <thead>
                         <tr>
@@ -228,7 +226,7 @@
     console.log("dateFromToCurrentYear", dateFromToCurrentYear);
 
     let script = document.createElement("script");
-    script.src = "/js/chartIncome.js";
+    script.src = "/js/displayChart.js";
     //document.head.prepend(script);
     document.body.appendChild(script);
 </script>

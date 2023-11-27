@@ -1,4 +1,4 @@
-function displayChart(elements) {
+function getChartDataPoint(elements) {
     const $entryElementsIncomes = $(elements);
     // const $entryElementsIncomes = $('#chart_icome_1[data-entry-id]');
 
@@ -62,6 +62,7 @@ function displayChart(elements) {
             label: $entryDispalyArrayElementsIncome[i + 1]
         });
     }
+    console.log("Value oif DATA POINTS: ", valueOfDataPoints);
     return valueOfDataPoints;
 }
 
@@ -169,10 +170,15 @@ window.onload = function () {
             indexLabelFontSize: 16,
             indexLabel: "{label} - {y}%",
             // dataPoints: valueOfDataPoints
-            dataPoints: displayChart(sumOfIncomesElements)
+            // dataPoints: getChartDataPoint(sumOfIncomesElements)
+            dataPoints: getChartDataPoint(sumOfIncomesElements)
         }]
     });
-    chart.render();
+    let dataPointIncomes = getChartDataPoint(sumOfIncomesElements);
+    console.log("DATA DO END OF CHArt ", dataPointIncomes);
+    if (dataPointIncomes !== '') {
+        chart.render();
+    }
 
     var chart = new CanvasJS.Chart("chartContainerExpenses", {
         theme: "light2", // "light1", "light2", "dark1", "dark2"
@@ -189,9 +195,16 @@ window.onload = function () {
             legendText: "{label}",
             indexLabelFontSize: 16,
             indexLabel: "{label} - {y}%",
-            dataPoints: displayChart(sumOfExpensesElements)
+            // dataPoints: getChartDataPoint(sumOfExpensesElements)
+            dataPoints: getChartDataPoint(sumOfExpensesElements)
         }]
     });
-    chart.render();
+    let dataPointExpenses = getChartDataPoint(sumOfExpensesElements);
+    console.log("DATA DO END OF CHArt ", dataPointExpenses);
+    if (dataPointExpenses !== '') {
+        chart.render();
+    }
 
 }
+// console.log("DATA DO END OF CHArt ", dataPointIncomes);
+// console.log("DATA DO END OF CHArt ", dataPointExpenses);

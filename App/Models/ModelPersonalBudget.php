@@ -286,6 +286,30 @@ class ModelPersonalBudget extends \Core\Model
         return $incomesSumToChart;
     }
 
+    public static function sumOfNamesFromIncomesToChartSelectedPeriod()
+    {
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $querySumIncomes = $db->prepare('SELECT 
+        income_category_assigned_to_user_id AS inc_assigned_id, 
+        SUM(amount) AS incNameSum, 
+        inc_cat.name AS catName
+        FROM incomes AS inc
+        INNER JOIN incomes_category_assigned_to_users AS inc_cat ON inc_cat.id = inc.income_category_assigned_to_user_id
+        WHERE inc.user_id = :userId AND date_of_income >= :dateSelectedPeriod1 AND date_of_income <= :dateSelectedPeriod2
+        GROUP BY income_category_assigned_to_user_id
+        ORDER BY incNameSum DESC');
+        $querySumIncomes->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $querySumIncomes->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $querySumIncomes->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
+        $querySumIncomes->execute();
+
+        $incomesSumToChart = $querySumIncomes->fetchAll();
+        
+        return $incomesSumToChart;
+    }    
+
     public static function sumOfNamesFromExpensesToChart($dataHelp)
     {
         $db = static::getDB();
@@ -300,6 +324,30 @@ class ModelPersonalBudget extends \Core\Model
         ORDER BY expNameSum DESC');
         $querySumExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumExpenses->bindValue(':dataHelp', $dataHelp, PDO::PARAM_STR);
+        $querySumExpenses->execute();
+
+        $expensesSumToChart = $querySumExpenses->fetchAll();
+        
+        return $expensesSumToChart;
+    }
+
+    public static function sumOfNamesFromExpensesToChartSelectedPeriod()
+    {
+        $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
+        $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
+        $db = static::getDB();
+        $querySumExpenses = $db->prepare('SELECT 
+        expense_category_assigned_to_user_id AS exp_assigned_id, 
+        SUM(amount) AS expNameSum, 
+        exp_cat.name AS catName
+        FROM expenses AS exp
+        INNER JOIN expenses_category_assigned_to_users AS exp_cat ON exp_cat.id = exp.expense_category_assigned_to_user_id
+        WHERE exp.user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2
+        GROUP BY expense_category_assigned_to_user_id
+        ORDER BY expNameSum DESC');
+        $querySumExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $querySumExpenses->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
+        $querySumExpenses->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);
         $querySumExpenses->execute();
 
         $expensesSumToChart = $querySumExpenses->fetchAll();

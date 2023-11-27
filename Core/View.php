@@ -59,6 +59,8 @@ class View
                         $twig->addGlobal('query_name_expense_current_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentMonth));
                         $twig->addGlobal('query_name_incomes_sum_current_month', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentMonth));
                         $twig->addGlobal('query_name_expenses_sum_current_month', \App\Models\ModelPersonalBudget::expensesSum($dateCurrentMonth));
+                        $twig->addGlobal('chart_incomes_current_month', \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth));
+                        $twig->addGlobal('chart_expenses_current_month', \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth));
 
                         // unset($_SESSION['currentMonth']);
                     }
@@ -71,6 +73,8 @@ class View
                         $twig->addGlobal('query_name_expense_last_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateLastMonth));
                         $twig->addGlobal('query_name_incomes_sum_last_month', \App\Models\ModelPersonalBudget::incomesSum($dateLastMonth));
                         $twig->addGlobal('query_name_expenses_sum_last_month', \App\Models\ModelPersonalBudget::expensesSum($dateLastMonth));
+                        $twig->addGlobal('chart_incomes_last_month', \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateLastMonth));
+                        $twig->addGlobal('chart_expenses_last_month', \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateLastMonth));
 
                         // unset($_SESSION['lastMonth']);
                     }
@@ -98,6 +102,8 @@ class View
                         $twig->addGlobal('query_name_expenses_selected_period', \App\Models\ModelPersonalBudget::getSelectedPeriodQueryNameExpense());
                         $twig->addGlobal('query_name_incomes_sum_selected_period', \App\Models\ModelPersonalBudget::incomesSelectedPeriodSum());
                         $twig->addGlobal('query_name_expenses_sum_selected_period', \App\Models\ModelPersonalBudget::expensesSelectedPeriodSum());
+                        $twig->addGlobal('chart_incomes_selected_period', \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChartSelectedPeriod());
+                        $twig->addGlobal('chart_expenses_selected_period', \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChartSelectedPeriod());
 
                         // unset($_SESSION['selectedPeriod']);
                         // unset($_SESSION['start_date']);

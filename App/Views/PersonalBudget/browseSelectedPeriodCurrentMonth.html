@@ -30,7 +30,7 @@
                 </form>
             </div>
             <div class="table-responsive">
-                <table class="table-center my-table">
+                <table class="table-center my-table mb-4">
                     <thead>
                         <tr>
                             <th colspan="8" class="center-td">Zestawienie przychodów w okresie od
@@ -91,8 +91,15 @@
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive mt-4">
-                <table class="table-center my-table">
+            <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4"></div>
+            {% if chart_incomes_current_month %}
+            {% for chart_income in chart_incomes_current_month %}
+            <a href='#' data-entry-id='{{ chart_income.incNameSum }}' id='chart_icome_1'></a>
+            <a href="#" data-entry-id="{{ chart_income.catName }}" id="chart_icome_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
+                <table class="table-center my-table mb-4">
                     <thead>
                         <tr>
                             <th colspan="9" class="center-td">Zestawienie wydatków w okresie od
@@ -156,7 +163,15 @@
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive mt-4">
+            <div id="chartContainerExpenses" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4">
+            </div>
+            {% if chart_expenses_current_month %}
+            {% for chart_expense in chart_expenses_current_month %}
+            <a href="#" data-entry-id="{{ chart_expense.expNameSum }}" id="chart_expense_1"></a>
+            <a href="#" data-entry-id="{{ chart_expense.catName }}" id="chart_expense_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
                 <table class="table-center">
                     <thead>
                         <tr>
@@ -195,4 +210,20 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block footer2 %}
+<script>
+    let dateFromToCurrentYear = "{{ date_from_to_current_month }}";
+
+    let sumOfIncomesElements = '#chart_icome_1[data-entry-id]';
+    let sumOfExpensesElements = '#chart_expense_1[data-entry-id]';
+
+    console.log("dateFromToCurrentYear", dateFromToCurrentYear);
+
+    let script = document.createElement("script");
+    script.src = "/js/displayChart.js";
+    //document.head.prepend(script);
+    document.body.appendChild(script);
+</script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 {% endblock %}
