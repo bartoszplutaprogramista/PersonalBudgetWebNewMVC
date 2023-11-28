@@ -175,9 +175,13 @@ window.onload = function () {
         }]
     });
     let dataPointIncomes = getChartDataPoint(sumOfIncomesElements);
-    console.log("DATA DO END OF CHArt ", dataPointIncomes);
-    if (dataPointIncomes !== '') {
+    // console.log("DATA DO END OF CHArt ", dataPointIncomes);
+    if (dataPointIncomes.length !== 0) {
         chart.render();
+    } else {
+        document.getElementById("chartContainer").style.height = "0px";
+        let element = document.querySelector("#table_incomes");
+        element.classList.replace("mb-4", "mb-0");
     }
 
     var chart = new CanvasJS.Chart("chartContainerExpenses", {
@@ -201,8 +205,13 @@ window.onload = function () {
     });
     let dataPointExpenses = getChartDataPoint(sumOfExpensesElements);
     console.log("DATA DO END OF CHArt ", dataPointExpenses);
-    if (dataPointExpenses !== '') {
+    if (dataPointExpenses.length !== 0) {
         chart.render();
+    } else {
+        document.getElementById("chartContainerExpenses").style.height = "0px";
+        let element = document.querySelector("#table_expenses");
+        element.classList.replace("mb-4", "mb-0");
+        // $("#table_expenses").removeClass('mb-4').addClass('mb-0');
     }
 
 }

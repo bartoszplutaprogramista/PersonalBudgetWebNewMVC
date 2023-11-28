@@ -15,16 +15,15 @@ class Signup extends \Core\Controller
 
     public function newAction()
     {
-        if(isset($_POST['g-recaptcha-response'])){
+        if(isset($_POST['recaptchaResponse'])){
             $secretKey = "";
 
-            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
+            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
 
             $answer = json_decode($check);   
             
             if($answer->success==false){
-                $everythings_OK=false;
-                $_SESSION['e_bot']="Potwierdź, że nie jesteś botem!";
+                echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
             }
         }
 
@@ -33,6 +32,18 @@ class Signup extends \Core\Controller
 
     public function createAction()
     {
+        if(isset($_POST['recaptchaResponse'])){
+            $secretKey = "";
+
+            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
+
+            $answer = json_decode($check);   
+            
+            if($answer->success==false){
+                echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
+            }
+        }
+
         $user = new User($_POST);
 
         $personalBudget = new ModelPersonalBudget($_POST);

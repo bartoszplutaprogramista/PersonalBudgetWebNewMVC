@@ -64,6 +64,8 @@
 <script>
     $(document).ready(function () {
 
+        let recaptchaResponse = grecaptcha.getResponse();
+
         $('#formSignup').validate({
             ignore: ".ignore",
             rules: {
@@ -78,15 +80,7 @@
                     minlength: 6,
                     validPassword: true
                 },
-                captcha: {
-                    required: function () {
-                        if (grecaptcha.getResponse() == '') {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
+                captcha: recaptchaResponse
             },
             messages: {
                 email: {
