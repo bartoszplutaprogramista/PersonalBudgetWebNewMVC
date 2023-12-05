@@ -26,21 +26,6 @@ class Signup extends \Core\Controller
      * @return void
      */
 
-
-
-    // public static function verify($response){
-    //     $ip = $_SERVER['REMOTE_ADDR'];
-    //     $key = "6LcGul0kAAAAABDtMLhJ6BGXm0JSlLSxOIm8ZTuv";
-    //     $url = 'https://www.google.com/recaptcha/api/siteverify';
-    //     $full_url = $url.'?secret='.$key.'&response='.$response.'&remoteip='.$ip;
-      
-    //     $data = json_decode(file_get_contents($full_url));
-    //     if(isset($data->success) && $data->success == true){
-    //        return true;
-    //     }
-    //     return false;
-    //   }
-
     public function newAction()
     {
         // if(isset($_POST['g-recaptcha-response'])){
