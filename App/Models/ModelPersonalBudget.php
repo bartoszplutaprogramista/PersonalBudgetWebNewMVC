@@ -431,7 +431,7 @@ class ModelPersonalBudget extends \Core\Model
         INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
         INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
         WHERE ex.user_id = :userId AND date_of_expense >= :dateSelectedPeriod1 AND date_of_expense <= :dateSelectedPeriod2
-        ORDER BY date_of_expense ASC');
+        ORDER BY date_of_expense DESC');
         $queryNameSelectedPeriodExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod1', $startDate, PDO::PARAM_STR);
         $queryNameSelectedPeriodExpense->bindValue(':dateSelectedPeriod2', $endDate, PDO::PARAM_STR);

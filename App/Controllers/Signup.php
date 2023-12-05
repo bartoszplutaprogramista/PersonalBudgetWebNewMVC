@@ -44,19 +44,19 @@ class Signup extends \Core\Controller
 
     public function newAction()
     {
-        if(isset($_POST['recaptchaResponse'])){
-            $secretKey = "";
-            echo "WARTOŚĆ CAPTCHY ".$_POST['recaptchaResponse'];
-            exit;
+        // if(isset($_POST['recaptchaResponse'])){
+        //     $secretKey = "";
+        //     echo "WARTOŚĆ CAPTCHY ".$_POST['recaptchaResponse'];
+        //     exit;
 
-            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
+        //     $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
 
-            $answer = json_decode($check);   
+        //     $answer = json_decode($check);   
             
-            if($answer->success==false){
-                echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
-            }
-        }
+        //     if($answer->success==false){
+        //         echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
+        //     }
+        // }
 
         View::renderTemplate('Signup/new.html');
     }
@@ -73,38 +73,43 @@ class Signup extends \Core\Controller
             $answer = json_decode($check);   
             
             if($answer->success==false){
-                echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
-                exit;
+                Flash::addMessage('Potwierdź że nie jesteś botem');
+                $this->redirect('/signup/new');
+            } else {
+                $user = new User($_POST);
+
+                $personalBudget = new ModelPersonalBudget($_POST);
+        
+                if ($user->save()) {
+                    $emailOfUser = $_POST['email']; 
+                    $userId = $user->getUserId($emailOfUser);
+        
+                    $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
+                    $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
+                    $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
+                    
+                    $user->sendActivationEmail();
+        
+                    $this->redirect('/signup/success');
+        
+                } else {
+        
+                    View::renderTemplate('Signup/new.html', [
+                        'user' => $user
+                    ]);
+        
+                } 
             }
             //  else {
             //     echo "UDAŁO SIĘ";
             //     exit;
             // }
-        }
-
-        $user = new User($_POST);
-
-        $personalBudget = new ModelPersonalBudget($_POST);
-
-        if ($user->save()) {
-            $emailOfUser = $_POST['email']; 
-            $userId = $user->getUserId($emailOfUser);
-
-            $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
-            $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
-            $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
-            
-            $user->sendActivationEmail();
-
-            $this->redirect('/signup/success');
-
         } else {
-
-            View::renderTemplate('Signup/new.html', [
-                'user' => $user
-            ]);
-
-        } 
+            // $user = new User($_POST);
+            // $user->validate();
+            Flash::addMessage('Potwierdź że nie jesteś botem');
+            $this->redirect('/signup/new');
+        }
     }
     public function successAction()
     {

@@ -8,13 +8,15 @@
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS BIEŻĄCY MIESIĄC</h3>
-            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-2">
-                <div class="bd-highlight balance-width d-flex align-items-center">
-                    <label class="p-input-radio w-100" for="paymentMethod">Wybierz okres czasu:</label>
-                </div>
-                <div
-                    class="bd-highlight balance-width2 margin-top-gap d-flex align-items-center justify-content-center">
-                    <form action="/personalbudget/newbrowsethebalance" method="post">
+            <form action="/personalbudget/newbrowsethebalance" method="post">
+                <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-2">
+
+                    <div class="bd-highlight balance-width d-flex align-items-center">
+                        <label class="p-input-radio w-100" for="paymentMethodSelected">Wybierz okres czasu:</label>
+                    </div>
+                    <div
+                        class="bd-highlight balance-width2 margin-top-gap d-flex align-items-center justify-content-center">
+                        <!-- <form action="/personalbudget/newbrowsethebalance" method="post"> -->
                         <select class="form-select form-select-sm w-100" aria-label="sposob platnosci"
                             name="paymentMethod" id="paymentMethodSelected">
                             <option value="currentMonth" selected>Bieżący miesiąc</option>
@@ -22,13 +24,13 @@
                             <option value="currentYear">Bieżący rok</option>
                             <option value="selectedPeriod">Wybrany okres</option>
                         </select>
+                    </div>
+                    <div
+                        class="bd-highlight balance-width3 submit2 small-text d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-warning">Przeglądaj</button>
+                    </div>
                 </div>
-                <div
-                    class="bd-highlight balance-width3 submit2 small-text d-flex align-items-center justify-content-center">
-                    <button type="submit" class="btn btn-warning">Przeglądaj</button>
-                </div>
-                </form>
-            </div>
+            </form>
             <div class="table-responsive">
                 <table id="table_incomes" class="table-center my-table mb-4">
                     <thead>
