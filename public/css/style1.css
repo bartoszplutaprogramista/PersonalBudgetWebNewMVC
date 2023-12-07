@@ -363,6 +363,7 @@ p
 .set-margin
 {
 	margin: 0 auto;
+	width: 80%;
 }
 
 .p-content
@@ -491,6 +492,10 @@ h3
 	{
 		width: 25% !important;
 	}
+	.set-margin
+	{
+		width: 50%;
+	}
 }
 
 @media (max-width: 720px)
@@ -546,6 +551,10 @@ h3
 		margin-left: 0px;
 		text-align: center;
 	}
+	.div-form-buttons-show
+	{
+		width: 250px;
+	}
 }
 
 @media (min-width: 1400px)
@@ -570,6 +579,10 @@ h3
 	.p-content
 	{
 		text-align: left;
+	}
+	.set-margin
+	{
+		width: 100%;
 	}
 }
 
