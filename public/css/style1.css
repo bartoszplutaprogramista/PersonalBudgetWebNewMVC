@@ -44,23 +44,45 @@ body
 
 .ordinal-number
 {
-	width: 5%;
+	width: 8%;
 }
 
 .column-incomes
 {
-	width: 23.75%;
+	width: 19%;
+}
+
+.column-incomes-delete
+{
+	width: 23%;
 }
 
 .column-expenses
 {
-	width: 19%;
+	width: 15.2%;
+}
+
+.column-expenses-delete
+{
+	width: 18.4%;
+}
+
+.column-delete-edit
+{
+	width: 8%;
 }
 
 .my-table
 {
 	/* width: 85%; */
 	width: 1000px;
+
+}
+
+.my-table-delete
+{
+	/* width: 85%; */
+	width: 850px;
 
 }
 

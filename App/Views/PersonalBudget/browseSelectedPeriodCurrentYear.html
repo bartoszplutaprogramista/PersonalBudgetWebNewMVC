@@ -33,19 +33,18 @@
                 <table id="table_incomes" class="table-center my-table mb-4">
                     <thead>
                         <tr>
-                            <th colspan="8" class="center-td">Zestawienie przychodów w okresie od
+                            <th colspan="7" class="center-td">Zestawienie przychodów w okresie od
                                 {{ date_from_to_current_year }}
                             </th>
                         </tr>
                         <tr>
-                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
                             <th class="column-incomes">Kwota (zł)</th>
                             <th class="column-incomes">Data</th>
                             <th class="column-incomes">Kategoria</th>
                             <th class="column-incomes">Komentarz</th>
-                            <th class="column-expenses">Edytuj</th>
-                            <th class="column-expenses">Usuń</th>
+                            <th class="column-delete-edit">Edytuj</th>
+                            <th class="column-delete-edit">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,13 +52,12 @@
                         {% set myOrdinalNumber = 1 %}
                         {% for income in query_name_income_current_year %}
                         <tr>
-                            <td class="ordinal-number">{{ income.incID }}</td>
                             <td class="ordinal-number">{{ myOrdinalNumber }}</td>
                             <td class="column-incomes">{{ income.amn }}</td>
                             <td class="column-incomes">{{ income.dateInc }}</td>
                             <td class="column-incomes">{{ income.incCategory }}</td>
                             <td class="column-incomes">{{ income.comment }}</td>
-                            <td class="ordinal-number text-center">
+                            <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/editIncomes" id="formDeleteExpanse"
                                     name="formDelete">
                                     <input type="hidden" name="editRowIncomes" value="{{ income.incID }}" />
@@ -68,7 +66,7 @@
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
-                            <td class="ordinal-number text-center">
+                            <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
                                     id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
@@ -85,7 +83,7 @@
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="8" class="center-td">Brak przychodów</td>
+                            <td colspan="7" class="center-td">Brak przychodów</td>
                         </tr>
                         {% endif %}
                     </tbody>
@@ -102,20 +100,19 @@
                 <table id="table_expenses" class="table-center my-table mb-4">
                     <thead>
                         <tr>
-                            <th colspan="9" class="center-td">Zestawienie wydatków w okresie od
+                            <th colspan="8" class="center-td">Zestawienie wydatków w okresie od
                                 {{ date_from_to_current_year }}
                             </th>
                         </tr>
                         <tr>
-                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
                             <th class="column-expenses">Kwota (zł)</th>
                             <th class="column-expenses">Data</th>
                             <th class="column-expenses">Sposób płatności</th>
                             <th class="column-expenses">Kategoria</th>
                             <th class="column-expenses">Komentarz</th>
-                            <th class="column-expenses">Edytuj</th>
-                            <th class="column-expenses">Usuń</th>
+                            <th class="column-delete-edit">Edytuj</th>
+                            <th class="column-delete-edit">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,14 +121,13 @@
                         {% for expense in query_name_expense_current_year %}
 
                         <tr>
-                            <td class="ordinal-number">{{ expense.exID }}</td>
                             <td class="ordinal-number">{{ myOrdinalNumberExpenses }}</td>
                             <td class="column-expenses">{{ expense.amn }}</td>
                             <td class="column-expenses">{{ expense.dateExp }}</td>
                             <td class="column-expenses">{{ expense.pay }}</td>
                             <td class="column-expenses">{{ expense.excategory }}</td>
                             <td class="column-expenses">{{ expense.comment }}</td>
-                            <td class="ordinal-number text-center">
+                            <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
                                     name="formDelete">
                                     <input type="hidden" name="editRow" value="{{ expense.exID }}" />
@@ -140,7 +136,7 @@
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
-                            <td class="ordinal-number text-center">
+                            <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
                                     id="formDeleteExpanse" name="formDelete">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
@@ -159,7 +155,7 @@
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="9" class="center-td">Brak wydatków</td>
+                            <td colspan="8" class="center-td">Brak wydatków</td>
                         </tr>
                         {% endif %}
                     </tbody>

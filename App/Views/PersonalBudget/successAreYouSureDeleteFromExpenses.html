@@ -6,31 +6,30 @@
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content2 mt-2">
-            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o id {{ id_expenses_delete }}</p>
+            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o lp
+                {{ ordinal_delete_expenses_number }}?</p>
             <div class="table-responsive">
-                <table class="table-center my-table">
+                <table class="table-center my-table-delete">
                     <thead>
                         <tr>
-                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
-                            <th class="column-expenses">Kwota (zł)</th>
-                            <th class="column-expenses">Data</th>
-                            <th class="column-expenses">Sposób płatności</th>
-                            <th class="column-expenses">Kategoria</th>
-                            <th class="column-expenses">Komentarz</th>
+                            <th class="column-expenses-delete">Kwota (zł)</th>
+                            <th class="column-expenses-delete">Data</th>
+                            <th class="column-expenses-delete">Sposób płatności</th>
+                            <th class="column-expenses-delete">Kategoria</th>
+                            <th class="column-expenses-delete">Komentarz</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% if data_to_are_you_sure_table_expenses %}
                         {% for expense_are_you_sure in data_to_are_you_sure_table_expenses %}
                         <tr>
-                            <td class="ordinal-number">{{ expense_are_you_sure.exID }}</td>
                             <td class="ordinal-number">{{ ordinal_delete_expenses_number }}</td>
-                            <td class="column-expenses">{{ expense_are_you_sure.amn }}</td>
-                            <td class="column-expenses">{{ expense_are_you_sure.dateExp }}</td>
-                            <td class="column-expenses">{{ expense_are_you_sure.pay }}</td>
-                            <td class="column-expenses">{{ expense_are_you_sure.excategory }}</td>
-                            <td class="column-expenses">{{ expense_are_you_sure.comment }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.amn }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.dateExp }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.pay }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.excategory }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.comment }}</td>
                         </tr>
                         {% endfor %}
                         {% endif %}

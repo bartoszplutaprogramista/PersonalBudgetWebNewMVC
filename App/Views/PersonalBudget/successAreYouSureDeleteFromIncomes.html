@@ -6,29 +6,28 @@
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content2 mt-2">
-            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o id {{ id_incomes_delete }}</p>
+            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o lp
+                {{ ordinal_delete_incomes_number }}?</p>
             <div class="table-responsive">
-                <table class="table-center my-table">
+                <table class="table-center my-table-delete">
                     <thead>
                         <tr>
-                            <th class="ordinal-number">ID</th>
                             <th class="ordinal-number">Lp</th>
-                            <th class="column-incomes">Kwota (zł)</th>
-                            <th class="column-incomes">Data</th>
-                            <th class="column-incomes">Kategoria</th>
-                            <th class="column-incomes">Komentarz</th>
+                            <th class="column-incomes-delete">Kwota (zł)</th>
+                            <th class="column-incomes-delete">Data</th>
+                            <th class="column-incomes-delete">Kategoria</th>
+                            <th class="column-incomes-delete">Komentarz</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% if data_to_are_you_sure_table_incomes %}
                         {% for income_are_you_sure in data_to_are_you_sure_table_incomes %}
                         <tr>
-                            <td class="ordinal-number">{{ income_are_you_sure.incID }}</td>
                             <td class="ordinal-number">{{ ordinal_delete_incomes_number }}</td>
-                            <td class="column-incomes">{{ income_are_you_sure.amn }}</td>
-                            <td class="column-incomes">{{ income_are_you_sure.dateInc }}</td>
-                            <td class="column-incomes">{{ income_are_you_sure.incCategory }}</td>
-                            <td class="column-incomes">{{ income_are_you_sure.comment }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.amn }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.dateInc }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.incCategory }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.comment }}</td>
                         </tr>
                         {% endfor %}
                         {% endif %}
