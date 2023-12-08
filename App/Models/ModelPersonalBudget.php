@@ -14,7 +14,6 @@ class ModelPersonalBudget extends \Core\Model
     public $amountIncome;
     public $dateIncome;
     public $commentIncome;
-    // public $userId;
     public $email;
     public $paymentCategoryIncomeName;
  
@@ -67,21 +66,6 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditExpense->bindValue(':expenseEditId', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
         
         return $queryEditExpense->execute();
-
-
-        
-
-        // $amountExpense = $_POST['amountExpense'];
-        // $dateExpense = $_POST['dateExpense'];
-        // $commentExpense = $_POST['commentExpense'];
-
-        // $queryExpense = $db->prepare('INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)');	
-		// $queryExpense->bindValue(':userId', $userId, PDO::PARAM_INT);
-		// $queryExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
-		// $queryExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
-		// $queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
-		// $queryExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
-		// $queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
     }
 
     public static function selectAllFromIncomesToEdit($idIncomesEdit)
@@ -131,10 +115,7 @@ class ModelPersonalBudget extends \Core\Model
         $queryDeleteIncome->bindValue(':idOfRow', $_SESSION['idIncomesDelete'], PDO::PARAM_INT);
         $queryDeleteIncome->execute();
 
-        // echo "Id wynosi: ".$id;
-
         return $queryDeleteIncome;
-        // return $id;
     }
 
     public function deleteExpense()
@@ -144,21 +125,8 @@ class ModelPersonalBudget extends \Core\Model
         $queryDeleteExpense->bindValue(':idOfRow', $_SESSION['idExpensesDelete'], PDO::PARAM_INT);
         $queryDeleteExpense->execute();
 
-        // echo "Id wynosi: ".$id;
-
         return $queryDeleteExpense;
-        // return $id;
     }
-
-    // public function getRegisteredUser()
-    // {
-
-    //     $queryId = $db->prepare('SELECT id FROM users WHERE name = :userName');	
-    //     $queryId->bindValue(':userName', $nick, PDO::PARAM_STR);
-    //     $queryId->execute();
-    
-    //     $userId = $queryId->fetch();
-    // }
 
     public static function getQueryIncomesNameDefault()
     {
@@ -207,18 +175,6 @@ class ModelPersonalBudget extends \Core\Model
         
         return $fullDateCurrentYear;
     }
-
-    // public static function getQueryNameIncome($dataHelp)
-    // {
-    //     $db = static::getDB();
-    //     $queryNameIncome = $db->prepare('SELECT * FROM incomes_category_assigned_to_users INNER JOIN incomes ON incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id WHERE incomes.user_id = :userId AND date_of_income LIKE :dataHelpCurrentMonth ORDER BY date_of_income DESC');
-    //     $queryNameIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
-    //     $queryNameIncome->bindValue(':dataHelpCurrentMonth', $dataHelp, PDO::PARAM_STR);
-    //     $queryNameIncome->execute();
-
-    //     $queryName = $queryNameIncome->fetchAll();   
-    //     return $queryName;
-    // }
 
     public static function getQueryNameIncome($dataHelp)
     {
@@ -562,13 +518,7 @@ class ModelPersonalBudget extends \Core\Model
 
         if (empty($this->errors)){
 
-            // $array = get_object_vars($user);
-
             $personalBudget = new ModelPersonalBudget($_POST);
-
-            // $user = new User($_POST);
-
-            // $userId = $user->getUserId($array['email']);
 
             $paymentCategoryIncomeId = $personalBudget->getpaymentCategoryIncomeId();
 
@@ -621,11 +571,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public function insertToExpenses($user)
     {
-        // $array = get_object_vars($user);
         $personalBudget = new ModelPersonalBudget($_POST);
-
-        // $user = new User($_POST);
-        // $userId = $user->getUserId($array['email']);
 
         $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId();
 

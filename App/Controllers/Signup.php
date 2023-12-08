@@ -13,51 +13,8 @@ class Signup extends \Core\Controller
 {
     public $user;
 
-    public function checkCaptcha()
-    {
-        // if(isset($_POST['g-recaptcha-response'])){
-            // echo "WARTOŚĆ CAPTCHY ".$_POST['g-recaptcha-response'];
-            // exit;
-            $secretKey = "";
-
-            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
-            // $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
-
-            $answer = json_decode($check); 
-            
-            // echo "ODPOWIEDŹ: ".$answer;
-            // exit;
-
-            header('Content-Type: application/json');
-            // $answer = json_encode($answer);
-
-            if($answer->success==false){
-                $answer = '';
-                echo $answer;
-            } else echo $answer;
-
-            // if($answer->success==false){
-            //     return true;
-            // }else return false;      
-        // }
-    }
-
     public function newAction()
     {
-        // if(isset($_POST['recaptchaResponse'])){
-        //     $secretKey = "";
-        //     echo "WARTOŚĆ CAPTCHY ".$_POST['recaptchaResponse'];
-        //     exit;
-
-        //     $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['recaptchaResponse']);
-
-        //     $answer = json_decode($check);   
-            
-        //     if($answer->success==false){
-        //         echo "POTWIERDŹ ŻE NIE JESTEŚ BOTEM";
-        //     }
-        // }
-
         View::renderTemplate('Signup/new.html');
     }
 
@@ -65,8 +22,6 @@ class Signup extends \Core\Controller
     {
         if(isset($_POST['g-recaptcha-response'])){
             $secretKey = "";
-            // echo "WARTOŚĆ CAPTCHY ".$_POST['g-recaptcha-response'];
-            // exit;
 
             $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
 
@@ -100,13 +55,7 @@ class Signup extends \Core\Controller
         
                 } 
             }
-            //  else {
-            //     echo "UDAŁO SIĘ";
-            //     exit;
-            // }
         } else {
-            // $user = new User($_POST);
-            // $user->validate();
             Flash::addMessage('Potwierdź że nie jesteś botem');
             $this->redirect('/signup/new');
         }

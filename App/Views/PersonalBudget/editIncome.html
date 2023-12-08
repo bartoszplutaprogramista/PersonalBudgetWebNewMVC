@@ -3,13 +3,13 @@
 {% block title2 %}Edytuj przychód{% endblock %}
 
 {% block body2 %}
+{% if incomes_edit_values %}
+{% for inc_edit in incomes_edit_values %}
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>DODAJ PRZYCHÓD</h3>
             <div class="div-form-buttons mx-auto">
-                {% if incomes_edit_values %}
-                {% for inc_edit in incomes_edit_values %}
                 <form method="post" action="/personalbudget/updateIncomeAction">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Kwota (zł):</label>

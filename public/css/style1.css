@@ -8,17 +8,6 @@ body
 	margin: 0 !important;
 }
 
-/*
-.black-color
-{
-	background-color: #000;
-}
-
-.gray-color
-{
-	background-color: #373737;
-} */
-
 .keep-password
 {
 	font-size: 16px;
@@ -74,14 +63,12 @@ body
 
 .my-table
 {
-	/* width: 85%; */
 	width: 1000px;
 
 }
 
 .my-table-delete
 {
-	/* width: 85%; */
 	width: 850px;
 
 }
@@ -98,20 +85,6 @@ body
 	margin-left: auto;
 	margin-right: auto;
 }
-
-/*
-.table{
-	display: block !important;
-	overflow-x: auto !important;
-	width: 100% !important;
-  } */
-
-/*
-.css-s1 tr:nth-child(2n+1) 
-{
-    background: #373737;
-    padding: 10px;
-} */
 
 .p-bold
 {
@@ -142,13 +115,6 @@ tr:nth-child(odd)
 {
 	background-color: #373737;
 }
-
-/*
-td, th
-{
-	border: 1px solid #FFF;
-	padding: 10px;
-} */
 
 .dispaly-as-flex
 {
@@ -205,31 +171,14 @@ a:active {
 
 .error
 {
-	/* margin: 0px !important;  */
 	margin-top: 6px;
-
-	/* margin-top: 0px;
-	padding-top: 0px; */
-	/* margin: 0;
-	padding: 0; */
-	/* margin-bottom: 0px;  */
-	/* margin-top: 0px; */
 	color: #cc6060; 
 	font-size: 14px;
-	/* margin-left: 20px; */
 } 
 
 .error2
 {
-	/* margin: 0px !important;  */
 	margin-top: 0px;
-
-	/* margin-top: 0px;
-	padding-top: 0px; */
-	/* margin: 0;
-	padding: 0; */
-	/* margin-bottom: 0px;  */
-	/* margin-top: 0px; */
 	color: #cc6060; 
 	font-size: 14px;
 } 
@@ -264,23 +213,19 @@ a:active {
 
 .balance-width-percent
 {
-	/* width: 33.33%; width: 33.33%; */
 	width: 200px;
 }
 
 .balance-width
 {
-	/* width: 33.33%; width: 33.33%; */
 	width: 200px;
 }
 .balance-width2
 {
-	/* width: 33.33%; */
 	 width: 165px;
 }
 .balance-width3
 {
-	/* width: 33.33%; */
 	 width: 105px;
 }
 
@@ -359,17 +304,6 @@ a:active {
 	padding: 0;
 } 
 
-/* .sum
-{
-	width: 300px;
-} */
-
-/* input 
-{
-	margin: 0;
-	padding: 0;
-} */
-
 p
 {
 	color: white;
@@ -399,12 +333,6 @@ p
 	color: white;
 	text-align: left;
 }
-
-/* .p-input-radio-browse
-{
-	color: white;
-	text-align: left;
-} */
 
 .bo
 {
@@ -468,7 +396,6 @@ h3
 
 .submit2
 {
-/*	text-align: center; */
 	margin-left: 10px;
 }
 
@@ -477,14 +404,6 @@ h3
 	width: 100%;
 	text-align: center;
 }
-
-/*
-.error-info-my
-{
-	color: red;
-	margin-top: 0;
-	margin-bottom: 0;
-}  */
 
 @media (min-width: 1900px)
 {
@@ -545,9 +464,7 @@ h3
 		margin-top: 10px;
 	}
 	.small-text
-	{
-		/* text-align: center;*/
-		
+	{	
 		margin-left: 0; 
 		margin-top: 20px;
 	}
@@ -555,10 +472,6 @@ h3
 	{
 		text-align: center;
 	}
-	/* .div-balance-buttons-choose-period
-	{
-		width: 100%;
-	} */
 }
 
 @media (max-width: 991px)
@@ -614,10 +527,5 @@ h3
 	{
 		flex-direction: column;
 	}
-	/* .my-table
-	{
-		/* width: 85%; */
-		/* width: 600px;
-	} */ 
 }
 

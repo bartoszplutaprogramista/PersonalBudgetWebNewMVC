@@ -62,22 +62,7 @@
 <script src="/js/hideShowPassword.min.js"></script>
 <script src="/js/app.js"></script>
 <script>
-    // let recaptchaResponse = grecaptcha.getResponse();
-
-    // let myVar = $("reCaptcha").value;
-    // console.log("myVar:, ", myVar);
-    // console.log("myVar długość:, ", recaptchaResponse.length);
-    // console.log("WARTOŚĆ:, ", recaptchaResponse);
     $(document).ready(function () {
-
-        // let recaptchaResponse = grecaptcha.getResponse();
-
-        // str = JSON.stringify(recaptchaResponse);
-
-        // let myVar = $("reCaptcha").value;
-        // console.log("myVar:, ", myVar);
-        // console.log("myVar długość:, ", str.length);
-        // console.log("WARTOŚĆ:, ", str);
 
         $('#formSignup').validate({
             ignore: ".ignore",
@@ -99,37 +84,9 @@
 
                             return true;
                         } else {
-                            // let recaptchaResponse = grecaptcha.getResponse();
-                            // console.log("myVar długość:, ", recaptchaResponse.length);
-                            // console.log("WARTOŚĆ:, ", recaptchaResponse);
                             return false;
                         }
                     }
-
-
-                    // remote: {
-                    //     url: "/signup/checkCaptcha",
-                    //     type: "post",
-                    //     data: {
-                    //         // captcha: function () {
-                    //         //     return $("#reCaptcha").val();
-                    //         recaptchaResponse: function () {
-                    //             return grecaptcha.getResponse();
-                    //         }
-                    //     },
-                    //     dataType: 'json'
-                    // }
-                    // captcha: {
-                    //     required: true,
-                    // remote: {
-                    //     url: "/signup/checkCaptcha",
-                    //     type: "post",
-                    //     data: {
-                    //         // captcha: function () {
-                    //         //     return $("#reCaptcha").val();
-                    //         recaptchaResponse: recaptchaResponse
-                    //     }
-                    // }
                 }
             },
             messages: {
@@ -147,10 +104,6 @@
                 },
                 captcha: {
                     required: 'Pole wymagane'
-                    // remote: 'Potwierdź że nie jesteś botem'
-                    // recaptchaResponse: {
-                    // remote: 'Potwierdź że nie jesteś botem'
-                    // }
                 }
             }
         });

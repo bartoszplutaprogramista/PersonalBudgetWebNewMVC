@@ -64,7 +64,6 @@
                                     name="formDelete">
                                     <input type="hidden" name="editRowIncomes" value="{{ income.incID }}" />
                                     <button type="submit" class="btn btn-secondary" title="Edytuj">
-                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
@@ -74,9 +73,7 @@
                                     <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
                                     <input type="hidden" name="myOrdinalNumberDeleteIncomes"
                                         value="{{ myOrdinalNumber }}" />
-                                    <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
-                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-trash-empty"></i></button>
                                 </form>
                             </td>
@@ -135,7 +132,6 @@
                                     name="formDelete">
                                     <input type="hidden" name="editRow" value="{{ expense.exID }}" />
                                     <button type="submit" class="btn btn-secondary" title="Edytuj">
-                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
@@ -145,9 +141,7 @@
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
                                     <input type="hidden" name="myOrdinalNumberDeleteExpenses"
                                         value="{{ myOrdinalNumberExpenses }}" />
-                                    <!-- <button type="submit" class="btn btn-secondary" id="{{ expense.exID }}"> -->
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
-                                        <!-- <button type="submit" class="btn btn-light"> -->
                                         <i class="icon-trash-empty"></i></button>
                                 </form>
                             </td>
@@ -224,7 +218,6 @@
 
     let script = document.createElement("script");
     script.src = "/js/displayChart.js";
-    //document.head.prepend(script);
     document.body.appendChild(script);
 </script>
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>

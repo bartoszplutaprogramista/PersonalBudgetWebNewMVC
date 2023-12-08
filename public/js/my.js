@@ -87,8 +87,6 @@ function check() {
         helpCounting++;
     }
 
-    console.log("helpCounting: ", helpCounting);
-
     if (helpCounting == 6) {
         return true;
     } else {

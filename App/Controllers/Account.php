@@ -12,7 +12,6 @@ class Account extends \Core\Controller
         
         header('Content-Type: application/json');
 
-        // echo "MÓJ TEKST ";
         echo json_encode($is_valid);
     }
 }

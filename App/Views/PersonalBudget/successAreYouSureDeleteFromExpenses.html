@@ -43,13 +43,11 @@
                             name="formDelete">
                             <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
                             <button type="submit" class="btn btn-warning">
-                                <!-- <i class="icon-trash-empty"></i> -->
                                 Usuń
                             </button>
                         </form>
                     </div>
                     <div class="ms-2">
-                        <!-- <form action="/personalbudget/successselectedperiodchoosethedate" method="post"> -->
                         <form action="/personalbudget/redirectToChosenPeriod" method="post">
                             <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
                             <button type="submit" class="btn btn-secondary">Anuluj</button>
