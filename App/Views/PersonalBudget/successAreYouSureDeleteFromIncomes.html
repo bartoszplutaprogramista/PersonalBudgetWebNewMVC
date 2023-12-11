@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Usunąć wiersz z przychodu?{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content2 mt-2">
+            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o lp
+                {{ ordinal_delete_incomes_number }}?</p>
+            <div class="table-responsive">
+                <table class="table-center my-table-delete">
+                    <thead>
+                        <tr>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-incomes-delete">Kwota (zł)</th>
+                            <th class="column-incomes-delete">Data</th>
+                            <th class="column-incomes-delete">Kategoria</th>
+                            <th class="column-incomes-delete">Komentarz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data_to_are_you_sure_table_incomes %}
+                        {% for income_are_you_sure in data_to_are_you_sure_table_incomes %}
+                        <tr>
+                            <td class="ordinal-number">{{ ordinal_delete_incomes_number }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.amn }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.dateInc }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.incCategory }}</td>
+                            <td class="column-incomes-delete">{{ income_are_you_sure.comment }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="submit mt-4">
+                <div class="d-flex flex-row justify-content-center pb-4">
+                    <div class="me-2">
+                        <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse"
+                            name="formDelete">
+                            <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
+                            <button type="submit" class="btn btn-warning">
+                                Usuń
+                            </button>
+                        </form>
+                    </div>
+                    <div class="ms-2">
+                        <form action="/personalbudget/redirectToChosenPeriod" method="post">
+                            <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
+                            <button type="submit" class="btn btn-secondary">Anuluj</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

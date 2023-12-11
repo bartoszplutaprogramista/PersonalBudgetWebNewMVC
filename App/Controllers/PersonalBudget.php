@@ -12,7 +12,7 @@ use \App\Auth;
 use \App\Flash;
 
 #[\AllowDynamicProperties]
-class personalBudget extends \Core\Controller
+class Personalbudget extends \Core\Controller
 {
     public $user;
 
@@ -29,7 +29,126 @@ class personalBudget extends \Core\Controller
     public function browseTheBalance()
     {
         View::renderTemplate('PersonalBudget/browseTheBalance.html');
-    }   
+    } 
+
+    public function successDeletedExpenseAction()
+    {
+        View::renderTemplate('PersonalBudget/successDeletedExpense.html');
+    }
+
+    public function successAreyouSuredeleteFromIncomes()
+    {
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html');
+    }
+
+    public function successAreyouSuredeleteFromExpenses()
+    {
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromExpenses.html');
+    }    
+
+    public function successEditIncomes()
+    {
+        View::renderTemplate('PersonalBudget/editIncome.html');
+    }
+
+    public function successEditExpenses()
+    {
+        View::renderTemplate('PersonalBudget/editExpense.html');
+    }
+
+    public function redirectToChosenPeriod(){
+        if($_SESSION['paymentMethod'] == "currentMonth"){
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
+        } else if ($_SESSION['paymentMethod'] == "currentYear"){         
+            $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');
+        } else if ($_SESSION['paymentMethod'] == "lastMonth"){         
+            $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
+        } else {
+            $this->redirect('/personalbudget/successselectedperiodchoosethedate');
+        }
+    }
+
+    public function updateIncomeAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+
+        if ($personalBudget->updateIncomes()) {
+            Flash::addMessage('Pomyślnie zakończono edycję');
+            $this->redirectToChosenPeriod();
+        }
+    }
+
+    public function updateExpenseAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+
+        if ($personalBudget->updateExpenses()) {
+            Flash::addMessage('Pomyślnie zakończono edycję');
+            $this->redirectToChosenPeriod();
+        }
+        unset($_SESSION['paymentMethod']);
+    }
+
+    public function editIncomes()
+    {
+        if(isset($_POST['editRowIncomes'])) {
+            $_SESSION['idIncomesEditRow'] = $_POST['editRowIncomes'];
+        }
+        $this->redirect('/personalbudget/successeditincomes');
+    }
+
+    public function editExpenses()
+    {
+        if(isset($_POST['editRow'])) {
+            $_SESSION['idExpensesEditRow'] = $_POST['editRow'];
+        }
+        $this->redirect('/personalbudget/successeditexpenses');
+    }
+
+    public function areYouSureDeleteFromIncomes()
+    {
+        if(isset($_POST['deleteRowIncomes'])) {
+            $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
+        }
+
+        if(isset($_POST['myOrdinalNumberDeleteIncomes'])) {
+
+            $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteIncomes'];
+        }
+        $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+    }
+    
+    public function areYouSureDeleteFromExpenses()
+    {
+        if(isset($_POST['deleteRow'])) {
+            $_SESSION['idExpensesDelete'] = $_POST['deleteRow'];
+        }
+
+        if(isset($_POST['myOrdinalNumberDeleteExpenses'])) {
+            
+            $_SESSION['myOrdinalNumberDeleteExpensesVar'] = $_POST['myOrdinalNumberDeleteExpenses'];
+        }
+
+        $this->redirect('/personalbudget/successareyousuredeletefromexpenses');
+    }
+
+    public function deleteFromIncomes()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->deleteIncome()) {
+            Flash::addMessage('Pomyślnie usunięto rekord');
+            $this->redirectToChosenPeriod();
+         }
+    }
+
+    public function deleteFromExpenses()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->deleteExpense()) {
+            Flash::addMessage('Pomyślnie usunięto rekord');
+            $this->redirectToChosenPeriod();
+        }
+    }
 
     public function newIncomeAction()
     {
@@ -85,7 +204,7 @@ class personalBudget extends \Core\Controller
     {
         $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
 
-        return $dateFdateSelectedPeriod1romTo;
+        return $dateSelectedPeriod1;
     }
 
     public static function dateFromToSelectedPeriodDate2()
@@ -97,30 +216,20 @@ class personalBudget extends \Core\Controller
 
     public function newBrowseTheBalanceAction()
     {
-        $wartosc = false;
-        $userValue = Auth::getUser();  
-        $array = get_object_vars($userValue);
-        $user_object = new User($_POST);
-        $userId = $user_object->getUserId($array['email']);
         $paymentMethod = $_POST['paymentMethod'];
+        $_SESSION['paymentMethod'] = $paymentMethod;
 
         if($paymentMethod=='currentMonth')
             {
-                $_SESSION['currentMonth'] = "currentMonth";
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
             }
-
-
         elseif($paymentMethod=='lastMonth'){
             {
-                $_SESSION['lastMonth'] = "lastMonth";
                 $this->redirect('/personalbudget/successbrowseselectedperiodlastmonth');
             }
         }
-
         elseif ($paymentMethod=='currentYear'){
             {
-                $_SESSION['currentYear'] = "currentYear";
                 $this->redirect('/personalbudget/successbrowseselectedperiodcurrentyear');      
             }
         }
@@ -138,7 +247,16 @@ class personalBudget extends \Core\Controller
         $_SESSION['start_date'] = $dateSelectedPeriod1;
         $_SESSION['end_date'] = $dateSelectedPeriod2;
 
-        $this->redirect('/personalbudget/successselectedperiodchoosethedate');        
+        if($_SESSION['start_date']>$_SESSION['end_date']){
+            $this->redirect('/personalbudget/choosecorrectdate');
+        } else {
+            $this->redirect('/personalbudget/successselectedperiodchoosethedate');  
+        }      
+    }
+
+    public function choosecorrectdate()
+    {
+        View::renderTemplate('PersonalBudget/chooseCorrectDate.html');
     }
 
     public function successBrowseSelectedPeriodCurrentMonth()
@@ -176,4 +294,5 @@ class personalBudget extends \Core\Controller
     {
         View::renderTemplate('PersonalBudget/successAddExpense.html');
     }
+    
 }

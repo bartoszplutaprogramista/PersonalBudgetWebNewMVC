@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Usunąć wiersz z wydatku?{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content2 mt-2">
+            <p class="p-content text-center p-3">Czy napewno chcesz usunąć wiersz o lp
+                {{ ordinal_delete_expenses_number }}?</p>
+            <div class="table-responsive">
+                <table class="table-center my-table-delete">
+                    <thead>
+                        <tr>
+                            <th class="ordinal-number">Lp</th>
+                            <th class="column-expenses-delete">Kwota (zł)</th>
+                            <th class="column-expenses-delete">Data</th>
+                            <th class="column-expenses-delete">Sposób płatności</th>
+                            <th class="column-expenses-delete">Kategoria</th>
+                            <th class="column-expenses-delete">Komentarz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data_to_are_you_sure_table_expenses %}
+                        {% for expense_are_you_sure in data_to_are_you_sure_table_expenses %}
+                        <tr>
+                            <td class="ordinal-number">{{ ordinal_delete_expenses_number }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.amn }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.dateExp }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.pay }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.excategory }}</td>
+                            <td class="column-expenses-delete">{{ expense_are_you_sure.comment }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="submit mt-4">
+                <div class="d-flex flex-row justify-content-center pb-4">
+                    <div class="me-2">
+                        <form method="post" action="/personalbudget/deleteFromExpenses" id="formDeleteExpanse"
+                            name="formDelete">
+                            <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
+                            <button type="submit" class="btn btn-warning">
+                                Usuń
+                            </button>
+                        </form>
+                    </div>
+                    <div class="ms-2">
+                        <form action="/personalbudget/redirectToChosenPeriod" method="post">
+                            <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
+                            <button type="submit" class="btn btn-secondary">Anuluj</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

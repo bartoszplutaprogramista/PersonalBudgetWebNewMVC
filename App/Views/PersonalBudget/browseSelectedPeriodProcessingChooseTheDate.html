@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title2 %}Dodaj przychód{% endblock %}
+{% block title2 %}Wybierz okres czasu{% endblock %}
 
 {% block body2 %}
 <div class="row justify-content-center m-0 p-0">
@@ -8,10 +8,8 @@
         <div class="content mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS WYBRANY OKRES</h3>
             <p><b>Wybierz okres czasu:</b></p>
-            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2">
-                <div class="bd-highlight balance-width">
-                </div>
-                <div class="bd-highlight balance-width">
+            <div class="d-flex flex-row bd-highlight div-balance-buttons-choose-period mx-auto p-2">
+                <div class="bd-highlight balance-width-percent mx-auto">
                     <form action="/personalbudget/newselectedperiod" method="post">
                         <div class="mb-3">
                             <label for="theDate1" class="form-label choose-the-date">Początek okresu:</label>

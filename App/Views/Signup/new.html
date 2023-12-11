@@ -22,32 +22,32 @@
         <div class="col-sm-12 col-lg-4 col-xxl-3 log-in-or-register mt-3">
             <p class="p-2"> Masz już konto? </p>
             <div class="submit"><button type="button" onclick="document.location='/login'"
-                    class="btn btn-warning">Zaloguj się</div>
+                    class="btn btn-warning">Zaloguj się</button></div>
         </div>
         <div class="col-sm-12 col-lg-4 col-xxl-3 mt-3">
             <form method="post" action="/signup/create" id="formSignup" name="form">
                 <p class="p-2"> Nie masz jeszcze konta? </p>
                 <div class="input-group mb-2 mt-0">
-                    <div class="w-75 set-margin">
+                    <div class="set-margin">
                         <input type="text" class="form-control mt-0 mb-0" placeholder="Podaj imię" name="name"
-                            id="inputName" value="{{ user.name }}">
+                            id="inputName" value="{{ user.name }}" autocomplete="on" />
                     </div>
                 </div>
                 <div class="input-group mb-2 mt-0">
-                    <div class="w-75 set-margin">
+                    <div class="set-margin">
                         <input id="inputEmail" name="email" placeholder="Podaj adres e-mail" class="form-control mt-0"
-                            value="{{ user.email }}" />
+                            value="{{ user.email }}" autocomplete="on" />
                     </div>
                 </div>
                 <div class="input-group mb-2 mt-0">
-                    <div class="w-75 set-margin">
+                    <div class="set-margin">
                         <input type="password" class="form-control mb-0" placeholder="Podaj hasło" name="password"
-                            id="inputPassword">
+                            id="inputPassword" />
                     </div>
                 </div>
-                <div class="g-recaptcha margins-captcha center" data-sitekey="" id="reCaptcha" name="captcha"></div>
+                <div class="g-recaptcha margins-captcha center" data-sitekey="" id="reCaptcha"></div>
                 <div class="margin-left-spacing">
-                    <input type="hidden" name="captcha" id="hiddenRecaptcha">
+                    <input type="hidden" name="captcha" id="hiddenRecaptcha" />
                 </div>
                 <div class="submit"><button type="submit" class="btn btn-success mt-2">Zarejestruj się</button>
                 </div>
@@ -80,7 +80,8 @@
                 },
                 captcha: {
                     required: function () {
-                        if (grecaptcha.getResponse() == '') {
+                        if (grecaptcha.getResponse() === '') {
+
                             return true;
                         } else {
                             return false;

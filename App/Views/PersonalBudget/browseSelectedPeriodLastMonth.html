@@ -8,30 +8,33 @@
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS POPRZEDNI MIESIĄC</h3>
-            <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-3">
-                <div class="bd-highlight balance-width">
-                    <label class="p-input-radio mb-2 mt-1 w-100" for="paymentMethod">Wybierz okres czasu:</label>
-                </div>
-                <div class="bd-highlight balance-width">
-                    <form action="/personalbudget/newbrowsethebalance" method="post">
-                        <select class="form-select form-select-sm mb-0 mt-1" aria-label="sposob platnosci"
+            <form action="/personalbudget/newbrowsethebalance" method="post">
+                <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-2">
+                    <div class="bd-highlight balance-width d-flex align-items-center">
+                        <label class="p-input-radio w-100" for="paymentMethodSelected">Wybierz okres czasu:</label>
+                    </div>
+                    <div
+                        class="bd-highlight balance-width2 margin-top-gap d-flex align-items-center justify-content-center">
+
+                        <select class="form-select form-select-sm w-100" aria-label="sposob platnosci"
                             name="paymentMethod" id="paymentMethodSelected">
                             <option value="currentMonth">Bieżący miesiąc</option>
                             <option value="lastMonth" selected>Poprzedni miesiąc</option>
                             <option value="currentYear">Bieżący rok</option>
                             <option value="selectedPeriod">Wybrany okres</option>
                         </select>
+                    </div>
+                    <div
+                        class="bd-highlight balance-width3 submit2 small-text d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-warning">Przeglądaj</button>
+                    </div>
                 </div>
-                <div class="bd-highlight balance-width submit2 small-text">
-                    <button type="submit" class="btn btn-warning">Przeglądaj</button>
-                </div>
-                </form>
-            </div>
+            </form>
             <div class="table-responsive">
-                <table class="table-center my-table">
+                <table id="table_incomes" class="table-center my-table mb-4">
                     <thead>
                         <tr>
-                            <th colspan="5" class="center-td">Zestawienie przychodów w okresie od
+                            <th colspan="7" class="center-td">Zestawienie przychodów w okresie od
                                 {{ date_from_to_last_month }}
                             </th>
                         </tr>
@@ -41,6 +44,8 @@
                             <th class="column-incomes">Data</th>
                             <th class="column-incomes">Kategoria</th>
                             <th class="column-incomes">Komentarz</th>
+                            <th class="column-delete-edit">Edytuj</th>
+                            <th class="column-delete-edit">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,28 +53,52 @@
                         {% set myOrdinalNumber = 1 %}
                         {% for income in query_name_income_last_month %}
                         <tr>
-
                             <td class="ordinal-number">{{ myOrdinalNumber }}</td>
-                            <td class="column-incomes">{{ income.amount }}</td>
-                            <td class="column-incomes">{{ income.date_of_income }}</td>
-                            <td class="column-incomes">{{ income.name }}</td>
-                            <td class="column-incomes">{{ income.income_comment }}</td>
+                            <td class="column-incomes">{{ income.amn }}</td>
+                            <td class="column-incomes">{{ income.dateInc }}</td>
+                            <td class="column-incomes">{{ income.incCategory }}</td>
+                            <td class="column-incomes">{{ income.comment }}</td>
+                            <td class="column-delete-edit text-center">
+                                <form method="post" action="/personalbudget/editIncomes" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="editRowIncomes" value="{{ income.incID }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <i class="icon-pencil"></i></button>
+                                </form>
+                            </td>
+                            <td class="column-delete-edit text-center">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
+                                    id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
+                                    <input type="hidden" name="myOrdinalNumberDeleteIncomes"
+                                        value="{{ myOrdinalNumber }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
                         </tr>
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="5" class="center-td">Brak przychodów</td>
+                            <td colspan="7" class="center-td">Brak przychodów</td>
                         </tr>
                         {% endif %}
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive mt-4">
-                <table class="table-center my-table">
+            <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4"></div>
+            {% if chart_incomes_last_month %}
+            {% for chart_income in chart_incomes_last_month %}
+            <a href='#' data-entry-id='{{ chart_income.incNameSum }}' id='chart_icome_1'></a>
+            <a href="#" data-entry-id="{{ chart_income.catName }}" id="chart_icome_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
+                <table id="table_expenses" class="table-center my-table mb-4">
                     <thead>
                         <tr>
-                            <th colspan="6" class="center-td">Zestawienie wydatków w okresie od
+                            <th colspan="8" class="center-td">Zestawienie wydatków w okresie od
                                 {{ date_from_to_last_month }}
                             </th>
                         </tr>
@@ -80,6 +109,8 @@
                             <th class="column-expenses">Sposób płatności</th>
                             <th class="column-expenses">Kategoria</th>
                             <th class="column-expenses">Komentarz</th>
+                            <th class="column-delete-edit">Edytuj</th>
+                            <th class="column-delete-edit">Usuń</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,18 +124,44 @@
                             <td class="column-expenses">{{ expense.pay }}</td>
                             <td class="column-expenses">{{ expense.excategory }}</td>
                             <td class="column-expenses">{{ expense.comment }}</td>
+                            <td class="column-delete-edit text-center">
+                                <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="editRow" value="{{ expense.exID }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <i class="icon-pencil"></i></button>
+                                </form>
+                            </td>
+                            <td class="column-delete-edit text-center">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
+                                    id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
+                                    <input type="hidden" name="myOrdinalNumberDeleteExpenses"
+                                        value="{{ myOrdinalNumberExpenses }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
                         </tr>
                         {% set myOrdinalNumberExpenses = myOrdinalNumberExpenses + 1 %}
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="6" class="center-td">Brak wydatków</td>
+                            <td colspan="8" class="center-td">Brak wydatków</td>
                         </tr>
                         {% endif %}
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive mt-4">
+            <div id="chartContainerExpenses" style="height: 370px; max-width: 920px; margin: 0px auto;" class="mb-4">
+            </div>
+            {% if chart_expenses_last_month %}
+            {% for chart_expense in chart_expenses_last_month %}
+            <a href="#" data-entry-id="{{ chart_expense.expNameSum }}" id="chart_expense_1"></a>
+            <a href="#" data-entry-id="{{ chart_expense.catName }}" id="chart_expense_1"></a>
+            {% endfor %}
+            {% endif %}
+            <div class="table-responsive mt-3">
                 <table class="table-center">
                     <thead>
                         <tr>
@@ -143,4 +200,17 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block footer2 %}
+<script>
+    let dateFromToCurrentYear = "{{ date_from_to_last_month }}";
+
+    let sumOfIncomesElements = '#chart_icome_1[data-entry-id]';
+    let sumOfExpensesElements = '#chart_expense_1[data-entry-id]';
+
+    let script = document.createElement("script");
+    script.src = "/js/displayChart.js";
+    document.body.appendChild(script);
+</script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 {% endblock %}

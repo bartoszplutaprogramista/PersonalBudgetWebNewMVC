@@ -11,6 +11,7 @@ let today = year + "-" + month + "-" + day;
 
 input = document.getElementById('theDate');
 input2 = document.getElementById('theDate1');
+input3editExpenses = document.getElementById('theDate3');
 
 if (input != null) {
     document.getElementById('theDate').value = today;
@@ -21,6 +22,8 @@ if (input != null) {
     document.getElementById('theDate1').setAttribute("max", today);
     document.getElementById('theDate2').value = today;
     document.getElementById('theDate2').setAttribute("max", today);
+} else if (input3editExpenses != null) {
+    document.getElementById('theDate3').setAttribute("max", today);
 }
 
 function onlyNumberKey(evt) {

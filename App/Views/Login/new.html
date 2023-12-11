@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Strona startowa{% endblock %}
+{% block title %}Logowanie{% endblock %}
 
 {% block body %}
 
@@ -9,22 +9,22 @@
         <div class="col-sm-12 col-lg-4 col-xxl-3 log-in-or-register mt-3">
             <form action="/login/create" method="post">
                 <p class="p-2"> Masz już konto? </p>
-                <div class="input-group mb-3 w-75 set-margin">
+                <div class="input-group mb-3 set-margin">
                     <input type="email" placeholder="Podaj email" id="inputEmail" name="email" autofocus
-                        value="{{ email }}" class="form-control" />
+                        autocomplete="on" value="{{ email }}" class="form-control" />
                 </div>
-                <div class="input-group w-75 set-margin">
+                <div class="input-group set-margin">
                     <input type="password" id="inputPassword" name="password" placeholder="Podaj hasło"
-                        class="form-control" />
+                        class="form-control" autocomplete="on" />
                 </div>
-                <div class="w-75 set-margin checkbox mt-2">
+                <div class="set-margin checkbox mt-2">
                     <label>
                         <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {% endif %} />
                         Zapamiętaj mnie
                     </label>
 
                 </div>
-                <div class="w-75 set-margin checkbox mt-2">
+                <div class="set-margin checkbox mt-2">
                     <a href="/password/forgot">Zapomniałeś hasło?</a>
                 </div>
                 <div class="submit mt-3"><button type="submit" class="btn btn-warning">Zaloguj się</button></div>

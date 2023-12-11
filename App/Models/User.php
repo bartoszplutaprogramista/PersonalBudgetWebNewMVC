@@ -141,7 +141,6 @@ class User extends \Core\Model
     {
         $user = static::findByEmail($email);
 
-        //if ($user) {
         if ($user && $user->is_active) {
             if (password_verify($password, $user->password_hash)) {
                 return $user;
@@ -231,7 +230,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
         $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
 
-        Mail::send($this->email, 'Password reset', $text, $html);
+        Mail::send($this->email, 'Resetuj hasło', $text, $html);
     }
 
     public static function findByPasswordReset($token)
