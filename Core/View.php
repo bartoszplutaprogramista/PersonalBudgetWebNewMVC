@@ -54,7 +54,7 @@ class View
                     if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='currentMonth')){
                         $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
                         
-                        $twig->addGlobal('date_from_to_current_month', \App\Controllers\personalBudget::dateFromToCurrentMonth());
+                        $twig->addGlobal('date_from_to_current_month', \App\Controllers\Personalbudget::dateFromToCurrentMonth());
                         $twig->addGlobal('query_name_income_current_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentMonth));
                         $twig->addGlobal('query_name_expense_current_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentMonth));
                         $twig->addGlobal('query_name_incomes_sum_current_month', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentMonth));
@@ -66,7 +66,7 @@ class View
                     else if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='lastMonth')){
                         $dateLastMonth = \App\Models\ModelPersonalBudget::getDateLastMonth();
 
-                        $twig->addGlobal('date_from_to_last_month', \App\Controllers\personalBudget::dateFromToLastMonth());
+                        $twig->addGlobal('date_from_to_last_month', \App\Controllers\Personalbudget::dateFromToLastMonth());
                         $twig->addGlobal('query_name_income_last_month', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateLastMonth));
                         $twig->addGlobal('query_name_expense_last_month', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateLastMonth));
                         $twig->addGlobal('query_name_incomes_sum_last_month', \App\Models\ModelPersonalBudget::incomesSum($dateLastMonth));
@@ -79,7 +79,7 @@ class View
                     else if((isset($_SESSION['paymentMethod']))&&($_SESSION['paymentMethod']=='currentYear')){
                         $dateCurrentYear = \App\Models\ModelPersonalBudget::getDateCurrentYear();
 
-                        $twig->addGlobal('date_from_to_current_year', \App\Controllers\personalBudget::dateFromToCurrentYear());
+                        $twig->addGlobal('date_from_to_current_year', \App\Controllers\Personalbudget::dateFromToCurrentYear());
                         $twig->addGlobal('query_name_income_current_year', \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentYear));
                         $twig->addGlobal('query_name_expense_current_year', \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentYear));
                         $twig->addGlobal('query_name_incomes_sum_current_year', \App\Models\ModelPersonalBudget::incomesSum($dateCurrentYear));

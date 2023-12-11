@@ -83,7 +83,6 @@ window.onload = function () {
         }]
     });
     let dataPointExpenses = getChartDataPoint(sumOfExpensesElements);
-    console.log("DATA DO END OF CHArt ", dataPointExpenses);
     if (dataPointExpenses.length !== 0) {
         chart.render();
     } else {

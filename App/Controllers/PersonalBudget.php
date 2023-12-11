@@ -12,7 +12,7 @@ use \App\Auth;
 use \App\Flash;
 
 #[\AllowDynamicProperties]
-class personalBudget extends \Core\Controller
+class Personalbudget extends \Core\Controller
 {
     public $user;
 
@@ -38,12 +38,12 @@ class personalBudget extends \Core\Controller
 
     public function successAreyouSuredeleteFromIncomes()
     {
-        View::renderTemplate('PersonalBudget/successAreyouSuredeleteFromIncomes.html');
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html');
     }
 
     public function successAreyouSuredeleteFromExpenses()
     {
-        View::renderTemplate('PersonalBudget/successAreyouSuredeleteFromExpenses.html');
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromExpenses.html');
     }    
 
     public function successEditIncomes()
