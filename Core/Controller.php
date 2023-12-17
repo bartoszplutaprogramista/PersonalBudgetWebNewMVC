@@ -45,10 +45,21 @@ abstract class Controller
     public function requireLogin()
     {
         if (! Auth::getUser()) {
+            $url1="/personalbudget/addincome";
+            $url2="/personalbudget/addexpense";
+            $url3="/personalbudget/browsethebalance";
+            $url4="/profile/show";
+            $url5="/profile/edit";
 
-            Flash::addMessage('Please login to access that page', Flash::INFO);
+            Flash::addMessage('Zaloguj się aby uzyskać dostęp do tej strony', Flash::INFO);
 
-            Auth::rememberRequestedPage();
+            if (($_SERVER['REQUEST_URI'])===($url1)||
+            ($_SERVER['REQUEST_URI'])===($url2)||
+            ($_SERVER['REQUEST_URI'])===($url3)||
+            ($_SERVER['REQUEST_URI'])===($url4)||
+            ($_SERVER['REQUEST_URI'])===($url5)){
+                Auth::rememberRequestedPage();
+            }
 
             $this->redirect('/login');
         }
