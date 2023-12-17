@@ -3,57 +3,78 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Auth;
+use \App\Flash;
 use \App\Models\ModelPersonalBudget;
 use \App\Models\User;
 
 
-
-use \App\Auth;
-use \App\Flash;
-
 #[\AllowDynamicProperties]
-class Personalbudget extends \Core\Controller
+class Personalbudget extends Authenticated
 {
     public $user;
 
+    protected function before()
+    {
+        parent::before();
+
+        $this->user = Auth::getUser();
+    }
+
     public function addIncomeAction()
     {
-        View::renderTemplate('PersonalBudget/addIncome.html');
+        View::renderTemplate('PersonalBudget/addIncome.html', [
+            'user' => $this->user
+        ]);
     }
 
     public function addExpenseAction()
     {
-        View::renderTemplate('PersonalBudget/addExpense.html');
+        View::renderTemplate('PersonalBudget/addExpense.html', [
+            'user' => $this->user
+        ]);
     } 
 
-    public function browseTheBalance()
+    public function browseTheBalanceAction()
     {
-        View::renderTemplate('PersonalBudget/browseTheBalance.html');
+        View::renderTemplate('PersonalBudget/browseTheBalance.html', [
+            'user' => $this->user
+        ]);
     } 
 
     public function successDeletedExpenseAction()
     {
-        View::renderTemplate('PersonalBudget/successDeletedExpense.html');
+        View::renderTemplate('PersonalBudget/successDeletedExpense.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successAreyouSuredeleteFromIncomes()
+    public function successAreyouSuredeleteFromIncomesAction()
     {
-        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html');
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successAreyouSuredeleteFromExpenses()
+    public function successAreyouSuredeleteFromExpensesAction()
     {
-        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromExpenses.html');
+        View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromExpenses.html', [
+            'user' => $this->user
+        ]);
     }    
 
-    public function successEditIncomes()
+    public function successEditIncomesAction()
     {
-        View::renderTemplate('PersonalBudget/editIncome.html');
+        View::renderTemplate('PersonalBudget/editIncome.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successEditExpenses()
+    public function successEditExpensesAction()
     {
-        View::renderTemplate('PersonalBudget/editExpense.html');
+        View::renderTemplate('PersonalBudget/editExpense.html', [
+            'user' => $this->user
+        ]);
     }
 
     public function redirectToChosenPeriod(){
@@ -254,45 +275,61 @@ class Personalbudget extends \Core\Controller
         }      
     }
 
-    public function choosecorrectdate()
+    public function choosecorrectdateAction()
     {
-        View::renderTemplate('PersonalBudget/chooseCorrectDate.html');
+        View::renderTemplate('PersonalBudget/chooseCorrectDate.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successBrowseSelectedPeriodCurrentMonth()
+    public function successBrowseSelectedPeriodCurrentMonthAction()
     {
-        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html');
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successBrowseSelectedPeriodLastMonth()
+    public function successBrowseSelectedPeriodLastMonthAction()
     {
-        View::renderTemplate('PersonalBudget/browseSelectedPeriodLastMonth.html');
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodLastMonth.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successBrowseSelectedPeriodCurrentYear()
+    public function successBrowseSelectedPeriodCurrentYearAction()
     {
-        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentYear.html');
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentYear.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function successSelectedPeriodChooseTheDate()
+    public function successSelectedPeriodChooseTheDateAction()
     {
-        View::renderTemplate('PersonalBudget/successSelectedPeriodChooseTheDate.html');
+        View::renderTemplate('PersonalBudget/successSelectedPeriodChooseTheDate.html', [
+            'user' => $this->user
+        ]);
     }
 
-    public function browseselectedperiodprocessing()
+    public function browseselectedperiodprocessingAction()
     {
-        View::renderTemplate('PersonalBudget/browseSelectedPeriodProcessingChooseTheDate.html');
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodProcessingChooseTheDate.html', [
+            'user' => $this->user
+        ]);
     }
     
 
     public function successAddIncomeAction()
     {
-        View::renderTemplate('PersonalBudget/successAddIncome.html');
+        View::renderTemplate('PersonalBudget/successAddIncome.html', [
+            'user' => $this->user
+        ]);
     }
 
     public function successAddExpenseAction()
     {
-        View::renderTemplate('PersonalBudget/successAddExpense.html');
+        View::renderTemplate('PersonalBudget/successAddExpense.html', [
+            'user' => $this->user
+        ]);
     }
     
 }
