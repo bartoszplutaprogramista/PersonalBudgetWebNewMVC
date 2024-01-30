@@ -127,7 +127,10 @@ class View
 
                     if(isset($_SESSION['paymentMethod'])){
                         $twig->addGlobal('which_period', $_SESSION['paymentMethod']);
-                    }                  
+                    }
+                    $twig->addGlobal('incomes_options_form', \App\Models\ModelPersonalBudget::selectOptionsForIncomes());              
+                    $twig->addGlobal('expenses_options_form_payment_method', \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod());              
+                    $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory());              
                 }
             }
 

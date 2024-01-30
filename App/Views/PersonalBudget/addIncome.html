@@ -21,10 +21,20 @@
                     <label class="p-input-radio mb-2" for="paymentCategoryIncomeId">Kategoria płatności:</label>
                     <select class="form-select form-select-sm" aria-label="kategoria platnosci"
                         name="paymentCategoryIncomeName" id="paymentCategoryIncomeId">
-                        <option value="Salary">Wynagrodzenie</option>
+                        <!-- <option value="Salary">Wynagrodzenie</option>
                         <option value="Interest">Odsetki</option>
                         <option value="Allegro">Allegro</option>
-                        <option value="Another">Inne</option>
+                        <option value="Another">Inne</option> -->
+                        {% if incomes_options_form %}
+                        {% for option_name in incomes_options_form %}
+                        <option value={{ option_name.name }}>{{ option_name.name }}</option>
+
+
+                        <!--<option value="Interest">Odsetki</option>
+                        <option value="Allegro">Allegro</option>
+                        <option value="Another">Inne</option> -->
+                        {% endfor %}
+                        {% endif %}
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>

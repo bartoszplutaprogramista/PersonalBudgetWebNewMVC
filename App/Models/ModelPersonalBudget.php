@@ -647,6 +647,17 @@ class ModelPersonalBudget extends \Core\Model
 	
 		$getPaymentId = $paymentMethod->fetch();
         
+        // return $getPaymentId['id'];
+        // if($getPaymentId){
+        //     $my = $getPaymentId['id'] ??= 'default value';
+        //     echo "my ".$my;
+        // }
+        // // echo $getPaymentId['id'];
+
+        // $my = $getPaymentId['id'] ??= 'default value';
+        //     echo "my ".$getPaymentId['id'];
+        
+        // exit;
         return $getPaymentId['id'];
     }
 
@@ -664,6 +675,12 @@ class ModelPersonalBudget extends \Core\Model
 
 		$paymentCategoryExpenseId  = $queryPaymentCategoryExpense -> fetch();
         
+        // $my = $paymentCategoryExpenseId['id'] ??= 'default value';
+        // echo $paymentCategoryExpenseId['id'] ??= 'default value';
+        // return $paymentCategoryExpenseId['id'];
+        // echo "Cat ".$paymentCategoryExpenseId['id'];
+        // exit;
+
         return $paymentCategoryExpenseId['id'];
     }
 
@@ -693,5 +710,50 @@ class ModelPersonalBudget extends \Core\Model
 		$queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
 		
         return $queryExpense->execute();
+    }
+    public static function selectOptionsForIncomes()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM incomes_category_assigned_to_users AS incCat
+                WHERE incCat.user_id = :user_id';
+
+        $queryOptionIncome = $db->prepare($sql);
+        $queryOptionIncome->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $queryOptionIncome->execute();
+
+        $queryName = $queryOptionIncome->fetchAll();   
+        return $queryName;        
+    }
+    public static function selectOptionsForExpensesPaymentMethod()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM payment_methods_assigned_to_users AS payMeth
+                WHERE payMeth.user_id = :user_id';
+
+        $queryOptionPaymentMethodExpense = $db->prepare($sql);
+        $queryOptionPaymentMethodExpense->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $queryOptionPaymentMethodExpense->execute();
+
+        $queryName = $queryOptionPaymentMethodExpense->fetchAll();   
+        return $queryName;        
+    }
+    public static function selectOptionsForExpensesCategory()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM expenses_category_assigned_to_users AS expCat
+                WHERE expCat.user_id = :user_id';
+
+        $queryOptionCategoryExpense = $db->prepare($sql);
+        $queryOptionCategoryExpense->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $queryOptionCategoryExpense->execute();
+
+        $queryName = $queryOptionCategoryExpense->fetchAll();   
+        return $queryName;        
     }
 }
