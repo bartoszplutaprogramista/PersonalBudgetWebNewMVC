@@ -331,5 +331,23 @@ class Personalbudget extends Authenticated
             'user' => $this->user
         ]);
     }
+
+    public function editIncomesCategory()
+    {
+        $editIncomesCateegoryID = $_POST['editIncomesCat'];
+        $_SESSION['incomesCatID'] = $editIncomesCateegoryID;
+
+        View::renderTemplate('PersonalBudget/editIncomesCategory.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    public function changeIncomeNameAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->editIncomesCategory()) {
+            $this->redirect('/profile/categoryconfigurator');      
+        }
+    }
     
 }

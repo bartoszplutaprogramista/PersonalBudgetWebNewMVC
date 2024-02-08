@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Dodaj przychód{% endblock %}
+
+{% block body2 %}
+{% if name_income_category_to_edit %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <div class="div-edit-category mx-auto">
+                <h3>EDYTUJ NAZWĘ KATEGORII DLA PRZYCHODÓW</h3>
+            </div>
+            <div class="div-form-buttons mx-auto">
+                <form method="post" action="/personalbudget/changeIncomeNameAction">
+                    <div class="mt-3 mb-3">
+                        <label for="comment" class="form-label">Nazwa Kategorii:</label>
+                        <input type="text" class="form-control" value="{{ name_income_category_to_edit }}">
+                    </div>
+                    <div class="mt-4 submit">
+                        <button type="submit" class="btn btn-warning btn-lg">Zmień</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

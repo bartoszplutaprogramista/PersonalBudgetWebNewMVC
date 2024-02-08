@@ -31,6 +31,13 @@ class Profile extends Authenticated
         ]);
     }
 
+    public function categoryConfiguratorAction()
+    {
+        View::renderTemplate('Profile/categoryConfigurator.html', [
+            'user' => $this->user
+        ]);
+    }
+
     public function updateAction()
     {
         if ($this->user->updateProfile($_POST)) {

@@ -130,7 +130,12 @@ class View
                     }
                     $twig->addGlobal('incomes_options_form', \App\Models\ModelPersonalBudget::selectOptionsForIncomes());              
                     $twig->addGlobal('expenses_options_form_payment_method', \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod());              
-                    $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory());              
+                    $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory()); 
+                   
+                    if(isset($_SESSION['incomesCatID'])){
+                        $twig->addGlobal('name_income_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit($_SESSION['incomesCatID']));
+                    }
+                    
                 }
             }
 

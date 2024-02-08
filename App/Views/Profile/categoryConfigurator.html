@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Przeglądaj bilans dla bieżącego miesiąca{% endblock %}
+
+{% block body2 %}
+
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content mt-2 p-4">
+            <h3>KONFIGURATOR KATEGORII</h3>
+            <div class="table-responsive">
+                <table id="table_incomes" class="table-center my-table-category-configurator mb-4">
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="center-td">Kategorie dla przychodów
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="ordinal-number-category-configurator">Lp</th>
+                            <th class="column-incomes-cat-conf-name text-center">Nazwa kategorii</th>
+                            <th class="column-incomes-cat-conf-edit-delete text-center">Zmień nazwę</th>
+                            <th class="column-incomes-cat-conf-edit-delete text-center">Usuń</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if incomes_options_form %}
+
+                        {% set myOrdinalNumber = 1 %}
+                        {% for inc_conf in incomes_options_form %}
+                        <tr>
+                            <td class="ordinal-number-category-configurator">{{ myOrdinalNumber }}</td>
+                            <td class="column-incomes-cat-conf-name">{{ inc_conf.name }}</td>
+                            <td class="column-incomes-cat-conf-edit-delete text-center">
+                                <form method="post" action="/personalbudget/editincomescategory" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="editIncomesCat" value="{{ inc_conf.id }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Edytuj">
+                                        <i class="icon-pencil"></i></button>
+                                </form>
+                            </td>
+                            <td class="column-incomes-cat-conf-edit-delete text-center">
+                                <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
+                                    id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
+                                    <input type="hidden" name="myOrdinalNumberDeleteIncomes"
+                                        value="{{ myOrdinalNumber }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Usuń">
+                                        <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% set myOrdinalNumber = myOrdinalNumber + 1 %}
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

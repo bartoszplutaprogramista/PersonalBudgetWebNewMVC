@@ -36,6 +36,21 @@ body
 	width: 8%;
 }
 
+.ordinal-number-category-configurator
+{
+	width: 8%;
+}
+
+.column-incomes-cat-conf-name
+{
+	width: 40%;
+}
+
+.column-incomes-cat-conf-edit-delete
+{
+	width: 26%;
+}
+
 .column-incomes
 {
 	width: 19%;
@@ -64,6 +79,12 @@ body
 .my-table
 {
 	width: 1000px;
+
+}
+
+.my-table-category-configurator
+{
+	width: 700px;
 
 }
 
@@ -247,6 +268,11 @@ a:active {
 .div-form-buttons
 {
 	width: 250px;
+}
+
+.div-edit-category
+{
+	width: 100%;
 }
 
 .mt-neg
@@ -487,6 +513,10 @@ h3
 		text-align: center;
 	}
 	.div-form-buttons-show
+	{
+		width: 250px;
+	}
+	.div-edit-category
 	{
 		width: 250px;
 	}

@@ -715,7 +715,7 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
         $sql = 'SELECT 
-                name
+                id, name
                 FROM incomes_category_assigned_to_users AS incCat
                 WHERE incCat.user_id = :user_id';
 
@@ -755,5 +755,23 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryName = $queryOptionCategoryExpense->fetchAll();   
         return $queryName;        
+    }
+
+    public static function selectNameFromIncomesCategoryToEdit($idIncomesCategoryToEdit)
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM incomes_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryEditIncome = $db->prepare($sql);
+        $queryEditIncome->bindValue(':id', $idIncomesCategoryToEdit, PDO::PARAM_INT);
+        $queryEditIncome->execute();
+
+        //$queryName = $queryEditIncome->fetchAll();  
+        $nameOfIncomeCategory  = $queryEditIncome -> fetch(); 
+
+        return $nameOfIncomeCategory['name'];        
     }
 }
