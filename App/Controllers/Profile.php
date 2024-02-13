@@ -5,7 +5,9 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Models\ModelPersonalBudget;
 
+#[\AllowDynamicProperties]
 class Profile extends Authenticated
 {
     public $user;
@@ -52,6 +54,25 @@ class Profile extends Authenticated
                 'user' => $this->user
             ]);
 
+        }
+    }
+    
+    public function editIncomesCategory()
+    {
+        $editIncomesCateegoryID = $_POST['editIncomesCat'];
+        $_SESSION['incomesCatID'] = $editIncomesCateegoryID;
+
+        View::renderTemplate('Profile/editIncomesCategory.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    public function changeIncomeNameAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->editIncomesCategory()) {
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator');      
         }
     }
 }

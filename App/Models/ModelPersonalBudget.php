@@ -774,4 +774,20 @@ class ModelPersonalBudget extends \Core\Model
 
         return $nameOfIncomeCategory['name'];        
     }
+
+    public function editIncomesCategory()
+    {
+        $db = static::getDB();
+        $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
+
+        $sql = 'UPDATE incomes_category_assigned_to_users 
+                SET name  = :income_category
+                WHERE id=:incomeCategoryEditId';
+
+        $queryEditIncome = $db->prepare($sql);
+		$queryEditIncome->bindValue(':income_category', $editIncomeCategoryName, PDO::PARAM_STR);
+        $queryEditIncome->bindValue(':incomeCategoryEditId', $_SESSION['incomesCatID'], PDO::PARAM_INT);
+        
+        return $queryEditIncome->execute();
+    }
 }
