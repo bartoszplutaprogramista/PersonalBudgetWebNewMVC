@@ -75,4 +75,25 @@ class Profile extends Authenticated
             $this->redirect('/profile/categoryconfigurator');      
         }
     }
+
+    public function deleteIncomesCategory()
+    {
+        if(isset($_POST['deleteIncomesCatID'])) {
+            $_SESSION['idIncomesDeleteCat'] = $_POST['deleteIncomesCatID'];
+        }
+
+        // if(isset($_POST['myOrdinalNumberDeleteCategoryIncomes'])) {
+
+        //     $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteCategoryIncomes'];
+        // }
+        View::renderTemplate('Profile/areYouSureDeleteIncomesCategory.html', [
+            'user' => $this->user
+        ]);
+        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+    }
+
+    // public function sucessAreYouSureDeleteCategoryFromIncomes()
+    // {
+        
+    // }
 }

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Napewno usunąć kategorię?{% endblock %}
+
+{% block body2 %}
+{% if name_income_category_to_edit %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content3 mt-2">
+            <p class="p-content text-center p-3">Napewno usunąć kategorię <b>
+                    {{ name_income_category_to_edit }} </b> i wszystkie z nią powiązane przychody?</p>
+            <div class="submit mt-1">
+                <div class="d-flex flex-row justify-content-center pb-4">
+                    <div class="me-2">
+                        <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse"
+                            name="formDelete">
+                            <button type="submit" class="btn btn-warning">
+                                Usuń
+                            </button>
+                        </form>
+                    </div>
+                    <div class="ms-2">
+                        <form action="/profile/categoryconfigurator" method="post">
+                            <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
+                            <button type="submit" class="btn btn-secondary">Anuluj</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -39,11 +39,9 @@
                                 </form>
                             </td>
                             <td class="column-incomes-cat-conf-edit-delete text-center">
-                                <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
-                                    id="formDeleteExpanse" name="formDelete">
-                                    <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
-                                    <input type="hidden" name="myOrdinalNumberDeleteIncomes"
-                                        value="{{ myOrdinalNumber }}" />
+                                <form method="post" action="/profile/deleteincomescategory" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="deleteIncomesCatID" value="{{ inc_conf.id }}" />
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
                                         <i class="icon-trash-empty"></i></button>
                                 </form>
@@ -52,6 +50,10 @@
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
                         {% endif %}
+                        <tr>
+                            <td colspan="4" class="center-td">Dodaj nową kategorię
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
