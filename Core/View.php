@@ -133,7 +133,11 @@ class View
                     $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory()); 
                    
                     if(isset($_SESSION['incomesCatID'])){
-                        $twig->addGlobal('name_income_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit($_SESSION['incomesCatID']));
+                        $twig->addGlobal('name_income_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit());
+                    }
+
+                    if(isset($_SESSION['idIncomesDeleteCat'])){
+                        $twig->addGlobal('name_income_category_to_delete', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToDelete());
                     }
                     
                 }

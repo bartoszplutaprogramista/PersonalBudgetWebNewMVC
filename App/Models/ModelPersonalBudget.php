@@ -757,7 +757,7 @@ class ModelPersonalBudget extends \Core\Model
         return $queryName;        
     }
 
-    public static function selectNameFromIncomesCategoryToEdit($idIncomesCategoryToEdit)
+    public static function selectNameFromIncomesCategoryToEdit()
     {
         $db = static::getDB();
         $sql = 'SELECT 
@@ -766,11 +766,48 @@ class ModelPersonalBudget extends \Core\Model
                 WHERE id = :id';
 
         $queryEditIncome = $db->prepare($sql);
-        $queryEditIncome->bindValue(':id', $idIncomesCategoryToEdit, PDO::PARAM_INT);
+        // $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         $queryEditIncome->execute();
 
         //$queryName = $queryEditIncome->fetchAll();  
         $nameOfIncomeCategory  = $queryEditIncome -> fetch(); 
+
+        // echo "wartość sesji edit :".$_SESSION['incomesCatID'];
+        // echo "wartość:".$nameOfIncomeCategory['name'];
+
+        // exit;
+
+        return $nameOfIncomeCategory['name'];        
+    }
+
+    public static function selectNameFromIncomesCategoryToDelete()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM incomes_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryDeleteIncome = $db->prepare($sql);
+        $queryDeleteIncome->bindValue(':id', $_SESSION['idIncomesDeleteCat'], PDO::PARAM_INT);
+        // $queryDeleteIncome->bindValue(':id', 121, PDO::PARAM_INT);
+        $queryDeleteIncome->execute();
+
+        //$queryName = $queryEditIncome->fetchAll();  
+        $nameOfIncomeCategory  = $queryDeleteIncome -> fetch(); 
+
+        // echo "wartość sesyjna ".$_SESSION['idIncomesDeleteCat'];
+        // exit;
+
+        // $moja = $nameOfIncomeCategory['name'] ?? 'default value';
+        // echo "wartość".$moja;
+        // exit;
+
+        // echo "wartość:".$nameOfIncomeCategory['name'];
+        // exit;
+        // echo "wartość:".$queryDeleteIncome['name'];
+        // exit;
 
         return $nameOfIncomeCategory['name'];        
     }
@@ -789,5 +826,31 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditIncome->bindValue(':incomeCategoryEditId', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
+    }
+
+    public function deleteIncomesCategory()
+    {
+        $db = static::getDB();
+
+        $sql = 'DELETE FROM incomes_category_assigned_to_users WHERE id = :idOfIncomeCategory';
+
+        $queryDeleteIncomeCategory = $db->prepare($sql);
+        $queryDeleteIncomeCategory->bindValue(':idOfIncomeCategory', $_SESSION['idIncomesDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteIncomeCategory->execute();
+
+        return $queryDeleteIncomeCategory;
+    } 
+
+    public function addNewIncomesCategory($newIncomeCat)
+    {
+        $db = static::getDB();
+
+            $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:user_id, :name)';
+
+            $addNewIncomesCategory = $db->prepare($sql);
+            $addNewIncomesCategory->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+            $addNewIncomesCategory->bindValue(':name', $newIncomeCat, PDO::PARAM_STR);
+            
+        return $addNewIncomesCategory->execute();   
     }
 }

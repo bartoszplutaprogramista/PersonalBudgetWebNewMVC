@@ -76,11 +76,26 @@ class Profile extends Authenticated
         }
     }
 
+    public function deleteIncomeCategoryDataBaseAction()
+    {
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->deleteIncomesCategory()) {
+            if(isset($_SESSION['idIncomesDeleteCat'])) {
+                unset($_SESSION['idIncomesDeleteCat']);
+            }
+            Flash::addMessage('Pomyślnie usunięto kategorię');
+            $this->redirect('/profile/categoryconfigurator');      
+        }       
+    }
+
     public function deleteIncomesCategory()
     {
         if(isset($_POST['deleteIncomesCatID'])) {
             $_SESSION['idIncomesDeleteCat'] = $_POST['deleteIncomesCatID'];
         }
+
+        // echo "delete: ".$_SESSION['idIncomesDeleteCat'];
+        // exit;
 
         // if(isset($_POST['myOrdinalNumberDeleteCategoryIncomes'])) {
 
@@ -90,6 +105,23 @@ class Profile extends Authenticated
             'user' => $this->user
         ]);
         // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+    }
+
+    public function addNewIncomesCategory()
+    {
+        View::renderTemplate('Profile/addNewIncomesCategory.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    public function addToDataBaseNewIncomesCategory()
+    {
+        $newIncomeCat = $_POST['addedNewIncomeCat'];
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->addNewIncomesCategory($newIncomeCat)) {
+            Flash::addMessage('Dodano nową kategorię');
+            $this->redirect('/profile/categoryconfigurator');      
+        }
     }
 
     // public function sucessAreYouSureDeleteCategoryFromIncomes()

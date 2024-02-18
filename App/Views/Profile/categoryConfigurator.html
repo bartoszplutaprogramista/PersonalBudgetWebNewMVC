@@ -51,8 +51,12 @@
                         {% endfor %}
                         {% endif %}
                         <tr>
-                            <td colspan="4" class="center-td">Dodaj nową kategorię
-                            </td>
+                            <form method="post" action="/profile/addNewIncomesCategory" id="incomesCat" name="incCat">
+                                <td colspan="4" class="center-td"> <button type="submit" class="btn btn-secondary"
+                                        title="Dodaj nową kategorię przychodów">Dodaj nową kategorię<i
+                                            class="icon-plus-circle"></i></button>
+                                </td>
+                            </form>
                         </tr>
                     </tbody>
                 </table>
