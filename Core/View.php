@@ -128,9 +128,10 @@ class View
                     if(isset($_SESSION['paymentMethod'])){
                         $twig->addGlobal('which_period', $_SESSION['paymentMethod']);
                     }
-                    $twig->addGlobal('incomes_options_form', \App\Models\ModelPersonalBudget::selectOptionsForIncomes());              
+                    $twig->addGlobal('incomes_options_form', \App\Models\ModelPersonalBudget::selectOptionsForIncomes());    
+                    $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory());           
                     $twig->addGlobal('expenses_options_form_payment_method', \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod());              
-                    $twig->addGlobal('expenses_options_form_category', \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory()); 
+                    
                    
                     if(isset($_SESSION['incomesCatID'])){
                         $twig->addGlobal('name_income_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit());
@@ -138,6 +139,27 @@ class View
 
                     if(isset($_SESSION['idIncomesDeleteCat'])){
                         $twig->addGlobal('name_income_category_to_delete', \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToDelete());
+                    }
+
+                    if(isset($_SESSION['expensesCatID'])){
+                        $twig->addGlobal('name_expense_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToEdit());
+                    }
+
+                    if(isset($_SESSION['idExpensesDeleteCat'])){
+                        $twig->addGlobal('name_expense_category_to_delete', \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToDelete());
+                    }
+
+
+
+
+                    if(isset($_SESSION['payMethCatID'])){
+                        // echo "zmienna ".$_SESSION['payMethCatID'];
+                        // exit;
+                        $twig->addGlobal('name_pay_meth_category_to_edit', \App\Models\ModelPersonalBudget::selectNameFromPayMethCategoryToEdit());
+                    }
+
+                    if(isset($_SESSION['idPayMethDeleteCat'])){
+                        $twig->addGlobal('name_pay_meth_category_to_delete', \App\Models\ModelPersonalBudget::selectNameFromPayMethCategoryToDelete());
                     }
                     
                 }
