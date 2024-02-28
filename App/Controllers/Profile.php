@@ -33,6 +33,13 @@ class Profile extends Authenticated
         ]);
     }
 
+    public function deleteAccount()
+    {
+        View::renderTemplate('Profile/areYouSureDeleteAccount.html', [
+            'user' => $this->user
+        ]);
+    }
+
     public function categoryConfiguratorAction()
     {
         View::renderTemplate('Profile/categoryConfigurator.html', [
@@ -266,6 +273,8 @@ class Profile extends Authenticated
         View::renderTemplate('Profile/addNewPayMethCategory.html', [
             'user' => $this->user
         ]);
+        $message = "Pomyślnie usunięto konto";
+        echo "<script type='text/javascript'>alert('$message');</script>"; 
     }
 
     public function addToDataBaseNewPayMethCategory()
@@ -275,6 +284,19 @@ class Profile extends Authenticated
         if ($personalBudget->addNewPayMethCategory($newPayMethCat)) {
             Flash::addMessage('Dodano nową kategorię');
             $this->redirect('/profile/categoryconfigurator');      
+        }
+    }
+
+    public function deleteDataBaseAccount()
+    {
+        $userID = $_SESSION['userIdSession'];
+        // Flash::addMessage('Pomyślnie usunięto konto');
+        $message = "Pomyślnie usunięto konto";
+        Auth::logout();
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {
+            echo "<script type='text/javascript'>alert('$message');</script>"; 
+            $this->redirect('/');     
         }
     }
 

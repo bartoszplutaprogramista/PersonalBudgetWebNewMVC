@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Napewno usunąć konto?{% endblock %}
+
+{% block body2 %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content3 mt-2">
+            <p class="p-content text-center p-3">Napewno usunąć konto <b>
+                    {{ current_user.email }} </b> i wszystkie powiązane z nim informacje?</p>
+            <div class="submit mt-1">
+                <div class="d-flex flex-row justify-content-center pb-4">
+                    <div class="me-2">
+                        <form method="post" action="/profile/deletedatabaseaccount" id="deleteCatExp"
+                            name="ExpCatdelete">
+                            <button type="submit" class="btn btn-warning">
+                                Usuń
+                            </button>
+                        </form>
+                    </div>
+                    <div class="ms-2">
+                        <form action="/profile/show" method="post">
+                            <button type="submit" class="btn btn-secondary">Anuluj</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
