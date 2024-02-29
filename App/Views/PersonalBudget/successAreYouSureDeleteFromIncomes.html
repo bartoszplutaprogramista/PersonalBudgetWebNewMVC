@@ -36,7 +36,8 @@
             </div>
             <div class="submit mt-4">
                 <div class="d-flex flex-row justify-content-center pb-4">
-                    <div class="me-2">
+                    <!-- <div class="me-2"> -->
+                    <div class="margin-end-income">
                         <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse"
                             name="formDelete">
                             <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
@@ -45,7 +46,8 @@
                             </button>
                         </form>
                     </div>
-                    <div class="ms-2">
+                    <!-- <div class="ms-2"> -->
+                    <div class="margin-start-income">
                         <form action="/personalbudget/redirectToChosenPeriod" method="post">
                             <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
                             <button type="submit" class="btn btn-secondary">Anuluj</button>

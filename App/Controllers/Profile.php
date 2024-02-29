@@ -273,8 +273,6 @@ class Profile extends Authenticated
         View::renderTemplate('Profile/addNewPayMethCategory.html', [
             'user' => $this->user
         ]);
-        $message = "Pomyślnie usunięto konto";
-        echo "<script type='text/javascript'>alert('$message');</script>"; 
     }
 
     public function addToDataBaseNewPayMethCategory()
@@ -291,14 +289,24 @@ class Profile extends Authenticated
     {
         $userID = $_SESSION['userIdSession'];
         // Flash::addMessage('Pomyślnie usunięto konto');
-        $message = "Pomyślnie usunięto konto";
+        // $message = "Pomyślnie usunięto konto";
         Auth::logout();
         $personalBudget = new ModelPersonalBudget($_POST);
         if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {
-            echo "<script type='text/javascript'>alert('$message');</script>"; 
-            $this->redirect('/');     
+            // echo "<script type='text/javascript'>alert('$message');</script>"; 
+            // $this->redirect('/');
+            
+            $this->redirect('/login/show-message-after-deleting-user-data');
+            // $this->redirect('/profile/show-message-after-deleting-user-data');
         }
     }
+
+    // public function showMessageAfterDeletingUserDataAction()
+    // {
+    //     Flash::addMessage('Pomyślnie usunięto konto');
+
+    //     $this->redirect('/');
+    // }
 
     // public function sucessAreYouSureDeleteCategoryFromIncomes()
     // {
