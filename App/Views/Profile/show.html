@@ -9,12 +9,14 @@
         <div class="content mt-2 p-4">
             <h3>WYŚWIETL DANE</h3>
             <div class="div-form-buttons-show mx-auto text-center">
-                <dl class="dl-horizontal">
-                    <dt>Imię</dt>
-                    <dd>{{ user.name }}</dd>
-                    <dt>E-mail</dt>
-                    <dd>{{ user.email }}</dd>
-                </dl>
+                <div class="table-responsive">
+                    <dl class="dl-horizontal">
+                        <dt>Imię</dt>
+                        <dd>{{ user.name }}</dd>
+                        <dt>E-mail</dt>
+                        <dd>{{ user.email }}</dd>
+                    </dl>
+                </div>
 
                 <a href="/profile/edit">Edytuj dane</a>
             </div>
