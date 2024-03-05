@@ -19,9 +19,7 @@ class ModelPersonalBudget extends \Core\Model
  
     public function updateIncomes()
     {
-        // $personalBudget = new ModelPersonalBudget($_POST);
         $db = static::getDB();
-        // $catIncomeId = $personalBudget->getpaymentCategoryIncomeId();
         $catIncomeId = $this->getpaymentCategoryIncomeId();
         $amountIncome = $_POST['amountIncome'];
         $dateIncome = $_POST['dateIncome'];
@@ -46,9 +44,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public function updateExpenses()
     {
-        // $personalBudget = new ModelPersonalBudget($_POST);
         $db = static::getDB();
-        // $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId();
         $paymentCatExpenseId = $this->getpaymentCategoryExpenseId();
         $paymentId = $this->getPaymentId();
         $amountExpense = $_POST['amountExpense'];
@@ -276,9 +272,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public static function sumOfNamesFromIncomesToChartSelectedPeriod()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -329,9 +323,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public static function sumOfNamesFromExpensesToChartSelectedPeriod()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -402,9 +394,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public static function getSelectedPeriodQueryNameIncome()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -429,9 +419,7 @@ class ModelPersonalBudget extends \Core\Model
     }
     public static function getSelectedPeriodQueryNameExpense()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -461,9 +449,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public static function incomesSelectedPeriodSum()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -482,9 +468,7 @@ class ModelPersonalBudget extends \Core\Model
 
     public static function expensesSelectedPeriodSum()
     {
-        // $startDate = ModelPersonalBudget::getStartDateSelectedPeriod();
         $startDate = self::getStartDateSelectedPeriod();
-        // $endDate = ModelPersonalBudget::getEndDateSelectedPeriod();
         $endDate = self::getEndDateSelectedPeriod();
         $db = static::getDB();
 
@@ -607,9 +591,6 @@ class ModelPersonalBudget extends \Core\Model
 
         if (empty($this->errors)){
 
-            // $personalBudget = new ModelPersonalBudget($_POST);
-
-            // $paymentCategoryIncomeId = $personalBudget->getpaymentCategoryIncomeId();
             $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId();
 
             $amountIncome = $_POST['amountIncome'];
@@ -646,18 +627,6 @@ class ModelPersonalBudget extends \Core\Model
 		$paymentMethod->execute();
 	
 		$getPaymentId = $paymentMethod->fetch();
-        
-        // return $getPaymentId['id'];
-        // if($getPaymentId){
-        //     $my = $getPaymentId['id'] ??= 'default value';
-        //     echo "my ".$my;
-        // }
-        // // echo $getPaymentId['id'];
-
-        // $my = $getPaymentId['id'] ??= 'default value';
-        //     echo "my ".$getPaymentId['id'];
-        
-        // exit;
         return $getPaymentId['id'];
     }
 
@@ -674,21 +643,12 @@ class ModelPersonalBudget extends \Core\Model
 		$queryPaymentCategoryExpense->execute();
 
 		$paymentCategoryExpenseId  = $queryPaymentCategoryExpense -> fetch();
-        
-        // $my = $paymentCategoryExpenseId['id'] ??= 'default value';
-        // echo $paymentCategoryExpenseId['id'] ??= 'default value';
-        // return $paymentCategoryExpenseId['id'];
-        // echo "Cat ".$paymentCategoryExpenseId['id'];
-        // exit;
 
         return $paymentCategoryExpenseId['id'];
     }
 
     public function insertToExpenses($user)
     {
-        // $personalBudget = new ModelPersonalBudget($_POST);
-
-        // $paymentCatExpenseId = $personalBudget->getpaymentCategoryExpenseId();
         $paymentCatExpenseId = $this->getpaymentCategoryExpenseId();
 
         $paymentId = $this->getPaymentId();
@@ -766,17 +726,10 @@ class ModelPersonalBudget extends \Core\Model
                 WHERE id = :id';
 
         $queryEditIncome = $db->prepare($sql);
-        // $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         $queryEditIncome->execute();
 
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfIncomeCategory  = $queryEditIncome -> fetch(); 
-
-        // echo "wartość sesji edit :".$_SESSION['incomesCatID'];
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-
-        // exit;
 
         return $nameOfIncomeCategory['name'];        
     }
@@ -790,17 +743,9 @@ class ModelPersonalBudget extends \Core\Model
                 WHERE id = :id';
 
         $queryEditExpense = $db->prepare($sql);
-        // $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         $queryEditExpense->bindValue(':id', $_SESSION['expensesCatID'], PDO::PARAM_INT);
         $queryEditExpense->execute();
-
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfExpenseCategory  = $queryEditExpense -> fetch(); 
-
-        // echo "wartość sesji edit :".$_SESSION['incomesCatID'];
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-
-        // exit;
 
         return $nameOfExpenseCategory['name'];        
     }
@@ -814,17 +759,10 @@ class ModelPersonalBudget extends \Core\Model
                 WHERE id = :id';
 
         $queryEditPayMeth = $db->prepare($sql);
-        // $queryEditIncome->bindValue(':id', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         $queryEditPayMeth->bindValue(':id', $_SESSION['payMethCatID'], PDO::PARAM_INT);
         $queryEditPayMeth->execute();
 
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfPayMethCategory  = $queryEditPayMeth -> fetch(); 
-
-        // echo "wartość sesji edit :".$_SESSION['incomesCatID'];
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-
-        // exit;
 
         return $nameOfPayMethCategory['name'];        
     }
@@ -839,23 +777,9 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryDeleteIncome = $db->prepare($sql);
         $queryDeleteIncome->bindValue(':id', $_SESSION['idIncomesDeleteCat'], PDO::PARAM_INT);
-        // $queryDeleteIncome->bindValue(':id', 121, PDO::PARAM_INT);
         $queryDeleteIncome->execute();
 
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfIncomeCategory  = $queryDeleteIncome -> fetch(); 
-
-        // echo "wartość sesyjna ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // $moja = $nameOfIncomeCategory['name'] ?? 'default value';
-        // echo "wartość".$moja;
-        // exit;
-
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-        // exit;
-        // echo "wartość:".$queryDeleteIncome['name'];
-        // exit;
 
         return $nameOfIncomeCategory['name'];        
     }
@@ -870,23 +794,9 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryDeleteExpense = $db->prepare($sql);
         $queryDeleteExpense->bindValue(':id', $_SESSION['idExpensesDeleteCat'], PDO::PARAM_INT);
-        // $queryDeleteIncome->bindValue(':id', 121, PDO::PARAM_INT);
         $queryDeleteExpense->execute();
 
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfExpenseCategory  = $queryDeleteExpense -> fetch(); 
-
-        // echo "wartość sesyjna ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // $moja = $nameOfIncomeCategory['name'] ?? 'default value';
-        // echo "wartość".$moja;
-        // exit;
-
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-        // exit;
-        // echo "wartość:".$queryDeleteIncome['name'];
-        // exit;
 
         return $nameOfExpenseCategory['name'];        
     }
@@ -901,23 +811,9 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryDeletePayMeth = $db->prepare($sql);
         $queryDeletePayMeth->bindValue(':id', $_SESSION['idPayMethDeleteCat'], PDO::PARAM_INT);
-        // $queryDeleteIncome->bindValue(':id', 121, PDO::PARAM_INT);
         $queryDeletePayMeth->execute();
 
-        //$queryName = $queryEditIncome->fetchAll();  
         $nameOfPayMethCategory  = $queryDeletePayMeth -> fetch(); 
-
-        // echo "wartość sesyjna ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // $moja = $nameOfIncomeCategory['name'] ?? 'default value';
-        // echo "wartość".$moja;
-        // exit;
-
-        // echo "wartość:".$nameOfIncomeCategory['name'];
-        // exit;
-        // echo "wartość:".$queryDeleteIncome['name'];
-        // exit;
 
         return $nameOfPayMethCategory['name'];        
     }

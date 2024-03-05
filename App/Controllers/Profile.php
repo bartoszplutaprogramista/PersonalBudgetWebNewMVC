@@ -87,13 +87,8 @@ class Profile extends Authenticated
     public function editPaymentMethodCategory()
     {
         $editPaymentMethCategoryID = $_POST['editPaymentMethodCat'];
-        // echo "zmienna ".$editPaymentMethCategoryID;
-        // exit;
 
         $_SESSION['payMethCatID'] = $editPaymentMethCategoryID;
-
-        // echo "zmienna ".$_SESSION['payMethCatID'];
-        // exit;
 
         View::renderTemplate('Profile/editPayMethCategory.html', [
             'user' => $this->user
@@ -180,18 +175,9 @@ class Profile extends Authenticated
         if(isset($_POST['deleteIncomesCatID'])) {
             $_SESSION['idIncomesDeleteCat'] = $_POST['deleteIncomesCatID'];
         }
-
-        // echo "delete: ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // if(isset($_POST['myOrdinalNumberDeleteCategoryIncomes'])) {
-
-        //     $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteCategoryIncomes'];
-        // }
         View::renderTemplate('Profile/areYouSureDeleteIncomesCategory.html', [
             'user' => $this->user
         ]);
-        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
 
     public function deleteExpensesCategory()
@@ -200,18 +186,9 @@ class Profile extends Authenticated
             $_SESSION['idExpensesDeleteCat'] = $_POST['deleteExpensesCatID'];
 
         }
-
-        // echo "delete: ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // if(isset($_POST['myOrdinalNumberDeleteCategoryIncomes'])) {
-
-        //     $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteCategoryIncomes'];
-        // }
         View::renderTemplate('Profile/areYouSureDeleteExpensesCategory.html', [
             'user' => $this->user
         ]);
-        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
 
     public function deletePaymentMethodsCategory()
@@ -220,18 +197,9 @@ class Profile extends Authenticated
             $_SESSION['idPayMethDeleteCat'] = $_POST['deletePayMethCatID'];
 
         }
-
-        // echo "delete: ".$_SESSION['idIncomesDeleteCat'];
-        // exit;
-
-        // if(isset($_POST['myOrdinalNumberDeleteCategoryIncomes'])) {
-
-        //     $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteCategoryIncomes'];
-        // }
         View::renderTemplate('Profile/areYouSureDeletePayMethCategory.html', [
             'user' => $this->user
         ]);
-        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
 
     public function addNewIncomesCategory()
@@ -288,28 +256,10 @@ class Profile extends Authenticated
     public function deleteDataBaseAccount()
     {
         $userID = $_SESSION['userIdSession'];
-        // Flash::addMessage('Pomyślnie usunięto konto');
-        // $message = "Pomyślnie usunięto konto";
         Auth::logout();
         $personalBudget = new ModelPersonalBudget($_POST);
-        if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {
-            // echo "<script type='text/javascript'>alert('$message');</script>"; 
-            // $this->redirect('/');
-            
+        if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {          
             $this->redirect('/login/show-message-after-deleting-user-data');
-            // $this->redirect('/profile/show-message-after-deleting-user-data');
         }
     }
-
-    // public function showMessageAfterDeletingUserDataAction()
-    // {
-    //     Flash::addMessage('Pomyślnie usunięto konto');
-
-    //     $this->redirect('/');
-    // }
-
-    // public function sucessAreYouSureDeleteCategoryFromIncomes()
-    // {
-        
-    // }
 }
