@@ -25,7 +25,8 @@ set_exception_handler('Core\Error::exceptionHandler');
  */
 
 
- 
+ini_set('session.cookie_lifetime', 60 * 60 * 24 * 30); 
+ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 30);
 ini_set('session.save_path', '../session');
 session_start();
 
