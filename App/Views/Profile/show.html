@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}WYŚWIETL DANE{% endblock %}
+{% block title2 %}WYŚWIETL DANE{% endblock %}
 
 {% block body2 %}
 
@@ -9,12 +9,24 @@
         <div class="content mt-2 p-4">
             <h3>WYŚWIETL DANE</h3>
             <div class="div-form-buttons-show mx-auto text-center">
-                <dl class="dl-horizontal">
-                    <dt>Imię</dt>
-                    <dd>{{ user.name }}</dd>
-                    <dt>E-mail</dt>
-                    <dd>{{ user.email }}</dd>
-                </dl>
+                <div class="table-responsive">
+                    <table class="table-center mb-3">
+                        <tr>
+                            <td style="background-color:#272020; border: none;" class="center-td"><b>Imię</b></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #373737; border: 1px solid #b0afaf;" class="center-td">
+                                {{ user.name }}</td>
+                        </tr>
+                        <tr>
+                            <td style="background-color:#272020; border: none;" class="center-td"><b>E-mail</b></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #373737; border: 1px solid #b0afaf;" class="center-td">
+                                {{ user.email }}</td>
+                        </tr>
+                    </table>
+                </div>
 
                 <a href="/profile/edit">Edytuj dane</a>
             </div>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title2 %}Napewno usunąć kategorię?{% endblock %}
+
+{% block body2 %}
+{% if name_income_category_to_delete %}
+<div class="row justify-content-center m-0 p-0">
+    <div class="col-xl-12 col-xxl-9 p-0">
+        <div class="content3 mt-2">
+            <p class="p-content text-center p-3">Napewno usunąć kategorię <b>
+                    {{ name_income_category_to_delete }} </b> i wszystkie z nią powiązane przychody?</p>
+            <div class="submit mt-1">
+                <div class="d-flex flex-row justify-content-center pb-4">
+                    <div class="margin-end-income">
+                        <form method="post" action="/profile/deleteIncomeCategoryDataBaseAction" id="deleteCatInc"
+                            name="IncCatdelete">
+                            <button type="submit" class="btn btn-warning">
+                                Usuń
+                            </button>
+                        </form>
+                    </div>
+                    <div class="margin-start-income">
+                        <form action="/profile/categoryconfigurator" method="post">
+                            <button type="submit" class="btn btn-secondary">Anuluj</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

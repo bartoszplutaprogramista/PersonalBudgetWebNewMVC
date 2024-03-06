@@ -23,6 +23,10 @@ set_exception_handler('Core\Error::exceptionHandler');
 /**
  * Sessions
  */
+
+
+ 
+ini_set('session.save_path', '../session');
 session_start();
 
 

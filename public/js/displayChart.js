@@ -35,8 +35,11 @@ function getChartDataPoint(elements) {
     }
     return valueOfDataPoints;
 }
-window.onload = function () {
 
+let dataPointIncomes = getChartDataPoint(sumOfIncomesElements);
+let dataPointExpenses = getChartDataPoint(sumOfExpensesElements);
+
+function renderChartIncomes() {
     var chart = new CanvasJS.Chart("chartContainer", {
         theme: "light2", // "light1", "light2", "dark1", "dark2"
         exportEnabled: true,
@@ -55,15 +58,12 @@ window.onload = function () {
             dataPoints: getChartDataPoint(sumOfIncomesElements)
         }]
     });
-    let dataPointIncomes = getChartDataPoint(sumOfIncomesElements);
     if (dataPointIncomes.length !== 0) {
         chart.render();
-    } else {
-        document.getElementById("chartContainer").style.height = "0px";
-        let element = document.querySelector("#table_incomes");
-        element.classList.replace("mb-4", "mb-0");
     }
+}
 
+function renderChartExpenses() {
     var chart = new CanvasJS.Chart("chartContainerExpenses", {
         theme: "light2", // "light1", "light2", "dark1", "dark2"
         exportEnabled: true,
@@ -82,13 +82,40 @@ window.onload = function () {
             dataPoints: getChartDataPoint(sumOfExpensesElements)
         }]
     });
-    let dataPointExpenses = getChartDataPoint(sumOfExpensesElements);
     if (dataPointExpenses.length !== 0) {
         chart.render();
-    } else {
-        document.getElementById("chartContainerExpenses").style.height = "0px";
-        let element = document.querySelector("#table_expenses");
-        element.classList.replace("mb-4", "mb-0");
     }
+}
 
+function addZeroPxIncomes() {
+    document.getElementById("chartContainer").style.height = "0px";
+    let element = document.querySelector("#table_incomes");
+    element.classList.replace("mb-4", "mb-0");
+}
+
+function addZeroPxExpenses() {
+    document.getElementById("chartContainerExpenses").style.height = "0px";
+    let element = document.querySelector("#table_expenses");
+    element.classList.replace("mb-4", "mb-0");
+}
+
+if ((dataPointIncomes.length !== 0) && (dataPointExpenses.length !== 0)) {
+
+    window.onload = function () {
+        renderChartIncomes();
+        renderChartExpenses();
+    }
+} else if ((dataPointIncomes.length === 0) && (dataPointExpenses.length === 0)) {
+    addZeroPxIncomes();
+    addZeroPxExpenses();
+} else if ((dataPointIncomes.length === 0) && (dataPointExpenses.length !== 0)) {
+    addZeroPxIncomes();
+    window.onload = function () {
+        renderChartExpenses();
+    }
+} else if ((dataPointIncomes.length !== 0) && (dataPointExpenses.length === 0)) {
+    window.onload = function () {
+        renderChartIncomes();
+    }
+    addZeroPxExpenses();
 }

@@ -13,8 +13,9 @@
                 <form method="post" action="/personalbudget/updateExpenseAction">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
-                        <input type="number" class="form-control" min="0" step="0.01" id="amountOfExpanse"
-                            value="{{ ex_edit.amn }}" name="amountExpense" onkeypress="return onlyNumberKey(event)">
+                        <input type="number" class="form-control" min="1" max="999999.99" step="0.01"
+                            id="amountOfExpanse" value="{{ ex_edit.amn }}" name="amountExpense"
+                            onkeypress="return onlyNumberKey(event)">
                     </div>
                     <div class="mb-3">
                         <label for="theDate3" class="form-label">Data:</label>
@@ -24,29 +25,24 @@
                     <label class="p-input-radio mb-2" for="paymentMethodId">Sposób płatności:</label>
                     <select class="form-select form-select-sm mb-3" aria-label="sposob platnosci" name="paymentMethod"
                         id="paymentMethodId">
-                        <option value="Cash">Gotówka</option>
-                        <option value="Debit Card">Karta debetowa</option>
-                        <option value="Credit Card">Karta kredytowa</option>
+                        {% if expenses_options_form_payment_method %}
+                        {% for option_name_pay_method in expenses_options_form_payment_method %}
+
+                        <option value='{{ option_name_pay_method.name }}'>{{ option_name_pay_method.name }}</option>
+
+                        {% endfor %}
+                        {% endif %}
                     </select>
                     <label class="p-input-radio mb-2" for="paymentCategory">Kategoria płatności: </label>
                     <select class="form-select form-select-sm" aria-label="sposob platnosci" id="paymentCategory"
                         name="paymentCategoryExpense">
-                        <option value="Transport">Transport</option>
-                        <option value="Books">Książki</option>
-                        <option value="Food">Jedzenie</option>
-                        <option value="Apartments">Mieszkanie</option>
-                        <option value="Telecommunication">Telekomunikacja</option>
-                        <option value="Health">Opieka zdrowotna</option>
-                        <option value="Clothes">Ubranie</option>
-                        <option value="Hygiene">Higiena</option>
-                        <option value="Kids">Dzieci</option>
-                        <option value="Recreation">Rozrywka</option>
-                        <option value="Trip">Wycieczka</option>
-                        <option value="Savings">Oszczędności</option>
-                        <option value="For Retirement">Na złotą jesień, czyli emeryturę</option>
-                        <option value="Debt Repayment">Spłata długów</option>
-                        <option value="Gift">Darowizna</option>
-                        <option value="Another">Inne</option>
+                        {% if expenses_options_form_category %}
+                        {% for option_name_category in expenses_options_form_category %}
+
+                        <option value='{{ option_name_category.name }}'>{{ option_name_category.name }}</option>
+
+                        {% endfor %}
+                        {% endif %}
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
