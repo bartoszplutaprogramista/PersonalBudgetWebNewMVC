@@ -5,9 +5,11 @@
 {% block body2 %}
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
-        <div class="content mt-2 p-4">
-            <h3>DODAJ WYDATEK</h3>
-            <div class="div-form-buttons mx-auto">
+        <div class="content mt-2 p-4 d-flex flex-row">
+
+            {# <div class="div-form-buttons mx-auto border"> #}
+            <div class="div-form-buttons-expense">
+                <h3>DODAJ WYDATEK</h3>
                 <form method="post" action="/personalbudget/newExpenseAction">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
@@ -50,6 +52,35 @@
                         <button type="submit" class="btn btn-warning btn-lg">Dodaj</button>
                     </div>
                 </form>
+            </div>
+            {# <div class="div-form-buttons mx-auto border"> #}
+            <div class="div-form-buttons-show-expense d-flex flex-column ">
+                <div class="expense-info d-flex flex-column justify-content-center">
+                    {# <div class="w-100 h-100"> #}
+                    <h2 class="text-center">
+                        Informacja o limicie
+                    </h2>
+                    <p class="p-content-expense-info">
+                        Ustawiłeś limit xxx zł. na miesiąc dla tej kategorii
+                    </p>
+                    {# </div> #}
+                </div>
+                <div class="expense-info d-flex flex-column justify-content-center">
+                    <h2 class="text-center">
+                        Wartość limitu
+                    </h2>
+                    <p class="p-content-expense-info">
+                        Wydałeś xxx zł w tym miesiącu dla tej kategorii
+                    </p>
+                </div>
+                <div class="expense-info d-flex flex-column justify-content-center">
+                    <h2 class="text-center">
+                        Pieniądze, które Wydałeś
+                    </h2>
+                    <p class="p-content-expense-info">
+                        kategoria, data, ilość wymagana
+                    </p>
+                </div>
             </div>
         </div>
     </div>

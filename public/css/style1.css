@@ -280,6 +280,38 @@ a:active {
 	width: 250px;
 }
 
+.div-form-buttons-expense
+{
+	margin-left: 200px;
+	width: 250px;
+}
+
+.div-form-buttons-show-expense
+{
+	margin-left: 200px;
+	width: 400px;
+	gap: 25px;
+	border: 1px solid white;
+	border-radius: 15px;
+	/* background-color: #00de77; */
+}
+
+/* .expense-info {
+  background: rgba(0, 255, 0, 0.1);
+}
+.expense-info h2,
+.expense-info p {
+  background: rgba(255, 0, 0, 0.1);
+} */
+
+
+
+.expense-info
+{
+	height: 190px;
+	text-align: left; 
+}
+
 .div-edit-category
 {
 	width: 100%;
@@ -362,6 +394,12 @@ p
 {
 	color: white;
 	text-align: justify;
+}
+
+.p-content-expense-info
+{
+	color: white;
+	width: 100%;
 }
 
 .p-input-radio
