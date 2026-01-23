@@ -801,6 +801,24 @@ class ModelPersonalBudget extends \Core\Model
         return $nameOfExpenseCategory['name'];        
     }
 
+    public static function selectNameFromExpensesCategoryToLimit()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM expenses_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryDeleteExpense = $db->prepare($sql);
+        $queryDeleteExpense->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryDeleteExpense->execute();
+
+        $nameOfExpenseCategory  = $queryDeleteExpense -> fetch(); 
+
+        return $nameOfExpenseCategory['name'];        
+    }
+    
+
     public static function selectNameFromPayMethCategoryToDelete()
     {
         $db = static::getDB();
@@ -824,6 +842,21 @@ class ModelPersonalBudget extends \Core\Model
 
         $sql = 'UPDATE incomes_category_assigned_to_users 
                 SET name  = :income_category
+                WHERE id=:incomeCategoryEditId';
+
+        $queryEditIncome = $db->prepare($sql);
+		$queryEditIncome->bindValue(':income_category', $editIncomeCategoryName, PDO::PARAM_STR);
+        $queryEditIncome->bindValue(':incomeCategoryEditId', $_SESSION['incomesCatID'], PDO::PARAM_INT);
+        
+        return $queryEditIncome->execute();
+    }
+
+    public function setLimitValue($editIncomeCategoryName)
+    {
+        $db = static::getDB();
+
+        $sql = 'UPDATE expenses_category_assigned_to_users 
+                SET limit_value  = :income_category
                 WHERE id=:incomeCategoryEditId';
 
         $queryEditIncome = $db->prepare($sql);

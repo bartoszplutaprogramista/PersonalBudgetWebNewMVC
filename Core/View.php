@@ -149,6 +149,10 @@ class View
                         $twig->addGlobal('name_expense_category_to_delete', \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToDelete());
                     }
 
+                    if(isset($_SESSION['idExpenseLimit'])){
+                        $twig->addGlobal('set_limit_expense', \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToLimit());
+                    }
+
 
 
 
