@@ -121,6 +121,19 @@ class Profile extends Authenticated
         }
     }
 
+    public function setLimitOfExpenseAction()
+    {
+        $setLimitValue = $_POST['limitValue'];
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->setLimitValueDB($setLimitValue)) {
+            if(isset($_SESSION['idExpenseLimit'])) {
+                unset($_SESSION['idExpenseLimit']);
+            }
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator');      
+        }
+    }
+
     public function changePayMethNameAction()
     {
         $editPayMethCategoryName = $_POST['editPayMethCategoryName'];

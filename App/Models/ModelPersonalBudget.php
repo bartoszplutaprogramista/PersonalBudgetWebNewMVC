@@ -851,17 +851,17 @@ class ModelPersonalBudget extends \Core\Model
         return $queryEditIncome->execute();
     }
 
-    public function setLimitValue($editIncomeCategoryName)
+    public function setLimitValueDB($editIncomeCategoryName)
     {
         $db = static::getDB();
 
         $sql = 'UPDATE expenses_category_assigned_to_users 
-                SET limit_value  = :income_category
-                WHERE id=:incomeCategoryEditId';
+                SET limit_value  = :limit_value
+                WHERE id=:limitId';
 
         $queryEditIncome = $db->prepare($sql);
-		$queryEditIncome->bindValue(':income_category', $editIncomeCategoryName, PDO::PARAM_STR);
-        $queryEditIncome->bindValue(':incomeCategoryEditId', $_SESSION['incomesCatID'], PDO::PARAM_INT);
+		$queryEditIncome->bindValue(':limit_value', $editIncomeCategoryName, PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':limitId', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
     }
