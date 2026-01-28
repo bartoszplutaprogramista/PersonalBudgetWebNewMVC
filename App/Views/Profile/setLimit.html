@@ -7,7 +7,7 @@
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content3 mt-2">
-            <p class="p-content text-center p-3">Ustaw limit dla {{ set_limit_expense }} <b>
+            <p class="p-content text-center p-3">Ustaw limit dla {{ set_limit_expense }}<b>
                     <div class="mt-1">
                         <div class="limit-input-size d-flex flex-column justify-content-center pb-4 text-center">
                             <div class="">
@@ -15,9 +15,10 @@
                                     name="ExpSetLimit">
                                     <div class="mb-3">
                                         <label for="limitValue" class="form-label">Kwota (zł):</label>
-                                        <input type="number" class="form-control" min="1" step="1" max="999999"
-                                            id="limitValue" value="1" name="limitValue"
-                                            onkeypress="return onlyNumberKey(event)">
+                                        <input type="number" class="form-control" step="1" min="1" max="999999"
+                                            id="limitValue" value="{{ limit_value }}"
+                                            placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
+                                            name="limitValue" onkeypress="return onlyNumberKey(event)" required>
                                     </div>
                                     <button type="submit" class="btn btn-warning">
                                         Ustaw

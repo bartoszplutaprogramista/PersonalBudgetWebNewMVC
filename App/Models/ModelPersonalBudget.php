@@ -809,11 +809,11 @@ class ModelPersonalBudget extends \Core\Model
                 FROM expenses_category_assigned_to_users
                 WHERE id = :id';
 
-        $queryDeleteExpense = $db->prepare($sql);
-        $queryDeleteExpense->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
-        $queryDeleteExpense->execute();
+        $queryLimitName = $db->prepare($sql);
+        $queryLimitName->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryLimitName->execute();
 
-        $nameOfExpenseCategory  = $queryDeleteExpense -> fetch(); 
+        $nameOfExpenseCategory  = $queryLimitName -> fetch(); 
 
         return $nameOfExpenseCategory['name'];        
     }
@@ -864,6 +864,44 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditIncome->bindValue(':limitId', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
+    }
+
+    public static function selectLimitValueUserIdCategoryName($categoryExpenseName)
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT 
+                limit_value
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = :userId AND name LIKE :categoryName';
+
+        $queryLimitValue = $db->prepare($sql);
+        $queryLimitValue->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $queryLimitValue->bindValue(':categoryName', $categoryExpenseName, PDO::PARAM_STR);
+        $queryLimitValue->execute();
+
+        $valueOfLimit  = $queryLimitValue -> fetch(); 
+
+        return $valueOfLimit['limit_value'];
+    }
+
+    public static function selectValueOfLimit()
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT 
+                limit_value
+                FROM expenses_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryLimitValue = $db->prepare($sql);
+        $queryLimitValue->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryLimitValue->execute();
+
+        $valueOfLimit  = $queryLimitValue -> fetch(); 
+
+        return $valueOfLimit['limit_value'];
+        
     }
 
     public function editExpensesCategory($editExpenseCategoryName)

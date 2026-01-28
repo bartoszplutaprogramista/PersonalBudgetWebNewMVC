@@ -151,7 +151,10 @@ class View
 
                     if(isset($_SESSION['idExpenseLimit'])){
                         $twig->addGlobal('set_limit_expense', \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToLimit());
+                        $twig->addGlobal('limit_value', \App\Models\ModelPersonalBudget::selectValueOfLimit());
                     }
+
+
 
 
 
