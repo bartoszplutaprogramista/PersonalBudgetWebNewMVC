@@ -275,6 +275,26 @@ class Personalbudget extends Authenticated
         }      
     }
 
+    public function dateLimitSumExpenseAction()
+    {
+        $category = $this->route_params['category'];
+        $year     = $this->route_params['year'];
+        $month    = $this->route_params['month'];
+
+        $personalBudget = new ModelPersonalBudget();
+
+        $sum = $personalBudget->selectSumOfExpensesForParticularCategoryAndDate(
+            $category,
+            $year,
+            $month
+        );
+
+        echo json_encode(
+            ['category' => $category, 'year' => $year, 'month' => $month, 'total' => $sum],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
     public function limitAction()
     {
         // $user_id = $this->user->id;

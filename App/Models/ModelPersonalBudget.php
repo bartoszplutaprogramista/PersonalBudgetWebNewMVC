@@ -885,6 +885,30 @@ class ModelPersonalBudget extends \Core\Model
         return $valueOfLimit['limit_value'];
     }
 
+    public static function selectSumOfExpensesForParticularCategoryAndDate($categoryExpenseName, $year, $month)
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT SUM(e.amount) AS total
+                FROM expenses e
+                JOIN expenses_category_assigned_to_users c
+                    ON e.expense_category_assigned_to_user_id = c.id
+                WHERE c.name = :categoryName
+                AND YEAR(e.date_of_expense) = :year
+                AND MONTH(e.date_of_expense) = :month';
+
+        $querySumOfExpensesJavaScript = $db->prepare($sql);
+        // $querySumOfExpensesJavaScript->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $querySumOfExpensesJavaScript->bindValue(':categoryName', $categoryExpenseName, PDO::PARAM_STR);
+        $querySumOfExpensesJavaScript->bindValue(':year', $year, PDO::PARAM_INT);
+        $querySumOfExpensesJavaScript->bindValue(':month', $month, PDO::PARAM_INT);
+        $querySumOfExpensesJavaScript->execute();
+
+        $sumOfExpenses  = $querySumOfExpensesJavaScript -> fetch(); 
+
+        return $sumOfExpenses['total'];
+    }
+
     public static function selectValueOfLimit()
     {
         $db = static::getDB();
