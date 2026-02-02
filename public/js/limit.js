@@ -1,6 +1,7 @@
 const getLimitCategory = async (category) => {
     try {
-        const res = await fetch(`../api/limit/${category}`);
+        // const res = await fetch(`../api/limit/${category}`);
+        const res = await fetch(`/api/limit/${category}`);
         const data = await res.json();
         return data;
     } catch (e) {
@@ -117,3 +118,49 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLimitInfo();
     updateSpentInfo();
 });
+
+
+
+const getBalanceAfterOperation = async (category, amount) => {
+    try {
+        const data = await getLimitCategory(category);
+        console.log("DATA: ", data);
+        const limit = data ? parseFloat(data) : 0;
+        const balance = limit - amount;
+
+        console.log("LIMIT:", limit, "AMOUNT:", amount, "BALANCE:", balance);
+
+        return {
+            limit,
+            amount,
+            balance
+        };
+    } catch (e) {
+        console.log('Error getBalanceAfterOperation ', e);
+    }
+}
+
+const amountInput = document.getElementById("amountOfExpanse");
+const categorySelect = document.getElementById("paymentCategory");
+const balanceInfoElements = document.querySelectorAll(".balanceInfo");
+
+
+const updateBalanceInfo = async () => {
+    const category = categorySelect.value;
+    const amount = parseFloat(amountInput.value) || 0;
+
+
+    // console.log("ZMIANA!", category, amount);
+
+    const result = await getBalanceAfterOperation(category, amount);
+    if (!result) return;
+
+    balanceInfoElements.forEach(el => {
+        el.textContent =
+            `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
+    });
+
+};
+
+amountInput.addEventListener("input", updateBalanceInfo);
+categorySelect.addEventListener("change", updateBalanceInfo);
