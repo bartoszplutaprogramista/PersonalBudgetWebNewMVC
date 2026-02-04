@@ -87,6 +87,12 @@ body
 	width: 15.2%;
 }
 
+.negative {
+    color: #ffc107 !important;
+    font-weight: 600;
+}
+
+
 .column-expenses-delete
 {
 	width: 18.4%;

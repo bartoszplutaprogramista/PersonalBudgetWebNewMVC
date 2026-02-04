@@ -1,9 +1,14 @@
+const amountInput = document.getElementById("amountOfExpanse");
+const categorySelect = document.getElementById("paymentCategory");
+const balanceInfoElements = document.querySelectorAll(".balanceInfo");
+const dateInput = document.querySelector("#theDate");
+
 const getLimitCategory = async (category) => {
     try {
         // const res = await fetch(`../api/limit/${category}`);
         const res = await fetch(`/api/limit/${category}`);
-        const data = await res.json();
-        return data;
+        const data = await res.text();
+        return parseFloat(data);
     } catch (e) {
         console.log('Error ', e);
     }
@@ -63,7 +68,7 @@ const getMonthlySpent = async (category, year, month) => {
     try {
         const res = await fetch(`../api/expenses/summary/${category}/${year}/${month}`);
         const data = await res.json();
-        return data.total || 0;
+        return parseFloat(data.total) || 0;
     } catch (e) {
         console.log('Error ', e);
         return 0;
@@ -72,8 +77,8 @@ const getMonthlySpent = async (category, year, month) => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const categorySelect = document.querySelector("#paymentCategory");
-    const dateInput = document.querySelector("#theDate");
+    // const categorySelect = document.querySelector("#paymentCategory");
+    // const dateInput = document.querySelector("#theDate");
 
     const updateLimitInfo = async () => {
         const category = categorySelect.value;
@@ -111,12 +116,20 @@ document.addEventListener("DOMContentLoaded", () => {
     categorySelect.addEventListener("change", () => {
         updateLimitInfo();
         updateSpentInfo();
+        updateBalanceInfo();
     });
 
-    dateInput.addEventListener("change", updateSpentInfo);
+    // dateInput.addEventListener("change", updateSpentInfo);
+
+    dateInput.addEventListener("change", () => {
+        updateSpentInfo();
+        updateBalanceInfo();
+    });
+
 
     updateLimitInfo();
     updateSpentInfo();
+    updateBalanceInfo();
 });
 
 
@@ -124,15 +137,27 @@ document.addEventListener("DOMContentLoaded", () => {
 const getBalanceAfterOperation = async (category, amount) => {
     try {
         const data = await getLimitCategory(category);
-        console.log("DATA: ", data);
         const limit = data ? parseFloat(data) : 0;
-        const balance = limit - amount;
 
-        console.log("LIMIT:", limit, "AMOUNT:", amount, "BALANCE:", balance);
+        // Pobieramy datę z inputa
+        // const date = document.getElementById("theDate").value;
+        const date = dateInput.value;
+
+        let monthlySpent = 0;
+
+        if (date) {
+            const [year, month] = date.split("-");
+            monthlySpent = await getMonthlySpent(category, year, month);
+        }
+
+        console.log("monthlySpent ", monthlySpent, "limit ", limit);
+        const balance = limit - (monthlySpent + amount);
+        console.log("balance ", balance);
 
         return {
             limit,
             amount,
+            monthlySpent,
             balance
         };
     } catch (e) {
@@ -140,9 +165,30 @@ const getBalanceAfterOperation = async (category, amount) => {
     }
 }
 
-const amountInput = document.getElementById("amountOfExpanse");
-const categorySelect = document.getElementById("paymentCategory");
-const balanceInfoElements = document.querySelectorAll(".balanceInfo");
+// const getBalanceAfterOperation = async (category, amount) => {
+//     try {
+//         const data = await getLimitCategory(category);
+//         console.log("DATA: ", data);
+//         const limit = data ? parseFloat(data) : 0;
+//         const balance = limit - amount;
+
+//         console.log("LIMIT:", limit, "AMOUNT:", amount, "BALANCE:", balance);
+
+//         return {
+//             limit,
+//             amount,
+//             balance
+//         };
+//     } catch (e) {
+//         console.log('Error getBalanceAfterOperation ', e);
+//     }
+// }
+
+
+// const amountInput = document.getElementById("amountOfExpanse");
+// const categorySelect = document.getElementById("paymentCategory");
+// const balanceInfoElements = document.querySelectorAll(".balanceInfo");
+// const dateInput = document.querySelector("#theDate");
 
 
 const updateBalanceInfo = async () => {
@@ -155,12 +201,22 @@ const updateBalanceInfo = async () => {
     const result = await getBalanceAfterOperation(category, amount);
     if (!result) return;
 
+    // balanceInfoElements.forEach(el => {
+    //     el.textContent =
+    //         `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
+    // });
     balanceInfoElements.forEach(el => {
-        el.textContent =
-            `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
+        el.textContent = `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
+
+        if (result.balance < 0) {
+            el.classList.add("negative");
+        } else {
+            el.classList.remove("negative");
+        }
     });
+
 
 };
 
 amountInput.addEventListener("input", updateBalanceInfo);
-categorySelect.addEventListener("change", updateBalanceInfo);
+// categorySelect.addEventListener("change", updateBalanceInfo);
