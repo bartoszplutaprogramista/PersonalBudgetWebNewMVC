@@ -295,20 +295,39 @@ class Personalbudget extends Authenticated
         );
     }
 
+
+//!DZIAŁA WCZEŚNIEJ
+    // public function limitAction()
+    // {
+    //     // $user_id = $this->user->id;
+    //     $category = $this->route_params['category'];
+
+    //     // $this->user = Auth::getUser();  
+    //     $personalBudget = new ModelPersonalBudget($_POST);
+    //     // if ($personalBudget->selectValueOfLimit($this->user)) {
+    //     //     $this->redirect('/personalbudget/successaddexpense');      
+    //     // }
+
+    //     // echo json_encode(ExpenseCategory::getLimit($user_id, $category), JSON_UNESCAPED_UNICODE);
+    //     echo json_encode($personalBudget->selectLimitValueUserIdCategoryName($category), JSON_UNESCAPED_UNICODE);
+    // }
     public function limitAction()
     {
-        // $user_id = $this->user->id;
         $category = $this->route_params['category'];
 
-        // $this->user = Auth::getUser();  
-        $personalBudget = new ModelPersonalBudget($_POST);
-        // if ($personalBudget->selectValueOfLimit($this->user)) {
-        //     $this->redirect('/personalbudget/successaddexpense');      
-        // }
+        $personalBudget = new ModelPersonalBudget();
 
-        // echo json_encode(ExpenseCategory::getLimit($user_id, $category), JSON_UNESCAPED_UNICODE);
-        echo json_encode($personalBudget->selectLimitValueUserIdCategoryName($category), JSON_UNESCAPED_UNICODE);
+        $limit = $personalBudget->selectLimitValueUserIdCategoryName($category);
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        echo json_encode(
+            ['limit' => $limit],
+            JSON_UNESCAPED_UNICODE
+        );
     }
+
+
 
     public function choosecorrectdateAction()
     {

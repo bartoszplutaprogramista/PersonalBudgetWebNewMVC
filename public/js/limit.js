@@ -3,16 +3,36 @@ const categorySelect = document.getElementById("paymentCategory");
 const balanceInfoElements = document.querySelectorAll(".balanceInfo");
 const dateInput = document.querySelector("#theDate");
 
+
+//!DZIAŁA WCZEŚNIERJ
+// const getLimitCategory = async (category) => {
+//     try {
+//         // const res = await fetch(`../api/limit/${category}`);
+//         const res = await fetch(`/api/limit/${category}`);
+//         const data = await res.text();
+//         return parseFloat(data);
+//     } catch (e) {
+//         console.log('Error ', e);
+//     }
+// }
+
 const getLimitCategory = async (category) => {
     try {
-        // const res = await fetch(`../api/limit/${category}`);
         const res = await fetch(`/api/limit/${category}`);
-        const data = await res.text();
-        return parseFloat(data);
+        const data = await res.json();
+        // return parseFloat(data.limit) || 0;
+        // return parseFloat(data.limit);
+        if (data.limit === null) return null;
+
+        return parseFloat(data.limit);
+
     } catch (e) {
         console.log('Error ', e);
+        return null;
     }
 }
+
+
 
 // document.addEventListener("DOMContentLoaded", () => {
 
@@ -85,11 +105,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const limit = await getLimitCategory(category);
 
         document.querySelectorAll(".limitInfo").forEach(el => {
-            if (!limit) {
+            //!Działa wczesniej
+            // if (!limit) {
+            //     el.textContent = "Nie ustawiono limitu dla tej kategorii";
+            // } else {
+            //     el.textContent = `Ustawiłeś limit ${limit} zł na miesiąc dla tej kategorii`;
+            // }
+            if (limit === null) {
                 el.textContent = "Nie ustawiono limitu dla tej kategorii";
             } else {
                 el.textContent = `Ustawiłeś limit ${limit} zł na miesiąc dla tej kategorii`;
             }
+
         });
     };
 
@@ -136,11 +163,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const getBalanceAfterOperation = async (category, amount) => {
     try {
-        const data = await getLimitCategory(category);
-        const limit = data ? parseFloat(data) : 0;
+        // const data = await getLimitCategory(category);
+        const limit = await getLimitCategory(category);
+        // const limit = data ? parseFloat(data) : 0;
 
         // Pobieramy datę z inputa
         // const date = document.getElementById("theDate").value;
+        //Limit Nie Ustawiony
+        if (limit === null) {
+            return {
+                limit: null
+            };
+        }
+
         const date = dateInput.value;
 
         let monthlySpent = 0;
@@ -206,6 +241,14 @@ const updateBalanceInfo = async () => {
     //         `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
     // });
     balanceInfoElements.forEach(el => {
+
+        if (result.limit === null) {
+            el.textContent = "Limit nie ustawiony!!";
+            el.classList.remove("negative");
+            return;
+        }
+
+
         el.textContent = `Twój bilans po tej operacji wynosi: ${result.balance.toFixed(2)} zł`;
 
         if (result.balance < 0) {
