@@ -898,7 +898,6 @@ class ModelPersonalBudget extends \Core\Model
                 AND MONTH(e.date_of_expense) = :month';
 
         $querySumOfExpensesJavaScript = $db->prepare($sql);
-        // $querySumOfExpensesJavaScript->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $querySumOfExpensesJavaScript->bindValue(':categoryName', $categoryExpenseName, PDO::PARAM_STR);
         $querySumOfExpensesJavaScript->bindValue(':year', $year, PDO::PARAM_INT);
         $querySumOfExpensesJavaScript->bindValue(':month', $month, PDO::PARAM_INT);

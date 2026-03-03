@@ -187,18 +187,6 @@ class Profile extends Authenticated
         }       
     }
 
-    // public function setLimitExpenseAction()
-    // {
-    //     $personalBudget = new ModelPersonalBudget($_POST);
-    //     if ($personalBudget->deleteExpensesCategory()&&($personalBudget->deleteExpensesRowRelatedToExpensesCatAssignedToUserId())) {
-    //         if(isset($_SESSION['idExpensesDeleteCat'])) {
-    //             unset($_SESSION['idExpensesDeleteCat']);
-    //         }
-    //         Flash::addMessage('Pomyślnie usunięto kategorię oraz powiązane z nią wydatki');
-    //         $this->redirect('/profile/categoryconfigurator');      
-    //     }       
-    // }
-
     public function deletePaymentMethodsCategoryDataBaseAction()
     {
         $personalBudget = new ModelPersonalBudget($_POST);

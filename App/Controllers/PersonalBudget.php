@@ -89,21 +89,6 @@ class Personalbudget extends Authenticated
         ]);
     }    
 
-    // public function successEditIncomesAction()
-    // {
-    //     View::renderTemplate('PersonalBudget/editIncome.html', [
-    //         'user' => $this->user,
-    //         'incomes_edit_values' => $incomesEditValues;
-    //     ]);
-    // }
-
-    // public function successEditExpensesAction()
-    // {
-    //     View::renderTemplate('PersonalBudget/editExpense.html', [
-    //         'user' => $this->user
-    //     ]);
-    // }
-
     public function redirectToChosenPeriod(){
         if($_SESSION['paymentMethod'] == "currentMonth"){
             $this->redirect('/personalbudget/successbrowseselectedperiodcurrentmonth');
@@ -137,14 +122,6 @@ class Personalbudget extends Authenticated
         unset($_SESSION['paymentMethod']);
     }
 
-    //Po zmianie z globalnych na render w widoku
-    // public function editIncomes()
-    // {
-    //     if(isset($_POST['editRowIncomes'])) {
-    //         $_SESSION['idIncomesEditRow'] = $_POST['editRowIncomes'];
-    //     }
-    //     $this->redirect('/personalbudget/successeditincomes');
-    // }
     public function editIncomes()
     {
         if(isset($_POST['editRowIncomes'])) {
@@ -159,14 +136,6 @@ class Personalbudget extends Authenticated
             'incomes_edit_values' => $incomesEditValues,
             'incomes_options_form' => $incomes_options_form
         ]);
-
-
-        //  $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
-
-        // View::renderTemplate('PersonalBudget/addIncome.html', [
-        //     'user' => $this->user,
-        //     'incomes_options_form' => $incomes_options_form
-        // ]);
     }
 
 
@@ -188,29 +157,6 @@ class Personalbudget extends Authenticated
             'expenses_options_form_payment_method' => $expenses_options_form_payment_method
         ]);
     }
-
-    // public function areYouSureDeleteFromIncomes()
-    // {
-    //     if(isset($_POST['deleteRowIncomes'])) {
-    //         $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
-    //         // $id_incomes_delete = $_POST['deleteRowIncomes'];
-    //     }
-
-    //     if(isset($_POST['myOrdinalNumberDeleteIncomes'])) {
-    //         $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteIncomes'];
-    //         // $ordinal_delete_incomes_number = $_POST['myOrdinalNumberDeleteIncomes'];
-    //     }
-
-    //     $id_incomes_delete = $_SESSION['idIncomesDelete'];
-    //     $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesDelete']);
-    //     $ordinal_delete_incomes_number = $_SESSION['myOrdinalNumberDeleteIncomesVar'];
-    //     $which_period = $_SESSION['paymentMethod'];
-
-    //     View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html', [
-    //         'user' => $this->user,
-    //     ]);
-    //     $this->redirect('/personalbudget/successareyousuredeletefromincomes');
-    // }
 
     public function areYouSureDeleteFromIncomes()
     {
@@ -382,22 +328,6 @@ class Personalbudget extends Authenticated
         );
     }
 
-
-//!DZIAŁA WCZEŚNIEJ
-    // public function limitAction()
-    // {
-    //     // $user_id = $this->user->id;
-    //     $category = $this->route_params['category'];
-
-    //     // $this->user = Auth::getUser();  
-    //     $personalBudget = new ModelPersonalBudget($_POST);
-    //     // if ($personalBudget->selectValueOfLimit($this->user)) {
-    //     //     $this->redirect('/personalbudget/successaddexpense');      
-    //     // }
-
-    //     // echo json_encode(ExpenseCategory::getLimit($user_id, $category), JSON_UNESCAPED_UNICODE);
-    //     echo json_encode($personalBudget->selectLimitValueUserIdCategoryName($category), JSON_UNESCAPED_UNICODE);
-    // }
     public function limitAction()
     {
         $category = $this->route_params['category'];
@@ -413,8 +343,6 @@ class Personalbudget extends Authenticated
             JSON_UNESCAPED_UNICODE
         );
     }
-
-
 
     public function choosecorrectdateAction()
     {

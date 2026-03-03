@@ -310,7 +310,6 @@ a:active {
 	gap: 25px;
 	border: 1px solid white;
 	border-radius: 15px;
-	/* background-color: #00de77; */
 }
 
 .div-form-buttons-show-expense-mobile-devices
@@ -320,23 +319,12 @@ a:active {
 	gap: 0;
 	border: 1px solid white;
 	border-radius: 15px;
-	/* background-color: #00de77; */
 }
 
 .display-flex-expense {
   display: flex;
   flex-direction: row;
 }
-
-/* .expense-info {
-  background: rgba(0, 255, 0, 0.1);
-}
-.expense-info h2,
-.expense-info p {
-  background: rgba(255, 0, 0, 0.1);
-} */
-
-
 
 .expense-info
 {
@@ -664,7 +652,6 @@ h3
 		border: 1px solid white;
 		border-radius: 15px;
 		margin: 0 auto;
-		/* background-color: #00de77; */
 	}
 }
 
@@ -688,7 +675,6 @@ h3
 		border-radius: 15px;
 		margin: 0 auto;
 		background-color: #00de77;
-		/* background-color: #00de77; */
 	}
 	.display-flex-expense {
   		display: flex;
@@ -712,7 +698,6 @@ h3
 		gap: 0;
 		border: 1px solid white;
 		border-radius: 15px;
-		/* background-color: #00de77; */
 	}
 }
 
