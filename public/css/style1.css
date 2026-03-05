@@ -41,6 +41,12 @@ body
 	margin: 0 !important;
 }
 
+.limit-input-size
+{
+	width: 250px;
+	margin: 0 auto;
+}
+
 .ordinal-number
 {
 	width: 8%;
@@ -61,6 +67,11 @@ body
 	width: 26%;
 }
 
+.column-incomes-cat-conf-edit-limit
+{
+	width: 17%;
+}
+
 .column-incomes
 {
 	width: 19%;
@@ -75,6 +86,12 @@ body
 {
 	width: 15.2%;
 }
+
+.negative {
+    color: #ffc107 !important;
+    font-weight: 600;
+}
+
 
 .column-expenses-delete
 {
@@ -280,6 +297,47 @@ a:active {
 	width: 250px;
 }
 
+.div-form-buttons-expense
+{
+	margin-left: 200px;
+	width: 250px;
+}
+
+.div-form-buttons-show-expense
+{
+	margin-left: 200px;
+	width: 400px;
+	gap: 25px;
+	border: 1px solid white;
+	border-radius: 15px;
+}
+
+.div-form-buttons-show-expense-mobile-devices
+{
+	margin-left: 0;
+	width: 250px;
+	gap: 0;
+	border: 1px solid white;
+	border-radius: 15px;
+}
+
+.display-flex-expense {
+  display: flex;
+  flex-direction: row;
+}
+
+.expense-info
+{
+	height: 190px;
+	text-align: left; 
+}
+
+.expense-info-mobile-devices
+{
+	height: 90px;
+	text-align: left; 
+}
+
 .div-edit-category
 {
 	width: 100%;
@@ -362,6 +420,24 @@ p
 {
 	color: white;
 	text-align: justify;
+}
+
+.p-content-expense-info
+{
+	color: white;
+	width: 100%;
+}
+
+.p-content-expense-info-mobile-devices
+{
+	color: white;
+	font-size: 16px;
+	width: 100%;
+}
+
+.headline-h2
+{
+	font-size: 20px;
 }
 
 .p-input-radio
@@ -568,6 +644,15 @@ h3
 	{
 		width: 100%;
 	}
+	.div-form-buttons-show-expense
+	{
+		margin-left: 0;
+		width: 250px;
+		gap: 25px;
+		border: 1px solid white;
+		border-radius: 15px;
+		margin: 0 auto;
+	}
 }
 
 @media (max-width: 1399px)
@@ -575,6 +660,44 @@ h3
 	.dispaly-as-flex
 	{
 		flex-direction: column;
+	}
+}
+
+@media (max-width: 1200px)
+{
+	.div-form-buttons-show-expense
+	{
+		display: none !important;
+		margin-left: 0;
+		width: 400px;
+		gap: 25px;
+		border: 1px solid white;
+		border-radius: 15px;
+		margin: 0 auto;
+		background-color: #00de77;
+	}
+	.display-flex-expense {
+  		display: flex;
+  		flex-direction: column;
+	}
+	.div-form-buttons-expense
+	{
+		margin-left: 0;
+		width: 250px;
+		margin: 0 auto;
+	}
+}
+
+@media (min-width: 1201px)
+{
+	.div-form-buttons-show-expense-mobile-devices
+	{
+		display: none !important;
+		margin-left: 0;
+		width: 400px;
+		gap: 0;
+		border: 1px solid white;
+		border-radius: 15px;
 	}
 }
 

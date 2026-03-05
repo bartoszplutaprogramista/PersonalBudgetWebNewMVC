@@ -42,8 +42,15 @@ class Profile extends Authenticated
 
     public function categoryConfiguratorAction()
     {
+        $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
+        $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
+        $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod(); 
+
         View::renderTemplate('Profile/categoryConfigurator.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'incomes_options_form' => $incomes_options_form,
+            'expenses_options_form_category' => $expenses_options_form_category,
+            'expenses_options_form_payment_method' => $expenses_options_form_payment_method
         ]);
     }
 
@@ -69,8 +76,11 @@ class Profile extends Authenticated
         $editIncomesCategoryID = $_POST['editIncomesCat'];
         $_SESSION['incomesCatID'] = $editIncomesCategoryID;
 
+        $name_income_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit(); 
+
         View::renderTemplate('Profile/editIncomesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_income_category_to_edit' => $name_income_category_to_edit
         ]);
     }
 
@@ -79,8 +89,11 @@ class Profile extends Authenticated
         $editExpensesCategoryID = $_POST['editExpensesCat'];
         $_SESSION['expensesCatID'] = $editExpensesCategoryID;
 
+        $name_expense_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToEdit();
+
         View::renderTemplate('Profile/editExpensesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_expense_category_to_edit' => $name_expense_category_to_edit
         ]);
     }
 
@@ -90,8 +103,11 @@ class Profile extends Authenticated
 
         $_SESSION['payMethCatID'] = $editPaymentMethCategoryID;
 
+        $name_pay_meth_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromPayMethCategoryToEdit();
+
         View::renderTemplate('Profile/editPayMethCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_pay_meth_category_to_edit' => $name_pay_meth_category_to_edit
         ]);
     }
 
@@ -115,6 +131,19 @@ class Profile extends Authenticated
         if ($personalBudget->editExpensesCategory($editExpenseCategoryName)) {
             if(isset($_SESSION['expensesCatID'])) {
                 unset($_SESSION['expensesCatID']);
+            }
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator');      
+        }
+    }
+
+    public function setLimitOfExpenseAction()
+    {
+        $setLimitValue = $_POST['limitValue'];
+        $personalBudget = new ModelPersonalBudget($_POST);
+        if ($personalBudget->setLimitValueDB($setLimitValue)) {
+            if(isset($_SESSION['idExpenseLimit'])) {
+                unset($_SESSION['idExpenseLimit']);
             }
             Flash::addMessage('Zmiany zapisane');
             $this->redirect('/profile/categoryconfigurator');      
@@ -175,8 +204,12 @@ class Profile extends Authenticated
         if(isset($_POST['deleteIncomesCatID'])) {
             $_SESSION['idIncomesDeleteCat'] = $_POST['deleteIncomesCatID'];
         }
+
+        $name_income_category_to_delete = \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToDelete();
+
         View::renderTemplate('Profile/areYouSureDeleteIncomesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_income_category_to_delete' => $name_income_category_to_delete
         ]);
     }
 
@@ -184,10 +217,29 @@ class Profile extends Authenticated
     {
         if(isset($_POST['deleteExpensesCatID'])) {
             $_SESSION['idExpensesDeleteCat'] = $_POST['deleteExpensesCatID'];
-
         }
+
+        $name_expense_category_to_delete = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToDelete();
+
         View::renderTemplate('Profile/areYouSureDeleteExpensesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_expense_category_to_delete' => $name_expense_category_to_delete
+        ]);
+    }
+
+    public function setLimitForExpense()
+    {
+        if(isset($_POST['setExpenseLimit'])) {
+            $_SESSION['idExpenseLimit'] = $_POST['setExpenseLimit'];
+        }
+
+        $set_limit_expense = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToLimit();
+        $limit_value = \App\Models\ModelPersonalBudget::selectValueOfLimit();
+
+        View::renderTemplate('Profile/setLimit.html', [
+            'user' => $this->user,
+            'set_limit_expense' => $set_limit_expense,
+            'limit_value' => $limit_value
         ]);
     }
 
@@ -195,10 +247,13 @@ class Profile extends Authenticated
     {
         if(isset($_POST['deletePayMethCatID'])) {
             $_SESSION['idPayMethDeleteCat'] = $_POST['deletePayMethCatID'];
-
         }
+
+        $name_pay_meth_category_to_delete = \App\Models\ModelPersonalBudget::selectNameFromPayMethCategoryToDelete();
+
         View::renderTemplate('Profile/areYouSureDeletePayMethCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'name_pay_meth_category_to_delete' => $name_pay_meth_category_to_delete
         ]);
     }
 

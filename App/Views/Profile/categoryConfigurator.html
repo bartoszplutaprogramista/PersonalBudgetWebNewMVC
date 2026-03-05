@@ -66,14 +66,16 @@
                 <table id="table_expenses" class="table-center my-table-category-configurator mb-4">
                     <thead>
                         <tr>
-                            <th colspan="4" class="center-td">Kategorie dla wydatków
+                            <th colspan="5" class="center-td">Kategorie dla wydatków
                             </th>
                         </tr>
                         <tr>
                             <th class="ordinal-number-category-configurator">Lp</th>
                             <th class="column-incomes-cat-conf-name text-center">Nazwa kategorii</th>
-                            <th class="column-incomes-cat-conf-edit-delete text-center">Zmień nazwę</th>
-                            <th class="column-incomes-cat-conf-edit-delete text-center">Usuń</th>
+                            <th class="column-incomes-cat-conf-edit-limit text-center">Zmień nazwę</th>
+                            <th class="column-incomes-cat-conf-edit-limit text-center">Usuń</th>
+                            <th class="column-incomes-cat-conf-edit-limit text-center">Ustaw Limit</th>
+                        </tr>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,7 +86,7 @@
                         <tr>
                             <td class="ordinal-number-category-configurator">{{ myOrdinalNumber }}</td>
                             <td class="column-incomes-cat-conf-name">{{ exp_conf.name }}</td>
-                            <td class="column-incomes-cat-conf-edit-delete text-center">
+                            <td class="column-incomes-cat-conf-edit-limit text-center">
                                 <form method="post" action="/profile/editexpensescategory" id="formDeleteExpanse"
                                     name="formDelete">
                                     <input type="hidden" name="editExpensesCat" value="{{ exp_conf.id }}" />
@@ -92,12 +94,20 @@
                                         <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
-                            <td class="column-incomes-cat-conf-edit-delete text-center">
+                            <td class="column-incomes-cat-conf-edit-limit text-center">
                                 <form method="post" action="/profile/deleteexpensescategory" id="formDeleteExpanse"
                                     name="formDelete">
                                     <input type="hidden" name="deleteExpensesCatID" value="{{ exp_conf.id }}" />
                                     <button type="submit" class="btn btn-secondary" title="Usuń">
                                         <i class="icon-trash-empty"></i></button>
+                                </form>
+                            </td>
+                            <td class="column-incomes-cat-conf-edit-limit text-center">
+                                <form method="post" action="/profile/setlimitforexpense" id="formDeleteExpanse"
+                                    name="formDelete">
+                                    <input type="hidden" name="setExpenseLimit" value="{{ exp_conf.id }}" />
+                                    <button type="submit" class="btn btn-secondary" title="Ustaw limit">
+                                        <i class="icon-pencil"></i></button>
                                 </form>
                             </td>
                         </tr>
@@ -106,7 +116,7 @@
                         {% endif %}
                         <tr>
                             <form method="post" action="/profile/addNewExpensesCategory" id="expensesCat" name="expCat">
-                                <td colspan="4" class="center-td"> <button type="submit" class="btn btn-secondary"
+                                <td colspan="5" class="center-td"> <button type="submit" class="btn btn-secondary"
                                         title="Dodaj nową kategorię wydatków">Dodaj nową kategorię<i
                                             class="icon-plus-circle"></i></button>
                                 </td>

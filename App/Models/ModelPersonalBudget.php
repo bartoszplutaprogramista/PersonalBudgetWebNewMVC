@@ -801,6 +801,24 @@ class ModelPersonalBudget extends \Core\Model
         return $nameOfExpenseCategory['name'];        
     }
 
+    public static function selectNameFromExpensesCategoryToLimit()
+    {
+        $db = static::getDB();
+        $sql = 'SELECT 
+                name
+                FROM expenses_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryLimitName = $db->prepare($sql);
+        $queryLimitName->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryLimitName->execute();
+
+        $nameOfExpenseCategory  = $queryLimitName -> fetch(); 
+
+        return $nameOfExpenseCategory['name'];        
+    }
+    
+
     public static function selectNameFromPayMethCategoryToDelete()
     {
         $db = static::getDB();
@@ -831,6 +849,82 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditIncome->bindValue(':incomeCategoryEditId', $_SESSION['incomesCatID'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
+    }
+
+    public function setLimitValueDB($editIncomeCategoryName)
+    {
+        $db = static::getDB();
+
+        $sql = 'UPDATE expenses_category_assigned_to_users 
+                SET limit_value  = :limit_value
+                WHERE id=:limitId';
+
+        $queryEditIncome = $db->prepare($sql);
+		$queryEditIncome->bindValue(':limit_value', $editIncomeCategoryName, PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':limitId', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        
+        return $queryEditIncome->execute();
+    }
+
+    public static function selectLimitValueUserIdCategoryName($categoryExpenseName)
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT 
+                limit_value
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = :userId AND name LIKE :categoryName';
+
+        $queryLimitValue = $db->prepare($sql);
+        $queryLimitValue->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $queryLimitValue->bindValue(':categoryName', $categoryExpenseName, PDO::PARAM_STR);
+        $queryLimitValue->execute();
+
+        $valueOfLimit  = $queryLimitValue -> fetch(); 
+
+        return $valueOfLimit['limit_value'];
+    }
+
+    public static function selectSumOfExpensesForParticularCategoryAndDate($categoryExpenseName, $year, $month)
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT SUM(e.amount) AS total
+                FROM expenses e
+                JOIN expenses_category_assigned_to_users c
+                    ON e.expense_category_assigned_to_user_id = c.id
+                WHERE c.name = :categoryName
+                AND YEAR(e.date_of_expense) = :year
+                AND MONTH(e.date_of_expense) = :month';
+
+        $querySumOfExpensesJavaScript = $db->prepare($sql);
+        $querySumOfExpensesJavaScript->bindValue(':categoryName', $categoryExpenseName, PDO::PARAM_STR);
+        $querySumOfExpensesJavaScript->bindValue(':year', $year, PDO::PARAM_INT);
+        $querySumOfExpensesJavaScript->bindValue(':month', $month, PDO::PARAM_INT);
+        $querySumOfExpensesJavaScript->execute();
+
+        $sumOfExpenses  = $querySumOfExpensesJavaScript -> fetch(); 
+
+        return $sumOfExpenses['total'];
+    }
+
+    public static function selectValueOfLimit()
+    {
+        $db = static::getDB();
+
+        $sql = 'SELECT 
+                limit_value
+                FROM expenses_category_assigned_to_users
+                WHERE id = :id';
+
+        $queryLimitValue = $db->prepare($sql);
+        $queryLimitValue->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryLimitValue->execute();
+
+        $valueOfLimit  = $queryLimitValue -> fetch(); 
+
+        return $valueOfLimit['limit_value'];
+        
     }
 
     public function editExpensesCategory($editExpenseCategoryName)
