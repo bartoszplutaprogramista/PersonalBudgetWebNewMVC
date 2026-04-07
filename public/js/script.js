@@ -32,3 +32,10 @@ function onlyNumberKey(evt) {
         return false;
     return true;
 }
+
+function onlyNumberKeyIntegers(evt) {
+    let ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if ((ASCIICode > 31 && ASCIICode <= 44) || (ASCIICode > 44 && ASCIICode < 48) || (ASCIICode > 57))
+        return false;
+    return true;
+}
