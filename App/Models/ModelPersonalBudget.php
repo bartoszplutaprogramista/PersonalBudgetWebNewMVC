@@ -30,7 +30,8 @@ class ModelPersonalBudget extends \Core\Model
                 amount = :amount,
                 date_of_income = :dateIncome,
                 income_comment  = :commentIncome
-                WHERE id=:incomeEditId';
+                WHERE id=:incomeEditId
+                AND user_id = :userId';
 
         $queryEditIncome = $db->prepare($sql);
 		$queryEditIncome->bindValue(':income_category', $catIncomeId, PDO::PARAM_INT);
@@ -38,6 +39,7 @@ class ModelPersonalBudget extends \Core\Model
 		$queryEditIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
 		$queryEditIncome->bindValue(':commentIncome', $commentIncome, PDO::PARAM_STR);
         $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
     }
@@ -57,7 +59,8 @@ class ModelPersonalBudget extends \Core\Model
                 amount = :amount,
                 date_of_expense = :dateExpense,
                 expense_comment = :commentExpense
-                WHERE id=:expenseEditId';
+                WHERE id=:expenseEditId
+                AND user_id = :userId';
 
         $queryEditExpense = $db->prepare($sql);
 		$queryEditExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
@@ -66,6 +69,7 @@ class ModelPersonalBudget extends \Core\Model
 		$queryEditExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
 		$queryEditExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
         $queryEditExpense->bindValue(':expenseEditId', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
+        $queryEditExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditExpense->execute();
     }
@@ -81,10 +85,12 @@ class ModelPersonalBudget extends \Core\Model
                 inc.id AS incID
                 FROM incomes_category_assigned_to_users AS incCat
                 INNER JOIN incomes AS inc ON incCat.id = inc.income_category_assigned_to_user_id 
-                WHERE inc.id = :id';
+                WHERE inc.id = :id
+                AND inc.user_id = :userId';
 
         $queryEditIncome = $db->prepare($sql);
         $queryEditIncome->bindValue(':id', $idIncomesEdit, PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditIncome->execute();
 
         $queryName = $queryEditIncome->fetchAll();   
@@ -105,10 +111,12 @@ class ModelPersonalBudget extends \Core\Model
                 FROM expenses_category_assigned_to_users AS exCat 
                 INNER JOIN expenses AS ex ON exCat.id = ex.expense_category_assigned_to_user_id 
                 INNER JOIN payment_methods_assigned_to_users AS pay ON ex.payment_method_assigned_to_user_id = pay.id
-                WHERE ex.id = :id';
+                WHERE ex.id = :id
+                AND ex.user_id = :userId';
 
         $queryEditExpenses = $db->prepare($sql);
         $queryEditExpenses->bindValue(':id', $idExpensesEdit, PDO::PARAM_INT);
+        $queryEditExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditExpenses->execute();
 
         $queryName = $queryEditExpenses->fetchAll();   
@@ -941,10 +949,12 @@ class ModelPersonalBudget extends \Core\Model
         $sql = 'SELECT 
                 limit_value
                 FROM expenses_category_assigned_to_users
-                WHERE id = :id';
+                WHERE id = :id
+                AND user_id = :userId';
 
         $queryLimitValue = $db->prepare($sql);
         $queryLimitValue->bindValue(':id', $_SESSION['idExpenseLimit'], PDO::PARAM_INT);
+        $queryLimitValue->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryLimitValue->execute();
 
         $valueOfLimit  = $queryLimitValue -> fetch(); 
@@ -959,11 +969,13 @@ class ModelPersonalBudget extends \Core\Model
 
         $sql = 'UPDATE expenses_category_assigned_to_users 
                 SET name  = :expense_category
-                WHERE id=:expenseCategoryEditId';
+                WHERE id=:expenseCategoryEditId
+                AND user_id = :userId';
 
         $queryEditExpense = $db->prepare($sql);
 		$queryEditExpense->bindValue(':expense_category', $editExpenseCategoryName, PDO::PARAM_STR);
         $queryEditExpense->bindValue(':expenseCategoryEditId', $_SESSION['expensesCatID'], PDO::PARAM_INT);
+        $queryEditExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditExpense->execute();
     }
@@ -974,11 +986,13 @@ class ModelPersonalBudget extends \Core\Model
 
         $sql = 'UPDATE payment_methods_assigned_to_users 
                 SET name  = :pay_meth_category
-                WHERE id=:payMethCategoryEditId';
+                WHERE id=:payMethCategoryEditId
+                AND user_id = :userId';
 
         $queryEditPayment = $db->prepare($sql);
 		$queryEditPayment->bindValue(':pay_meth_category', $editPayMethCategoryName, PDO::PARAM_STR);
         $queryEditPayment->bindValue(':payMethCategoryEditId', $_SESSION['payMethCatID'], PDO::PARAM_INT);
+        $queryEditPayment->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditPayment->execute();
     }
@@ -987,10 +1001,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes_category_assigned_to_users WHERE id = :idOfIncomeCategory';
+        $sql = 'DELETE FROM incomes_category_assigned_to_users 
+                WHERE id = :idOfIncomeCategory
+                AND user_id = :userId';
 
         $queryDeleteIncomeCategory = $db->prepare($sql);
         $queryDeleteIncomeCategory->bindValue(':idOfIncomeCategory', $_SESSION['idIncomesDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteIncomeCategory->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncomeCategory->execute();
 
         return $queryDeleteIncomeCategory;
@@ -1000,10 +1017,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE id = :idOfExpenseCategory';
+        $sql = 'DELETE FROM expenses_category_assigned_to_users 
+                WHERE id = :idOfExpenseCategory
+                AND user_id = :userId';
 
         $queryDeleteIncomeCategory = $db->prepare($sql);
         $queryDeleteIncomeCategory->bindValue(':idOfExpenseCategory', $_SESSION['idExpensesDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteIncomeCategory->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncomeCategory->execute();
 
         return $queryDeleteIncomeCategory;
@@ -1013,10 +1033,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM payment_methods_assigned_to_users WHERE id = :idOfPayMethCategory';
+        $sql = 'DELETE FROM payment_methods_assigned_to_users 
+                WHERE id = :idOfPayMethCategory
+                AND user_id = :userId';
 
         $queryDeleteIncomeCategory = $db->prepare($sql);
         $queryDeleteIncomeCategory->bindValue(':idOfPayMethCategory', $_SESSION['idPayMethDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteIncomeCategory->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncomeCategory->execute();
 
         return $queryDeleteIncomeCategory;
@@ -1026,10 +1049,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes WHERE income_category_assigned_to_user_id = :idOfIncomeCategory';
+        $sql = 'DELETE FROM incomes 
+                WHERE income_category_assigned_to_user_id = :idOfIncomeCategory
+                AND user_id = :userId';
 
         $queryDeleteIncomesRowRelatedToIncCatAssignedToUser = $db->prepare($sql);
         $queryDeleteIncomesRowRelatedToIncCatAssignedToUser->bindValue(':idOfIncomeCategory', $_SESSION['idIncomesDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteIncomesRowRelatedToIncCatAssignedToUser->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncomesRowRelatedToIncCatAssignedToUser->execute();
 
         return $queryDeleteIncomesRowRelatedToIncCatAssignedToUser;
@@ -1039,10 +1065,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses WHERE expense_category_assigned_to_user_id = :idOfExpenseCategory';
+        $sql = 'DELETE FROM expenses 
+                WHERE expense_category_assigned_to_user_id = :idOfExpenseCategory
+                AND user_id = :userId';
 
         $queryDeleteExpensesRowRelatedToExpCatAssignedToUser = $db->prepare($sql);
         $queryDeleteExpensesRowRelatedToExpCatAssignedToUser->bindValue(':idOfExpenseCategory', $_SESSION['idExpensesDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteExpensesRowRelatedToExpCatAssignedToUser->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteExpensesRowRelatedToExpCatAssignedToUser->execute();
 
         return $queryDeleteExpensesRowRelatedToExpCatAssignedToUser;
@@ -1052,10 +1081,13 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses WHERE payment_method_assigned_to_user_id = :idOfPayMethCategory';
+        $sql = 'DELETE FROM expenses 
+                WHERE payment_method_assigned_to_user_id = :idOfPayMethCategory
+                AND user_id = :userId';
 
         $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser = $db->prepare($sql);
         $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser->bindValue(':idOfPayMethCategory', $_SESSION['idPayMethDeleteCat'], PDO::PARAM_INT);
+        $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser->execute();
 
         return $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser;
@@ -1104,7 +1136,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM users WHERE id = :idOfUser';
+        $sql = 'DELETE FROM users 
+                WHERE id = :idOfUser';
 
         $queryDeleteUser = $db->prepare($sql);
         $queryDeleteUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
@@ -1117,7 +1150,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes WHERE user_id = :idOfUser';
+        $sql = 'DELETE FROM incomes 
+                WHERE user_id = :idOfUser';
 
         $queryDeleteIncomesUser = $db->prepare($sql);
         $queryDeleteIncomesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
@@ -1130,7 +1164,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses WHERE user_id = :idOfUser';
+        $sql = 'DELETE FROM expenses 
+                WHERE user_id = :idOfUser';
 
         $queryDeleteExpensesUser = $db->prepare($sql);
         $queryDeleteExpensesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
@@ -1143,7 +1178,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes_category_assigned_to_users WHERE user_id = :idOfUser';
+        $sql = 'DELETE FROM incomes_category_assigned_to_users 
+                WHERE user_id = :idOfUser';
 
         $queryDeleteIncAssignedToUser = $db->prepare($sql);
         $queryDeleteIncAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
@@ -1156,7 +1192,8 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses_category_assigned_to_users WHERE user_id = :idOfUser';
+        $sql = 'DELETE FROM expenses_category_assigned_to_users 
+                WHERE user_id = :idOfUser';
 
         $queryDeleteExpAssignedToUser = $db->prepare($sql);
         $queryDeleteExpAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
