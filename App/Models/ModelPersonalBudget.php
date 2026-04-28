@@ -123,7 +123,7 @@ class ModelPersonalBudget extends \Core\Model
         return $queryName;
     }
 
-    public function deleteIncome()
+    public function deleteIncome($idIncomesDelete)
     {
         $db = static::getDB();
 
@@ -132,7 +132,8 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryDeleteIncome = $db->prepare($sql);
-        $queryDeleteIncome->bindValue(':idOfRow', $_SESSION['idIncomesDelete'], PDO::PARAM_INT);
+        // $queryDeleteIncome->bindValue(':idOfRow', $_SESSION['idIncomesDelete'], PDO::PARAM_INT);
+        $queryDeleteIncome->bindValue(':idOfRow', $idIncomesDelete, PDO::PARAM_INT);
         $queryDeleteIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncome->execute();
 

@@ -57,12 +57,19 @@ class Personalbudget extends Authenticated
         ]);
     }
 
+    // public function successAreyouSuredeleteFromIncomesAction($idIncomesDelete, $myOrdinalNumberDeleteIncomesVar)
     public function successAreyouSuredeleteFromIncomesAction()
     {
-        $id_incomes_delete = $_SESSION['idIncomesDelete'];
-        $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesDelete']);
-        $ordinal_delete_incomes_number = $_SESSION['myOrdinalNumberDeleteIncomesVar'];
+        // $id_incomes_delete = $idIncomesDelete;
+        // $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesDelete']);
+        // $ordinal_delete_incomes_number = $myOrdinalNumberDeleteIncomesVar;
+        // $which_period = $_SESSION['paymentMethod'];
+
+        $id_incomes_delete = (int)$this->route_params['idincomesdelete'];
+        $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($id_incomes_delete);
+        $ordinal_delete_incomes_number = (int)$this->route_params['myordinalnumberdeleteincomesvar'];
         $which_period = $_SESSION['paymentMethod'];
+
 
         View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromIncomes.html', [
             'user' => $this->user,
@@ -158,20 +165,38 @@ class Personalbudget extends Authenticated
         ]);
     }
 
+    // public function areYouSureDeleteFromIncomes()
+    // {
+    //     if(isset($_POST['deleteRowIncomes'])) {
+    //         $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
+    //     }
+
+    //     if(isset($_POST['myOrdinalNumberDeleteIncomes'])) {
+
+    //         $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteIncomes'];
+    //     }
+
+    //     $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+    // }
+    
     public function areYouSureDeleteFromIncomes()
     {
-        if(isset($_POST['deleteRowIncomes'])) {
-            $_SESSION['idIncomesDelete'] = $_POST['deleteRowIncomes'];
+
+        $idincomesdelete = filter_input(INPUT_POST, 'deleteRowIncomes', FILTER_VALIDATE_INT);
+        if (!$idincomesdelete) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
-
-        if(isset($_POST['myOrdinalNumberDeleteIncomes'])) {
-
-            $_SESSION['myOrdinalNumberDeleteIncomesVar'] = $_POST['myOrdinalNumberDeleteIncomes'];
+        
+        $myordinalnumberdeleteincomesvar = filter_input(INPUT_POST, 'myOrdinalNumberDeleteIncomes', FILTER_VALIDATE_INT);
+        if (!$myordinalnumberdeleteincomesvar) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
-
-        $this->redirect('/personalbudget/successareyousuredeletefromincomes');
+        // die('/personalbudget/successareyousuredeletefromincomes/' . $idIncomesDelete . '/' . $myOrdinalNumberDeleteIncomesVar);
+        $this->redirect('/personalbudget/successareyousuredeletefromincomes/' . $idincomesdelete . '/' . $myordinalnumberdeleteincomesvar);        
+        // $this->redirect('/personalbudget/successareyousuredeletefromincomes/' . $idIncomesDelete . '/' . $myOrdinalNumberDeleteIncomesVar);        
+        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
-    
+
     public function areYouSureDeleteFromExpenses()
     {
         if(isset($_POST['deleteRow'])) {
@@ -188,8 +213,11 @@ class Personalbudget extends Authenticated
 
     public function deleteFromIncomes()
     {
+        if(isset($_POST['deleteRow'])) {
+            $idIncomesDelete = $_POST['deleteRow'];
+        }
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->deleteIncome()) {
+        if ($personalBudget->deleteIncome($idIncomesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
             $this->redirectToChosenPeriod();
          }
