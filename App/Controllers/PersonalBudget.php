@@ -82,9 +82,9 @@ class Personalbudget extends Authenticated
 
     public function successAreyouSuredeleteFromExpensesAction()
     {
-        $id_expenses_delete = $_SESSION['idExpensesDelete'];
-        $data_to_are_you_sure_table_expenses = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesDelete']);
-        $ordinal_delete_expenses_number = $_SESSION['myOrdinalNumberDeleteExpensesVar'];
+        $id_expenses_delete = (int)$this->route_params['idexpensesdelete'];
+        $data_to_are_you_sure_table_expenses = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($id_expenses_delete);
+        $ordinal_delete_expenses_number = (int)$this->route_params['myordinalnumberdeleteexpensesvar'];
         $which_period = $_SESSION['paymentMethod'];
 
         View::renderTemplate('PersonalBudget/successAreYouSureDeleteFromExpenses.html', [
@@ -199,6 +199,20 @@ class Personalbudget extends Authenticated
 
     public function areYouSureDeleteFromExpenses()
     {
+
+        $idexpensesdelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
+        if (!$idexpensesdelete) {
+            $this->redirect('/personalbudget/browsethebalance');
+        }
+        
+        $myordinalnumberdeleteexpensesvar = filter_input(INPUT_POST, 'myOrdinalNumberDeleteExpenses', FILTER_VALIDATE_INT);
+        if (!$myordinalnumberdeleteexpensesvar) {
+            $this->redirect('/personalbudget/browsethebalance');
+        }
+
+        $this->redirect('/personalbudget/successareyousuredeletefromexpenses/' . $idexpensesdelete . '/' . $myordinalnumberdeleteexpensesvar); 
+
+    /*
         if(isset($_POST['deleteRow'])) {
             $_SESSION['idExpensesDelete'] = $_POST['deleteRow'];
         }
@@ -208,7 +222,7 @@ class Personalbudget extends Authenticated
             $_SESSION['myOrdinalNumberDeleteExpensesVar'] = $_POST['myOrdinalNumberDeleteExpenses'];
         }
 
-        $this->redirect('/personalbudget/successareyousuredeletefromexpenses');
+        $this->redirect('/personalbudget/successareyousuredeletefromexpenses');*/
     }
 
     public function deleteFromIncomes()
@@ -225,8 +239,11 @@ class Personalbudget extends Authenticated
 
     public function deleteFromExpenses()
     {
+        if(isset($_POST['deleteRow'])) {
+            $idExpensesDelete = $_POST['deleteRow'];
+        }
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->deleteExpense()) {
+        if ($personalBudget->deleteExpense($idExpensesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
             $this->redirectToChosenPeriod();
         }

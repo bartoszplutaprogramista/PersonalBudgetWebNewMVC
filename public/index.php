@@ -54,10 +54,17 @@ $router->add(
         'action' => 'successAreyouSuredeleteFromIncomes'
     ]
 );
+$router->add(
+    'personalbudget/successareyousuredeletefromexpenses/{idexpensesdelete:\d+}/{myordinalnumberdeleteexpensesvar:\d+}',
+    [
+        'controller' => 'PersonalBudget',
+        'action' => 'successAreyouSuredeleteFromExpenses'
+    ]
+);
 $router->add('{controller}/{action}');
 
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$path = trim($path, '/');
+//TO JEST //$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+//TO JEST //$path = trim($path, '/');
 
 // echo "<pre>";
 // echo "REQUEST_URI: "; var_dump($_SERVER['REQUEST_URI']);
@@ -67,10 +74,10 @@ $path = trim($path, '/');
 // exit;
 
 // Przekazanie poprawnej ścieżki do routera
-$router->dispatch($path);
+//TO JEST // $router->dispatch($path);
 
 
-// $router->dispatch($_SERVER['QUERY_STRING']);
+$router->dispatch($_SERVER['QUERY_STRING']);
 
 
 ////personalbudget/successareyousuredeletefromincomes/214/3
