@@ -34,6 +34,7 @@
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
                         <textarea class="form-control" id="comment" rows="2"
                             name="commentIncome">{{ inc_edit.comment }}</textarea>
+                        <input type="hidden" name="idOfEditedIncome" value="{{ inc_edit.incID }}" />
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Zmień</button>

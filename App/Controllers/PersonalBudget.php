@@ -110,9 +110,14 @@ class Personalbudget extends Authenticated
 
     public function updateIncomeAction()
     {
+        $idOfEditedIncome = filter_input(INPUT_POST, 'idOfEditedIncome', FILTER_VALIDATE_INT);
+        if (!$idOfEditedIncome) {
+            $this->redirect('/personalbudget/browsethebalance');
+        }
+
         $personalBudget = new ModelPersonalBudget($_POST);
 
-        if ($personalBudget->updateIncomes()) {
+        if ($personalBudget->updateIncomes($idOfEditedIncome)) {
             Flash::addMessage('Pomyślnie zakończono edycję');
             $this->redirectToChosenPeriod();
         }
@@ -131,11 +136,20 @@ class Personalbudget extends Authenticated
 
     public function editIncomes()
     {
-        if(isset($_POST['editRowIncomes'])) {
-            $_SESSION['idIncomesEditRow'] = $_POST['editRowIncomes'];
+        $idIncomesEditRow = filter_input(INPUT_POST, 'editRowIncomes', FILTER_VALIDATE_INT);
+        if (!$idIncomesEditRow) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
 
-        $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesEditRow']);
+        // if(isset($_POST['editRowIncomes'])) {
+        //     // $_SESSION['idIncomesEditRow'] = $_POST['editRowIncomes'];
+        //     $idIncomesEditRow = $_POST['editRowIncomes'];
+        // }
+
+        // echo $_SESSION['idIncomesEditRow'];
+        // exit;
+
+        $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
         $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
         View::renderTemplate('PersonalBudget/editIncome.html', [

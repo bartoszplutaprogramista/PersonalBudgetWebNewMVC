@@ -17,7 +17,7 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
-    public function updateIncomes()
+    public function updateIncomes($idIncomeEdited)
     {
         $db = static::getDB();
         $catIncomeId = $this->getpaymentCategoryIncomeId();
@@ -38,7 +38,8 @@ class ModelPersonalBudget extends \Core\Model
 		$queryEditIncome->bindValue(':amount', $amountIncome, PDO::PARAM_STR);
 		$queryEditIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
 		$queryEditIncome->bindValue(':commentIncome', $commentIncome, PDO::PARAM_STR);
-        $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        // $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':incomeEditId', $idIncomeEdited, PDO::PARAM_INT);
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
