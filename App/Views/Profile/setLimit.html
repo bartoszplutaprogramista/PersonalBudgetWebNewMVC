@@ -7,7 +7,7 @@
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content3 mt-2">
-            <p class="p-content text-center p-3">Ustaw limit dla {{ set_limit_expense }}<b>
+            <p class="p-content text-center p-3">Ustaw limit dla {{ set_limit_expense.name }}<b>
                     <div class="mt-1">
                         <div class="limit-input-size d-flex flex-column justify-content-center pb-4 text-center">
                             <div class="">
@@ -20,6 +20,7 @@
                                             placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
                                             name="limitValue" onkeypress="return onlyNumberKeyIntegers(event)" required>
                                     </div>
+                                    <input type="hidden" name="limitID" value="{{ set_limit_expense.id }}" />
                                     <button type="submit" class="btn btn-warning">
                                         Ustaw
                                     </button>

@@ -125,9 +125,15 @@ class Personalbudget extends Authenticated
 
     public function updateExpenseAction()
     {
+        $idOfEditedExpense = filter_input(INPUT_POST, 'idOfEditedExpense', FILTER_VALIDATE_INT);
+        if (!$idOfEditedExpense) {
+            $this->redirect('/personalbudget/browsethebalance');
+        }
+    
+
         $personalBudget = new ModelPersonalBudget($_POST);
 
-        if ($personalBudget->updateExpenses()) {
+        if ($personalBudget->updateExpenses($idOfEditedExpense)) {
             Flash::addMessage('Pomyślnie zakończono edycję');
             $this->redirectToChosenPeriod();
         }
@@ -162,11 +168,16 @@ class Personalbudget extends Authenticated
 
     public function editExpenses()
     {
-        if(isset($_POST['editRow'])) {
-            $_SESSION['idExpensesEditRow'] = $_POST['editRow'];
+        $idExpensesEditRow = filter_input(INPUT_POST, 'editRow', FILTER_VALIDATE_INT);
+        if (!$idExpensesEditRow) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
 
-        $expensesEditValues = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($_SESSION['idExpensesEditRow']);     
+        // if(isset($_POST['editRow'])) {
+        //     $_SESSION['idExpensesEditRow'] = $_POST['editRow'];
+        // }
+
+        $expensesEditValues = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($idExpensesEditRow);     
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
 
@@ -241,9 +252,13 @@ class Personalbudget extends Authenticated
 
     public function deleteFromIncomes()
     {
-        if(isset($_POST['deleteRow'])) {
-            $idIncomesDelete = $_POST['deleteRow'];
+        $idIncomesDelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
+        if (!$idIncomesDelete) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
+        // if(isset($_POST['deleteRow'])) {
+        //     $idIncomesDelete = $_POST['deleteRow'];
+        // }
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->deleteIncome($idIncomesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
@@ -253,9 +268,13 @@ class Personalbudget extends Authenticated
 
     public function deleteFromExpenses()
     {
-        if(isset($_POST['deleteRow'])) {
-            $idExpensesDelete = $_POST['deleteRow'];
+        $idExpensesDelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
+        if (!$idExpensesDelete) {
+            $this->redirect('/personalbudget/browsethebalance');
         }
+        // if(isset($_POST['deleteRow'])) {
+        //     $idExpensesDelete = $_POST['deleteRow'];
+        // }
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->deleteExpense($idExpensesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
