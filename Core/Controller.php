@@ -4,6 +4,7 @@ namespace Core;
 
 use \App\Auth;
 use \App\Flash;
+use \App\Csrf;
 
 abstract class Controller
 {
@@ -29,9 +30,19 @@ abstract class Controller
         }
     }
 
+    // protected function before()
+    // {
+    // }
+
     protected function before()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!\Core\Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+        }
     }
+
 
     protected function after()
     {

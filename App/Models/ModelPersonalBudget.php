@@ -17,13 +17,13 @@ class ModelPersonalBudget extends \Core\Model
     public $email;
     public $paymentCategoryIncomeName;
  
-    public function updateIncomes($idIncomeEdited)
+    public function updateIncomes($idIncomeEdited, $amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)
     {
         $db = static::getDB();
-        $catIncomeId = $this->getpaymentCategoryIncomeId();
-        $amountIncome = $_POST['amountIncome'];
-        $dateIncome = $_POST['dateIncome'];
-        $commentIncome = $_POST['commentIncome'];
+        $catIncomeId = $this->getpaymentCategoryIncomeId($paymentCategoryIncomeName);
+        // $amountIncome = $_POST['amountIncome'];
+        // $dateIncome = $_POST['dateIncome'];
+        // $commentIncome = $_POST['commentIncome'];
 
         $sql = 'UPDATE incomes 
                 SET income_category_assigned_to_user_id  = :income_category,  
@@ -45,11 +45,11 @@ class ModelPersonalBudget extends \Core\Model
         return $queryEditIncome->execute();
     }
 
-    public function updateExpenses($idExpenseEdited)
+    public function updateExpenses($idExpenseEdited, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
     {
         $db = static::getDB();
-        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId();
-        $paymentId = $this->getPaymentId();
+        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
+        $paymentId = $this->getPaymentId($paymentName);
         $amountExpense = $_POST['amountExpense'];
         $dateExpense = $_POST['dateExpense'];
         $commentExpense = $_POST['commentExpense'];
@@ -586,9 +586,9 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryIncomeId['id'];
     }
 
-    public function getpaymentCategoryIncomeId(){
+    public function getpaymentCategoryIncomeId($paymentCategoryIncomeName){
 
-        $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
+        // $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
         $db = static::getDB();
 
         $sql = 'SELECT id FROM incomes_category_assigned_to_users WHERE name = :nameIncomeCategory AND user_id = :userId';
@@ -603,17 +603,17 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryIncomeId['id'];
     }
 
-    public function insertToIncomes($user)
+    public function insertToIncomes($amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)
     {
 
         if (empty($this->errors)){
 
-            $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId();
+            $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId($paymentCategoryIncomeName);
 
-            $amountIncome = $_POST['amountIncome'];
-		    $dateIncome = $_POST['dateIncome'];
+            // $amountIncome = $_POST['amountIncome'];
+		    // $dateIncome = $_POST['dateIncome'];
 
-		    $commentIncome = $_POST['commentIncome'];
+		    // $commentIncome = $_POST['commentIncome'];
 
             $db = static::getDB();
 
@@ -631,10 +631,10 @@ class ModelPersonalBudget extends \Core\Model
         return false;
     }
 
-    public function getPaymentId()
+    public function getPaymentId($paymentName)
     {
         $db = static::getDB();
-        $paymentName = $_POST['paymentMethod'];
+        // $paymentName = $_POST['paymentMethod'];
 
         $sql = 'SELECT id FROM payment_methods_assigned_to_users WHERE name = :paymentName AND user_id = :userId';
 
@@ -647,10 +647,10 @@ class ModelPersonalBudget extends \Core\Model
         return $getPaymentId['id'];
     }
 
-    public function getPaymentCategoryExpenseId()
+    public function getPaymentCategoryExpenseId($paymentCategoryExpense)
     {
         $db = static::getDB();
-        $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
+        // $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
 
         $sql = 'SELECT id FROM expenses_category_assigned_to_users WHERE name = :nameExpCat AND user_id = :userId';
 
@@ -664,17 +664,17 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryExpenseId['id'];
     }
 
-    public function insertToExpenses($user)
+    public function insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
     {
-        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId();
+        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
 
-        $paymentId = $this->getPaymentId();
+        $paymentId = $this->getPaymentId($paymentName);
 
         $db = static::getDB();
 
-        $amountExpense = $_POST['amountExpense'];
-        $dateExpense = $_POST['dateExpense'];
-        $commentExpense = $_POST['commentExpense'];
+        // $amountExpense = $_POST['amountExpense'];
+        // $dateExpense = $_POST['dateExpense'];
+        // $commentExpense = $_POST['commentExpense'];
 
         $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)';
 

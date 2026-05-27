@@ -115,9 +115,14 @@ class Personalbudget extends Authenticated
             $this->redirect('/personalbudget/browsethebalance');
         }
 
+        $amountIncome = $_POST['amountIncome'];
+        $dateIncome = $_POST['dateIncome'];
+        $commentIncome = $_POST['commentIncome'];
+        $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
+
         $personalBudget = new ModelPersonalBudget($_POST);
 
-        if ($personalBudget->updateIncomes($idOfEditedIncome)) {
+        if ($personalBudget->updateIncomes($idOfEditedIncome, $amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)) {
             Flash::addMessage('Pomyślnie zakończono edycję');
             $this->redirectToChosenPeriod();
         }
@@ -129,11 +134,15 @@ class Personalbudget extends Authenticated
         if (!$idOfEditedExpense) {
             $this->redirect('/personalbudget/browsethebalance');
         }
-    
+        $amountExpense = $_POST['amountExpense'];
+        $dateExpense = $_POST['dateExpense'];
+        $commentExpense = $_POST['commentExpense'];
+        $paymentName = $_POST['paymentMethod'];
+        $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
 
         $personalBudget = new ModelPersonalBudget($_POST);
 
-        if ($personalBudget->updateExpenses($idOfEditedExpense)) {
+        if ($personalBudget->updateExpenses($idOfEditedExpense, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
             Flash::addMessage('Pomyślnie zakończono edycję');
             $this->redirectToChosenPeriod();
         }
@@ -285,19 +294,35 @@ class Personalbudget extends Authenticated
     public function newIncomeAction()
     {
 
-        $this->user = Auth::getUser();  
+        $amountIncome = $_POST['amountIncome'];
+        $dateIncome = $_POST['dateIncome'];
+        $commentIncome = $_POST['commentIncome'];
+        $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
+
+        // $this->user = Auth::getUser();  
 
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->insertToIncomes($this->user)) {
+        if ($personalBudget->insertToIncomes($amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)) {
             $this->redirect('/personalbudget/successaddincome');      
         }
     }
 
     public function newExpenseAction()
     {
-        $this->user = Auth::getUser();  
+        // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+        //     $this->redirect('/');
+        // }
+
+        $amountExpense = $_POST['amountExpense'];
+        $dateExpense = $_POST['dateExpense'];
+        $commentExpense = $_POST['commentExpense'];
+        $paymentName = $_POST['paymentMethod'];
+        $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
+
+
+        // $this->user = Auth::getUser();  
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->insertToExpenses($this->user)) {
+        if ($personalBudget->insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
             $this->redirect('/personalbudget/successaddexpense');      
         }
     }
