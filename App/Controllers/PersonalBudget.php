@@ -7,6 +7,7 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\ModelPersonalBudget;
 use \App\Models\User;
+use \App\Csrf;
 
 
 #[\AllowDynamicProperties]
@@ -27,7 +28,8 @@ class Personalbudget extends Authenticated
 
         View::renderTemplate('PersonalBudget/addIncome.html', [
             'user' => $this->user,
-            'incomes_options_form' => $incomes_options_form
+            'incomes_options_form' => $incomes_options_form,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -39,21 +41,24 @@ class Personalbudget extends Authenticated
         View::renderTemplate('PersonalBudget/addExpense.html', [
             'user' => $this->user,
             'expenses_options_form_category' => $expenses_options_form_category,
-            'expenses_options_form_payment_method' => $expenses_options_form_payment_method
+            'expenses_options_form_payment_method' => $expenses_options_form_payment_method,
+            'csrf_token' => Csrf::generate()
         ]);
     } 
 
     public function browseTheBalanceAction()
     {
         View::renderTemplate('PersonalBudget/browseTheBalance.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     } 
 
     public function successDeletedExpenseAction()
     {
         View::renderTemplate('PersonalBudget/successDeletedExpense.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -76,7 +81,8 @@ class Personalbudget extends Authenticated
             'id_incomes_delete' => $id_incomes_delete,
             'data_to_are_you_sure_table_incomes' => $data_to_are_you_sure_table_incomes,
             'ordinal_delete_incomes_number' => $ordinal_delete_incomes_number,
-            'which_period' => $which_period
+            'which_period' => $which_period,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -92,7 +98,8 @@ class Personalbudget extends Authenticated
             'id_expenses_delete' => $id_expenses_delete,
             'data_to_are_you_sure_table_expenses' => $data_to_are_you_sure_table_expenses,
             'ordinal_delete_expenses_number' => $ordinal_delete_expenses_number,
-            'which_period' => $which_period
+            'which_period' => $which_period,
+            'csrf_token' => Csrf::generate()
         ]);
     }    
 
@@ -110,6 +117,9 @@ class Personalbudget extends Authenticated
 
     public function updateIncomeAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idOfEditedIncome = filter_input(INPUT_POST, 'idOfEditedIncome', FILTER_VALIDATE_INT);
         if (!$idOfEditedIncome) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -130,6 +140,9 @@ class Personalbudget extends Authenticated
 
     public function updateExpenseAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idOfEditedExpense = filter_input(INPUT_POST, 'idOfEditedExpense', FILTER_VALIDATE_INT);
         if (!$idOfEditedExpense) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -151,6 +164,9 @@ class Personalbudget extends Authenticated
 
     public function editIncomes()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idIncomesEditRow = filter_input(INPUT_POST, 'editRowIncomes', FILTER_VALIDATE_INT);
         if (!$idIncomesEditRow) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -170,13 +186,17 @@ class Personalbudget extends Authenticated
         View::renderTemplate('PersonalBudget/editIncome.html', [
             'user' => $this->user,
             'incomes_edit_values' => $incomesEditValues,
-            'incomes_options_form' => $incomes_options_form
+            'incomes_options_form' => $incomes_options_form,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
 
     public function editExpenses()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idExpensesEditRow = filter_input(INPUT_POST, 'editRow', FILTER_VALIDATE_INT);
         if (!$idExpensesEditRow) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -195,7 +215,8 @@ class Personalbudget extends Authenticated
             'user' => $this->user,
             'expenses_edit_values' => $expensesEditValues,
             'expenses_options_form_category' => $expenses_options_form_category,
-            'expenses_options_form_payment_method' => $expenses_options_form_payment_method
+            'expenses_options_form_payment_method' => $expenses_options_form_payment_method,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -215,7 +236,9 @@ class Personalbudget extends Authenticated
     
     public function areYouSureDeleteFromIncomes()
     {
-
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idincomesdelete = filter_input(INPUT_POST, 'deleteRowIncomes', FILTER_VALIDATE_INT);
         if (!$idincomesdelete) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -233,7 +256,9 @@ class Personalbudget extends Authenticated
 
     public function areYouSureDeleteFromExpenses()
     {
-
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idexpensesdelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
         if (!$idexpensesdelete) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -261,6 +286,9 @@ class Personalbudget extends Authenticated
 
     public function deleteFromIncomes()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idIncomesDelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
         if (!$idIncomesDelete) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -277,6 +305,9 @@ class Personalbudget extends Authenticated
 
     public function deleteFromExpenses()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $idExpensesDelete = filter_input(INPUT_POST, 'deleteRow', FILTER_VALIDATE_INT);
         if (!$idExpensesDelete) {
             $this->redirect('/personalbudget/browsethebalance');
@@ -291,9 +322,12 @@ class Personalbudget extends Authenticated
         }
     }
 
+    // public function newIncomeAction()
     public function newIncomeAction()
     {
-
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $amountIncome = $_POST['amountIncome'];
         $dateIncome = $_POST['dateIncome'];
         $commentIncome = $_POST['commentIncome'];
@@ -309,9 +343,9 @@ class Personalbudget extends Authenticated
 
     public function newExpenseAction()
     {
-        // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-        //     $this->redirect('/');
-        // }
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
 
         $amountExpense = $_POST['amountExpense'];
         $dateExpense = $_POST['dateExpense'];
@@ -373,6 +407,9 @@ class Personalbudget extends Authenticated
 
     public function newBrowseTheBalanceAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $paymentMethod = $_POST['paymentMethod'];
         $_SESSION['paymentMethod'] = $paymentMethod;
 
@@ -477,7 +514,7 @@ class Personalbudget extends Authenticated
                 'query_name_incomes_sum_current_month' => $query_name_incomes_sum_current_month,
                 'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
                 'chart_incomes_current_month' => $chart_incomes_current_month,
-                'chart_expenses_current_month' => $chart_expenses_current_month
+                'chart_expenses_current_month' => $chart_expenses_current_month,
         ]);
     }
 

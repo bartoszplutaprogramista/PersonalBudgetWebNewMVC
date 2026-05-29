@@ -36,11 +36,12 @@ abstract class Controller
 
     protected function before()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!\Core\Csrf::verify($_POST['csrf_token'] ?? '')) {
-                $this->redirect('/');
-            }
-        }
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     die('BEFORE DZIAŁA');
+        //     if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+        //         $this->redirect('/');
+        //     }
+        // }
     }
 
 
