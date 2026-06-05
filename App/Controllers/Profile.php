@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use \App\Models\ModelPersonalBudget;
+use \App\Csrf;
 
 #[\AllowDynamicProperties]
 class Profile extends Authenticated
@@ -29,7 +30,8 @@ class Profile extends Authenticated
     public function editAction()
     {
         View::renderTemplate('Profile/edit.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -50,12 +52,16 @@ class Profile extends Authenticated
             'user' => $this->user,
             'incomes_options_form' => $incomes_options_form,
             'expenses_options_form_category' => $expenses_options_form_category,
-            'expenses_options_form_payment_method' => $expenses_options_form_payment_method
+            'expenses_options_form_payment_method' => $expenses_options_form_payment_method,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function updateAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         if ($this->user->updateProfile($_POST)) {
 
             Flash::addMessage('Zmiany zapisane');
@@ -65,7 +71,8 @@ class Profile extends Authenticated
         } else {
 
             View::renderTemplate('Profile/edit.html', [
-                'user' => $this->user
+                'user' => $this->user,
+                'csrf_token' => Csrf::generate()
             ]);
 
         }
@@ -73,6 +80,9 @@ class Profile extends Authenticated
     
     public function editIncomesCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editIncomesCategoryID = $_POST['editIncomesCat'];
         // $_SESSION['incomesCatID'] = $editIncomesCategoryID;
 
@@ -80,12 +90,16 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/editIncomesCategory.html', [
             'user' => $this->user,
-            'name_income_category_to_edit' => $name_income_category_to_edit
+            'name_income_category_to_edit' => $name_income_category_to_edit,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function editExpensesCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editExpensesCategoryID = $_POST['editExpensesCat'];
         // $_SESSION['expensesCatID'] = $editExpensesCategoryID;
 
@@ -93,12 +107,16 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/editExpensesCategory.html', [
             'user' => $this->user,
-            'name_expense_category_to_edit' => $name_expense_category_to_edit
+            'name_expense_category_to_edit' => $name_expense_category_to_edit,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function editPaymentMethodCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editPaymentMethCategoryID = $_POST['editPaymentMethodCat'];
 
         // $_SESSION['payMethCatID'] = $editPaymentMethCategoryID;
@@ -107,12 +125,16 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/editPayMethCategory.html', [
             'user' => $this->user,
-            'name_pay_meth_category_to_edit' => $name_pay_meth_category_to_edit
+            'name_pay_meth_category_to_edit' => $name_pay_meth_category_to_edit,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function changeIncomeNameAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
         if (!$editIncomeCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -134,6 +156,9 @@ class Profile extends Authenticated
 
     public function changeExpenseNameAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
         if (!$editExpenseCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -155,7 +180,9 @@ class Profile extends Authenticated
     public function setLimitOfExpenseAction()
     {
         // $setLimitValue = $_POST['limitValue'];
-        
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $setLimitValue = filter_input(INPUT_POST, 'limitValue', FILTER_VALIDATE_INT);
         if (!$setLimitValue) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -178,6 +205,9 @@ class Profile extends Authenticated
 
     public function changePayMethNameAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $editPayMethCategoryName = $_POST['editPayMethCategoryName'];
         if (!$editPayMethCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -287,6 +317,9 @@ class Profile extends Authenticated
         // if(isset($_POST['setExpenseLimit'])) {
         //     $_SESSION['idExpenseLimit'] = $_POST['setExpenseLimit'];
         // }
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
 
         $idExpenseLimit = filter_input(INPUT_POST, 'setExpenseLimit', FILTER_VALIDATE_INT);
         if (!$idExpenseLimit) {
@@ -299,7 +332,8 @@ class Profile extends Authenticated
         View::renderTemplate('Profile/setLimit.html', [
             'user' => $this->user,
             'set_limit_expense' => $set_limit_expense,
-            'limit_value' => $limit_value
+            'limit_value' => $limit_value,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -325,12 +359,16 @@ class Profile extends Authenticated
     public function addNewIncomesCategory()
     {
         View::renderTemplate('Profile/addNewIncomesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function addToDataBaseNewIncomesCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $newIncomeCat = $_POST['addedNewIncomeCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewIncomesCategory($newIncomeCat)) {
@@ -342,12 +380,16 @@ class Profile extends Authenticated
     public function addNewExpensesCategory()
     {
         View::renderTemplate('Profile/addNewExpensesCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function addToDataBaseNewExpensesCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $newExpenseCat = $_POST['addedNewExpenseCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewExpensesCategory($newExpenseCat)) {
@@ -359,12 +401,16 @@ class Profile extends Authenticated
     public function addNewPayMethCategory()
     {
         View::renderTemplate('Profile/addNewPayMethCategory.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function addToDataBaseNewPayMethCategory()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $newPayMethCat = $_POST['addedNewPayMethCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewPayMethCategory($newPayMethCat)) {

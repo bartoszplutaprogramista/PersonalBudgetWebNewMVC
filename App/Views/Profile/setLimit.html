@@ -13,6 +13,7 @@
                             <div class="">
                                 <form method="post" action="/profile/setLimitOfExpenseAction" id="setLimitForm"
                                     name="ExpSetLimit">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <div class="mb-3">
                                         <label for="limitValue" class="form-label">Kwota (zł):</label>
                                         <input type="number" class="form-control" step="1" min="1" max="999999"
@@ -27,9 +28,11 @@
                                 </form>
                             </div>
                             <div class="mt-3">
-                                <form action="/profile/categoryconfigurator" method="post">
+                                {# <form action="/profile/categoryconfigurator" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <button type="submit" class="btn btn-secondary">Anuluj</button>
-                                </form>
+                                </form> #}
+                                <a href="/profile/categoryconfigurator" class="btn btn-secondary text-white">Anuluj</a>
                             </div>
                         </div>
                     </div>

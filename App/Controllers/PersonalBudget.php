@@ -434,6 +434,9 @@ class Personalbudget extends Authenticated
     
     public function newSelectedPeriod()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $dateSelectedPeriod1 = $_POST['dateSelectedPeriod1'];
         $dateSelectedPeriod2 = $_POST['dateSelectedPeriod2'];
 
@@ -515,6 +518,7 @@ class Personalbudget extends Authenticated
                 'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
                 'chart_incomes_current_month' => $chart_incomes_current_month,
                 'chart_expenses_current_month' => $chart_expenses_current_month,
+                'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -538,7 +542,8 @@ class Personalbudget extends Authenticated
                 'query_name_incomes_sum_last_month' => $query_name_incomes_sum_last_month,
                 'query_name_expenses_sum_last_month' => $query_name_expenses_sum_last_month,
                 'chart_incomes_last_month' => $chart_incomes_last_month,
-                'chart_expenses_last_month' => $chart_expenses_last_month
+                'chart_expenses_last_month' => $chart_expenses_last_month,
+                'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -562,7 +567,8 @@ class Personalbudget extends Authenticated
             'query_name_incomes_sum_current_year' => $query_name_incomes_sum_current_year,
             'query_name_expenses_sum_current_year' => $query_name_expenses_sum_current_year,
             'chart_incomes_current_year' => $chart_incomes_current_year,
-            'chart_expenses_current_year' => $chart_expenses_current_year
+            'chart_expenses_current_year' => $chart_expenses_current_year,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -587,14 +593,16 @@ class Personalbudget extends Authenticated
             'query_name_incomes_sum_selected_period' => $query_name_incomes_sum_selected_period,
             'query_name_expenses_sum_selected_period' => $query_name_expenses_sum_selected_period,
             'chart_incomes_selected_period' => $chart_incomes_selected_period,
-            'chart_expenses_selected_period' => $chart_expenses_selected_period
+            'chart_expenses_selected_period' => $chart_expenses_selected_period,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
     public function browseselectedperiodprocessingAction()
     {
         View::renderTemplate('PersonalBudget/browseSelectedPeriodProcessingChooseTheDate.html', [
-            'user' => $this->user
+            'user' => $this->user,
+            'csrf_token' => Csrf::generate()
         ]);
     }
     
