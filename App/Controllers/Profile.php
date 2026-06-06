@@ -117,7 +117,11 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editPaymentMethCategoryID = $_POST['editPaymentMethodCat'];
+        $editPaymentMethCategoryID = filter_input(INPUT_POST, 'editPaymentMethodCat', FILTER_VALIDATE_INT);
+        if (!$editPaymentMethCategoryID) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $editPaymentMethCategoryID = $_POST['editPaymentMethodCat'];
 
         // $_SESSION['payMethCatID'] = $editPaymentMethCategoryID;
 
@@ -135,7 +139,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
+        $editIncomeCategoryName = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+        if ($editIncomeCategoryName === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
         if (!$editIncomeCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
         }
@@ -146,9 +155,9 @@ class Profile extends Authenticated
         // $editIncomeCategoryID = $_POST['incomeCategoryEditedID'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)) {
-            if(isset($_SESSION['incomesCatID'])) {
-                unset($_SESSION['incomesCatID']);
-            }
+            // if(isset($_SESSION['incomesCatID'])) {
+            //     unset($_SESSION['incomesCatID']);
+            // }
             Flash::addMessage('Zmiany zapisane');
             $this->redirect('/profile/categoryconfigurator');      
         }
@@ -159,7 +168,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
+        $editExpenseCategoryName = mb_substr(trim($_POST['editExpenseCategoryName'] ?? ''), 0, 50);
+        if ($editExpenseCategoryName === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
         if (!$editExpenseCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
         }
@@ -208,7 +222,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editPayMethCategoryName = $_POST['editPayMethCategoryName'];
+        $editPayMethCategoryName = mb_substr(trim($_POST['editPayMethCategoryName'] ?? ''), 0, 50);
+        if ($editPayMethCategoryName === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $editPayMethCategoryName = $_POST['editPayMethCategoryName'];
         if (!$editPayMethCategoryName) {
             ($this->redirect('/profile/categoryconfigurator'));
         }
@@ -218,9 +237,9 @@ class Profile extends Authenticated
         }
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->editPayMethCategory($editPayMethCategoryName, $editPaymentMethCategoryID)) {
-            if(isset($_SESSION['payMethCatID'])) {
-                unset($_SESSION['payMethCatID']);
-            }
+            // if(isset($_SESSION['payMethCatID'])) {
+            //     unset($_SESSION['payMethCatID']);
+            // }
             Flash::addMessage('Zmiany zapisane');
             $this->redirect('/profile/categoryconfigurator');      
         }
@@ -369,7 +388,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newIncomeCat = $_POST['addedNewIncomeCat'];
+        $newIncomeCat = mb_substr(trim($_POST['addedNewIncomeCat'] ?? ''), 0, 50);
+        if ($newIncomeCat === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $newIncomeCat = $_POST['addedNewIncomeCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewIncomesCategory($newIncomeCat)) {
             Flash::addMessage('Dodano nową kategorię');
@@ -390,7 +414,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newExpenseCat = $_POST['addedNewExpenseCat'];
+        $newExpenseCat = mb_substr(trim($_POST['addedNewExpenseCat'] ?? ''), 0, 50);
+        if ($newExpenseCat === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $newExpenseCat = $_POST['addedNewExpenseCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewExpensesCategory($newExpenseCat)) {
             Flash::addMessage('Dodano nową kategorię');
@@ -411,7 +440,12 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newPayMethCat = $_POST['addedNewPayMethCat'];
+        $newPayMethCat = mb_substr(trim($_POST['addedNewPayMethCat'] ?? ''), 0, 50);
+        if ($newPayMethCat === '') {
+            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
+        // $newPayMethCat = $_POST['addedNewPayMethCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->addNewPayMethCategory($newPayMethCat)) {
             Flash::addMessage('Dodano nową kategorię');

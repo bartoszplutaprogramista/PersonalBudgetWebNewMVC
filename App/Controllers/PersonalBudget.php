@@ -8,6 +8,7 @@ use \App\Flash;
 use \App\Models\ModelPersonalBudget;
 use \App\Models\User;
 use \App\Csrf;
+use DateTime;
 
 
 #[\AllowDynamicProperties]
@@ -125,9 +126,33 @@ class Personalbudget extends Authenticated
             $this->redirect('/personalbudget/browsethebalance');
         }
 
-        $amountIncome = $_POST['amountIncome'];
-        $dateIncome = $_POST['dateIncome'];
-        $commentIncome = $_POST['commentIncome'];
+        $errors = [];
+        
+        $amountIncome = filter_input(INPUT_POST, 'amountIncome', FILTER_VALIDATE_FLOAT);
+        if ($amountIncome === false || $amountIncome <= 0 || $amountIncome > 999999.99) {
+            $errors[] = 'Nieprawidłowa kwota';
+        }
+
+        $dateIncome = $_POST['dateIncome'] ?? '';
+        $d = DateTime::createFromFormat('Y-m-d', $dateIncome);
+        if (!$d || $d->format('Y-m-d') !== $dateIncome) {
+            $errors[] = 'Nieprawidłowy format daty';
+        }
+
+        $commentIncome = mb_substr(trim($_POST['commentIncome'] ?? ''), 0, 100);
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                Flash::addMessage($error, Flash::WARNING);
+            }
+
+            $this->redirect('/personalbudget/addincome');
+        }
+
+
+        // $amountIncome = $_POST['amountIncome'];
+        // $dateIncome = $_POST['dateIncome'];
+        // $commentIncome = $_POST['commentIncome'];
         $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
 
         $personalBudget = new ModelPersonalBudget($_POST);
@@ -147,9 +172,34 @@ class Personalbudget extends Authenticated
         if (!$idOfEditedExpense) {
             $this->redirect('/personalbudget/browsethebalance');
         }
-        $amountExpense = $_POST['amountExpense'];
-        $dateExpense = $_POST['dateExpense'];
-        $commentExpense = $_POST['commentExpense'];
+
+        $errors = [];
+        
+        $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
+        if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
+            $errors[] = 'Nieprawidłowa kwota';
+        }
+
+        $dateExpense = $_POST['dateExpense'] ?? '';
+        $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
+        if (!$d || $d->format('Y-m-d') !== $dateExpense) {
+            $errors[] = 'Nieprawidłowy format daty';
+        }
+
+        $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                Flash::addMessage($error, Flash::WARNING);
+            }
+
+            $this->redirect('/personalbudget/addexpense');
+        }
+
+
+        // $amountExpense = $_POST['amountExpense'];
+        // $dateExpense = $_POST['dateExpense'];
+        // $commentExpense = $_POST['commentExpense'];
         $paymentName = $_POST['paymentMethod'];
         $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
 
@@ -328,9 +378,45 @@ class Personalbudget extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $amountIncome = $_POST['amountIncome'];
-        $dateIncome = $_POST['dateIncome'];
-        $commentIncome = $_POST['commentIncome'];
+
+/****************************************************************/
+        $errors = [];
+        
+        $amountIncome = filter_input(INPUT_POST, 'amountIncome', FILTER_VALIDATE_FLOAT);
+        if ($amountIncome === false || $amountIncome <= 0 || $amountIncome > 999999.99) {
+            $errors[] = 'Nieprawidłowa kwota';
+        }
+
+        $dateIncome = $_POST['dateIncome'] ?? '';
+        $d = DateTime::createFromFormat('Y-m-d', $dateIncome);
+        if (!$d || $d->format('Y-m-d') !== $dateIncome) {
+            $errors[] = 'Nieprawidłowy format daty';
+        }
+
+        $commentIncome = mb_substr(trim($_POST['commentIncome'] ?? ''), 0, 100);
+
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                Flash::addMessage($error, Flash::WARNING);
+            }
+
+            $this->redirect('/personalbudget/addincome');
+        }
+
+        // if (!empty($errors)) {
+        //     $this->errors = $errors;
+        //     return false;
+        // }
+    
+    // ... reszta metody
+/****************************************************************/
+
+
+
+
+        // $amountIncome = $_POST['amountIncome'];
+        // $dateIncome = $_POST['dateIncome'];
+        // $commentIncome = $_POST['commentIncome'];
         $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
 
         // $this->user = Auth::getUser();  
@@ -346,10 +432,33 @@ class Personalbudget extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
+            $errors = [];
+            
+            $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
+            if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
+                $errors[] = 'Nieprawidłowa kwota';
+            }
 
-        $amountExpense = $_POST['amountExpense'];
-        $dateExpense = $_POST['dateExpense'];
-        $commentExpense = $_POST['commentExpense'];
+            $dateExpense = $_POST['dateExpense'] ?? '';
+            $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
+            if (!$d || $d->format('Y-m-d') !== $dateExpense) {
+                $errors[] = 'Nieprawidłowy format daty';
+            }
+
+            $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
+
+            if (!empty($errors)) {
+                foreach ($errors as $error) {
+                    Flash::addMessage($error, Flash::WARNING);
+                }
+
+                $this->redirect('/personalbudget/addexpense');
+            }
+
+
+        // $amountExpense = $_POST['amountExpense'];
+        // $dateExpense = $_POST['dateExpense'];
+        // $commentExpense = $_POST['commentExpense'];
         $paymentName = $_POST['paymentMethod'];
         $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
 

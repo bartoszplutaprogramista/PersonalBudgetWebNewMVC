@@ -18,7 +18,7 @@
                         <input type="hidden" name="expenseCategoryEditedID"
                             value="{{ name_expense_category_to_edit.id }}" />
                         <input type="text" class="form-control" value="{{ name_expense_category_to_edit.name }}"
-                            name="editExpenseCategoryName">
+                            name="editExpenseCategoryName" maxlength="50" required>
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Zmień</button>

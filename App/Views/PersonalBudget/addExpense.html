@@ -39,8 +39,8 @@
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
                         <input type="number" class="form-control" min="1" step="0.01" max="999999.99"
-                            id="amountOfExpanse" value="1" name="amountExpense"
-                            onkeypress="return onlyNumberKey(event)">
+                            id="amountOfExpanse" name="amountExpense" onkeypress="return onlyNumberKey(event)" required>
+                        {# <input class="form-control" id="amountOfExpanse" name="amountExpense"> #}
                     </div>
                     <div class="mb-3">
                         <label for="theDate" class="form-label">Data:</label>
@@ -71,7 +71,8 @@
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
-                        <textarea class="form-control" id="comment" rows="2" name="commentExpense"></textarea>
+                        <textarea class="form-control" id="comment" rows="2" name="commentExpense"
+                            maxlength="100"></textarea>
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Dodaj</button>

@@ -319,7 +319,7 @@ class User extends \Core\Model
    
     public function updateProfile($data)
     {
-        $this->name = $data['name'];
+        $this->name = mb_substr(trim($data['name'] ?? ''), 0, 18);
         $this->email = $data['email'];
 
         if ($data['password'] != '') {
