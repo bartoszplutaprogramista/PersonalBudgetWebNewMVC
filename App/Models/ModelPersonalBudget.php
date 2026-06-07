@@ -6,6 +6,7 @@ use PDO;
 use \App\Token;
 use \App\Mail;
 use \Core\View;
+use DateTime;
 
 #[\AllowDynamicProperties]
 class ModelPersonalBudget extends \Core\Model
@@ -16,11 +17,58 @@ class ModelPersonalBudget extends \Core\Model
     public $commentIncome;
     public $email;
     public $paymentCategoryIncomeName;
- 
-    public function updateIncomes($idIncomeEdited, $amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)
+
+
+    public $errors = [];
+    private $data;
+
+    public function __construct($data = [])
     {
+        $this->data = $data;
+    }
+ 
+    public function validateIncomes()
+    {
+        // KWOTA
+        $amount = filter_var($this->data['amountIncome'] ?? null, FILTER_VALIDATE_FLOAT);
+        if ($amount === false || $amount <= 0 || $amount > 999999.99) {
+            $this->errors[] = 'Nieprawidłowa kwota';
+        }
+
+        // DATA
+        $date = $this->data['dateIncome'] ?? '';
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        if (!$d || $d->format('Y-m-d') !== $date) {
+            $this->errors[] = 'Nieprawidłowy format daty';
+        }
+
+        // KOMENTARZ
+        $this->data['commentIncome'] = mb_substr(trim($this->data['commentIncome'] ?? ''), 0, 100);
+
+        return empty($this->errors);
+    }
+
+
+    public function updateIncomes()
+    {
+
+        if (!$this->validateIncomes()) {
+            return $this->errors;
+        }
+
+                    // $amountIncome = $_POST['amountIncome'];
+                    // $dateIncome = $_POST['dateIncome'];
+                    // $commentIncome = $_POST['commentIncome'];
+        // $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
+
+        $idIncomeEdited = filter_var($this->data['idOfEditedIncome'], FILTER_VALIDATE_INT);
+        if (!$idIncomeEdited) {
+            $this->errors[] = 'Błędne ID przychodu';
+            return $this->errors;
+        }
+
         $db = static::getDB();
-        $catIncomeId = $this->getpaymentCategoryIncomeId($paymentCategoryIncomeName);
+        $catIncomeId = $this->getpaymentCategoryIncomeId($this->data['paymentCategoryIncomeName']);
         // $amountIncome = $_POST['amountIncome'];
         // $dateIncome = $_POST['dateIncome'];
         // $commentIncome = $_POST['commentIncome'];
@@ -35,9 +83,9 @@ class ModelPersonalBudget extends \Core\Model
 
         $queryEditIncome = $db->prepare($sql);
 		$queryEditIncome->bindValue(':income_category', $catIncomeId, PDO::PARAM_INT);
-		$queryEditIncome->bindValue(':amount', $amountIncome, PDO::PARAM_STR);
-		$queryEditIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
-		$queryEditIncome->bindValue(':commentIncome', $commentIncome, PDO::PARAM_STR);
+		$queryEditIncome->bindValue(':amount', $this->data['amountIncome'], PDO::PARAM_STR);
+		$queryEditIncome->bindValue(':dateIncome', $this->data['dateIncome'], PDO::PARAM_STR);
+		$queryEditIncome->bindValue(':commentIncome', $this->data['commentIncome'], PDO::PARAM_STR);
         // $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
         $queryEditIncome->bindValue(':incomeEditId', $idIncomeEdited, PDO::PARAM_INT);
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
@@ -95,7 +143,7 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditIncome->execute();
 
-        $queryName = $queryEditIncome->fetchAll();   
+        $queryName = $queryEditIncome->fetch();   
         return $queryName;        
     }
 
