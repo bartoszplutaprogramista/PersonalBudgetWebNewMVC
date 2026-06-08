@@ -47,8 +47,8 @@
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
-                        <textarea class="form-control" id="comment" rows="2"
-                            name="commentExpense">{{ ex_edit.comment }}</textarea>
+                        <textarea class="form-control" id="comment" rows="2" name="commentExpense"
+                            maxlength="100">{{ ex_edit.comment }}</textarea>
                         <input type="hidden" name="idOfEditedExpense" value="{{ ex_edit.exID }}" />
                     </div>
                     <div class="mt-4 submit">

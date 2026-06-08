@@ -232,6 +232,9 @@ class Personalbudget extends Authenticated
         // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
         //     $this->redirect('/');
         // }
+        // echo $_POST['editRowIncomes'];
+        // exit;
+
         if (isset($_POST['editRowIncomes'])) {
             $idIncomesEditRow = filter_input(INPUT_POST, 'editRowIncomes', FILTER_VALIDATE_INT);
             if (!$idIncomesEditRow) {
@@ -249,15 +252,15 @@ class Personalbudget extends Authenticated
         $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
         $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
-        $formData = $_SESSION['form_data'] ?? null;
-        unset($_SESSION['form_data']);
+        // $formData = $_SESSION['form_data'] ?? null;
+        // unset($_SESSION['form_data']);
 
-        if ($formData) {
-            $incomesEditValues['amn'] = $formData['amountIncome'];
-            $incomesEditValues['date'] = $formData['dateIncome'];
-            $incomesEditValues['comment'] = $formData['commentIncome'];
-            $incomesEditValues['category'] = $formData['paymentCategoryIncomeName'];
-        }
+        // if ($formData) {
+        //     $incomesEditValues['amn'] = $formData['amountIncome'];
+        //     $incomesEditValues['date'] = $formData['dateIncome'];
+        //     $incomesEditValues['comment'] = $formData['commentIncome'];
+        //     $incomesEditValues['category'] = $formData['paymentCategoryIncomeName'];
+        // }
 
         // if(isset($_POST['editRowIncomes'])) {
         //     // $_SESSION['idIncomesEditRow'] = $_POST['editRowIncomes'];

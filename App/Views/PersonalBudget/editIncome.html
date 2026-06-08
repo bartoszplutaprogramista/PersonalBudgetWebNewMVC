@@ -24,6 +24,8 @@
                         <label for="theDate3" class="form-label">Data:</label>
                         <input type="date" class="form-control" id="theDate3" min="2000-01-01" name="dateIncome"
                             value="{{ inc_edit.dateInc }}">
+                        {# value="{{ inc_edit.dateInc }}"> #}
+
                         {# <input type="date" class="form-control" id="theDate3" min="2000-01-01" name="dateIncome"> #}
                     </div>
                     <label class="p-input-radio mb-2" for="paymentCategoryIncomeId">Kategoria płatności:</label>
@@ -39,8 +41,8 @@
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
                         {# <textarea class="form-control" id="comment" rows="2"
                             name="commentIncome">{{ inc_edit.comment }}</textarea> #}
-                        <textarea class="form-control" id="comment" rows="2"
-                            name="commentIncome">{{  inc_edit.comment }}</textarea>
+                        <textarea class="form-control" id="comment" rows="2" name="commentIncome"
+                            maxlength="100">{{  inc_edit.comment }} </textarea>
                         <input type="hidden" name="idOfEditedIncome" value="{{ inc_edit.incID }}" />
                     </div>
                     <div class="mt-4 submit">
