@@ -4,7 +4,8 @@
 
 {% block body2 %}
 {% if expenses_edit_values %}
-{% for ex_edit in expenses_edit_values %}
+{# {% for ex_edit in expenses_edit_values %} #}
+{% set ex_edit = expenses_edit_values %}
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
@@ -14,9 +15,11 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
-                        <input type="number" class="form-control" min="1" max="999999.99" step="0.01"
+                        <input class="form-control" min="1" max="999999.99" step="0.01" id="amountOfExpanse"
+                            value="{{ ex_edit.amn }}" name="amountExpense">
+                        {# <input type="number" class="form-control" min="1" max="999999.99" step="0.01"
                             id="amountOfExpanse" value="{{ ex_edit.amn }}" name="amountExpense"
-                            onkeypress="return onlyNumberKey(event)">
+                            onkeypress="return onlyNumberKey(event)"> #}
                     </div>
                     <div class="mb-3">
                         <label for="theDate3" class="form-label">Data:</label>
@@ -65,6 +68,6 @@
     document.getElementById('paymentCategory').value = "{{ ex_edit.excategory }}";
     document.getElementById('paymentMethodId').value = "{{ ex_edit.pay }}";
 </script>
-{% endfor %}
+{# {% endfor %} #}
 {% endif %}
 {% endblock %}

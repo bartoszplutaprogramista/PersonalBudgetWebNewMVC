@@ -93,14 +93,60 @@ class ModelPersonalBudget extends \Core\Model
         return $queryEditIncome->execute();
     }
 
-    public function updateExpenses($idExpenseEdited, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
+    // public function updateExpenses($idExpenseEdited, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
+    public function validateExpenses()
     {
+        // $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
+        // if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
+        //     $errors[] = 'Nieprawidłowa kwota';
+        // }
+
+        // $dateExpense = $_POST['dateExpense'] ?? '';
+        // $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
+        // if (!$d || $d->format('Y-m-d') !== $dateExpense) {
+        //     $errors[] = 'Nieprawidłowy format daty';
+        // }
+
+        // $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
+        
+        
+        // KWOTA
+        $amountExpense = filter_var($this->data['amountExpense'] ?? null, FILTER_VALIDATE_FLOAT);
+        if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
+            $this->errors[] = 'Nieprawidłowa kwota';
+        }
+
+        // DATA
+        $dateExpense = $this->data['dateExpense'] ?? '';
+        $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
+        if (!$d || $d->format('Y-m-d') !== $dateExpense) {
+            $this->errors[] = 'Nieprawidłowy format daty';
+        }
+
+        // KOMENTARZ
+        $this->data['commentExpense'] = mb_substr(trim($this->data['commentExpense'] ?? ''), 0, 100);
+
+        return empty($this->errors);
+    }
+
+    public function updateExpenses()
+    {
+        if (!$this->validateExpenses()) {
+            return $this->errors;
+        }
+        $idExpenseEdited = filter_var($this->data['idOfEditedExpense'], FILTER_VALIDATE_INT);
+        if (!$idExpenseEdited) {
+            $this->errors[] = 'Błędne ID przychodu';
+            return $this->errors;
+        }
         $db = static::getDB();
-        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
-        $paymentId = $this->getPaymentId($paymentName);
-        $amountExpense = $_POST['amountExpense'];
-        $dateExpense = $_POST['dateExpense'];
-        $commentExpense = $_POST['commentExpense'];
+        $catExpenseId = $this->getpaymentCategoryExpenseId($this->data['paymentCategoryExpense']);
+        $paymentId = $this->getPaymentId($this->data['paymentMethod']);
+        // $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
+        // $paymentId = $this->getPaymentId($paymentName);
+        // $amountExpense = $_POST['amountExpense'];
+        // $dateExpense = $_POST['dateExpense'];
+        // $commentExpense = $_POST['commentExpense'];
 
         $sql = 'UPDATE expenses 
                 SET expense_category_assigned_to_user_id = :expense_category,  
@@ -112,11 +158,11 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryEditExpense = $db->prepare($sql);
-		$queryEditExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
+		$queryEditExpense->bindValue(':expense_category', $catExpenseId, PDO::PARAM_INT);
 		$queryEditExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
-		$queryEditExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
-		$queryEditExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
-		$queryEditExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+		$queryEditExpense->bindValue(':amount', $this->data['amountExpense'], PDO::PARAM_STR);
+		$queryEditExpense->bindValue(':dateExpense', $this->data['dateExpense'], PDO::PARAM_STR);
+		$queryEditExpense->bindValue(':commentExpense', $this->data['commentExpense'], PDO::PARAM_STR);
         // $queryEditExpense->bindValue(':expenseEditId', $_SESSION['idExpensesEditRow'], PDO::PARAM_INT);
         $queryEditExpense->bindValue(':expenseEditId', $idExpenseEdited, PDO::PARAM_INT);
         $queryEditExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
@@ -169,7 +215,8 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditExpenses->execute();
 
-        $queryName = $queryEditExpenses->fetchAll();   
+        // $queryName = $queryEditExpenses->fetchAll();   
+        $queryName = $queryEditExpenses->fetch();   
         return $queryName;
     }
 

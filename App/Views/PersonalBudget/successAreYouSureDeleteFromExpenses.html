@@ -22,7 +22,8 @@
                     </thead>
                     <tbody>
                         {% if data_to_are_you_sure_table_expenses %}
-                        {% for expense_are_you_sure in data_to_are_you_sure_table_expenses %}
+                        {# {% for expense_are_you_sure in data_to_are_you_sure_table_expenses %} #}
+                        {% set expense_are_you_sure = data_to_are_you_sure_table_expenses %}
                         <tr>
                             <td class="ordinal-number">{{ ordinal_delete_expenses_number }}</td>
                             <td class="column-expenses-delete">{{ expense_are_you_sure.amn }}</td>
@@ -31,7 +32,7 @@
                             <td class="column-expenses-delete">{{ expense_are_you_sure.excategory }}</td>
                             <td class="column-expenses-delete">{{ expense_are_you_sure.comment }}</td>
                         </tr>
-                        {% endfor %}
+                        {# {% endfor %} #}
                         {% endif %}
                     </tbody>
                 </table>
