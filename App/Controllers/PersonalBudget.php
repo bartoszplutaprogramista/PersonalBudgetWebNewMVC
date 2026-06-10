@@ -229,13 +229,13 @@ class Personalbudget extends Authenticated
 
     public function editIncomes()
     {
-        // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-        //     $this->redirect('/');
-        // }
         // echo $_POST['editRowIncomes'];
         // exit;
 
         if (isset($_POST['editRowIncomes'])) {
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
             $idIncomesEditRow = filter_input(INPUT_POST, 'editRowIncomes', FILTER_VALIDATE_INT);
             if (!$idIncomesEditRow) {
                 $this->redirect('/personalbudget/browsethebalance');
