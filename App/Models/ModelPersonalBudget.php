@@ -698,12 +698,28 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryIncomeId['id'];
     }
 
-    public function insertToIncomes($amountIncome, $dateIncome, $commentIncome, $paymentCategoryIncomeName)
+    public function insertToIncomes()
     {
+        if (!$this->validateIncomes()) {
+            return $this->errors;
+        }
+        
+        // $amountIncome = filter_input(INPUT_POST, 'amountIncome', FILTER_VALIDATE_FLOAT);
+        // if ($amountIncome === false || $amountIncome <= 0 || $amountIncome > 999999.99) {
+        //     $errors[] = 'Nieprawidłowa kwota';
+        // }
 
-        if (empty($this->errors)){
+        // $dateIncome = $_POST['dateIncome'] ?? '';
+        // $d = DateTime::createFromFormat('Y-m-d', $dateIncome);
+        // if (!$d || $d->format('Y-m-d') !== $dateIncome) {
+        //     $errors[] = 'Nieprawidłowy format daty';
+        // }
 
-            $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId($paymentCategoryIncomeName);
+        // $commentIncome = mb_substr(trim($_POST['commentIncome'] ?? ''), 0, 100);
+
+            // $paymentCatIncId = filter_var($this->data['paymentCategoryIncomeName'], FILTER_VALIDATE_INT);
+
+            $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId($this->data['paymentCategoryIncomeName']);
 
             // $amountIncome = $_POST['amountIncome'];
 		    // $dateIncome = $_POST['dateIncome'];
@@ -717,13 +733,11 @@ class ModelPersonalBudget extends \Core\Model
             $queryIncome = $db->prepare($sql);	
             $queryIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
             $queryIncome->bindValue(':paymentCategoryIncome', $paymentCategoryIncomeId, PDO::PARAM_INT);
-            $queryIncome->bindValue(':amount', $amountIncome, PDO::PARAM_STR);
-            $queryIncome->bindValue(':dateIncome', $dateIncome, PDO::PARAM_STR);
-            $queryIncome->bindValue(':commentIncome', $commentIncome, PDO::PARAM_STR);
+            $queryIncome->bindValue(':amount', $this->data['amountIncome'], PDO::PARAM_STR);
+            $queryIncome->bindValue(':dateIncome', $this->data['dateIncome'], PDO::PARAM_STR);
+            $queryIncome->bindValue(':commentIncome',  $this->data['commentIncome'], PDO::PARAM_STR);
     
             return $queryIncome->execute();
-        }
-        return false;
     }
 
     public function getPaymentId($paymentName)
