@@ -773,11 +773,16 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryExpenseId['id'];
     }
 
-    public function insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
+    // public function insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
+    public function insertToExpenses()
     {
-        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
+        if (!$this->validateExpenses()) {
+            return $this->errors;
+        }
 
-        $paymentId = $this->getPaymentId($paymentName);
+        $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($this->data['paymentCategoryExpense']);
+
+        $paymentId = $this->getPaymentId($this->data['paymentMethod']);
 
         $db = static::getDB();
 
@@ -791,12 +796,13 @@ class ModelPersonalBudget extends \Core\Model
 		$queryExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
 		$queryExpense->bindValue(':expense_category', $paymentCatExpenseId, PDO::PARAM_INT);
 		$queryExpense->bindValue(':payment_method', $paymentId, PDO::PARAM_INT);
-		$queryExpense->bindValue(':amount', $amountExpense, PDO::PARAM_STR);
-		$queryExpense->bindValue(':dateExpense', $dateExpense, PDO::PARAM_STR);
-		$queryExpense->bindValue(':commentExpense', $commentExpense, PDO::PARAM_STR);
+		$queryExpense->bindValue(':amount', $this->data['amountExpense'], PDO::PARAM_STR);
+		$queryExpense->bindValue(':dateExpense', $this->data['dateExpense'], PDO::PARAM_STR);
+		$queryExpense->bindValue(':commentExpense', $this->data['commentExpense'], PDO::PARAM_STR);
 		
         return $queryExpense->execute();
     }
+    
     public static function selectOptionsForIncomes()
     {
         $db = static::getDB();

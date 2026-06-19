@@ -43,10 +43,14 @@ class Personalbudget extends Authenticated
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod(); 
 
+        $formDataExpenses = $_SESSION['form_data_expenses'] ?? null;
+        unset($_SESSION['form_data_expenses']);
+
         View::renderTemplate('PersonalBudget/addExpense.html', [
             'user' => $this->user,
             'expenses_options_form_category' => $expenses_options_form_category,
             'expenses_options_form_payment_method' => $expenses_options_form_payment_method,
+            'formDataExpenses' => $formDataExpenses,
             'csrf_token' => Csrf::generate()
         ]);
     } 
@@ -455,43 +459,59 @@ class Personalbudget extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-            $errors = [];
+            // $errors = [];
+
+            $personalBudget = new ModelPersonalBudget($_POST);
+            $result = $personalBudget->insertToExpenses();
+
+            if ($result === true) {
+                $this->redirect('/personalbudget/successaddexpense');
+            }
+
+            $_SESSION['form_data_expenses'] = $_POST;
+
+            foreach ($result as $error) {
+                Flash::addMessage($error, Flash::WARNING);
+            }
+
+            $this->redirect('/personalbudget/addexpense');
+    }
             
-            $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
-            if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
-                $errors[] = 'Nieprawidłowa kwota';
-            }
+            // $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
+            // if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
+            //     $errors[] = 'Nieprawidłowa kwota';
+            // }
 
-            $dateExpense = $_POST['dateExpense'] ?? '';
-            $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
-            if (!$d || $d->format('Y-m-d') !== $dateExpense) {
-                $errors[] = 'Nieprawidłowy format daty';
-            }
+            // $dateExpense = $_POST['dateExpense'] ?? '';
+            // $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
+            // if (!$d || $d->format('Y-m-d') !== $dateExpense) {
+            //     $errors[] = 'Nieprawidłowy format daty';
+            // }
 
-            $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
+            // $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
 
-            if (!empty($errors)) {
-                foreach ($errors as $error) {
-                    Flash::addMessage($error, Flash::WARNING);
-                }
+            // if (!empty($errors)) {
+            //     foreach ($errors as $error) {
+            //         Flash::addMessage($error, Flash::WARNING);
+            //     }
 
-                $this->redirect('/personalbudget/addexpense');
-            }
+            //     $this->redirect('/personalbudget/addexpense');
+            // }
 
 
         // $amountExpense = $_POST['amountExpense'];
         // $dateExpense = $_POST['dateExpense'];
         // $commentExpense = $_POST['commentExpense'];
-        $paymentName = $_POST['paymentMethod'];
-        $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
+        // $paymentName = $_POST['paymentMethod'];
+        // $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
 
 
         // $this->user = Auth::getUser();  
-        $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
-            $this->redirect('/personalbudget/successaddexpense');      
-        }
-    }
+        // $personalBudget = new ModelPersonalBudget($_POST);
+        // if ($personalBudget->insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
+        //     $this->redirect('/personalbudget/successaddexpense');      
+        // }
+    // }
 
     public static function dateFromToCurrentMonth()
     {
