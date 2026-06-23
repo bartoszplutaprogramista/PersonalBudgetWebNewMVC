@@ -17,9 +17,11 @@
                         <label for="comment" class="form-label">Nazwa Kategorii:</label>
                         <input type="hidden" name="incomeCategoryEditedID"
                             value="{{ name_income_category_to_edit.id }}" />
-                        <input type="text" class="form-control" value="{{ name_income_category_to_edit.name }}"
-                            name="editIncomeCategoryName" maxlength="50" required>
                         {# <input type="text" class="form-control" value="{{ name_income_category_to_edit.name }}"
+                            name="editIncomeCategoryName" maxlength="50" required> #}
+                        <input type="text" class="form-control" value="{{ name_income_category_to_edit.name }}"
+                            name="editIncomeCategoryName">
+                        {# złe <input type="text" class="form-control" value="{{ name_income_category_to_edit.name }}"
                             name="editIncomeCategoryName"> #}
                     </div>
                     <div class="mt-4 submit">

@@ -80,11 +80,26 @@ class Profile extends Authenticated
     
     public function editIncomesCategory()
     {
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->redirect('/');
-        }
-        $editIncomesCategoryID = $_POST['editIncomesCat'];
+        // $editIncomesCategoryID = $_POST['editIncomesCat'];
+
+        if (isset($_POST['editIncomesCat'])) {
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+
+            $editIncomesCategoryID = filter_input(INPUT_POST, 'editIncomesCat', FILTER_VALIDATE_INT);
+
+            if (!$editIncomesCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            }
+            $_SESSION['editIncomesCategoryID'] = $editIncomesCategoryID;
         // $_SESSION['incomesCatID'] = $editIncomesCategoryID;
+        }
+
+        $editIncomesCategoryID = $_SESSION['editIncomesCategoryID'] ?? null;
+        if (!$editIncomesCategoryID) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
 
         $name_income_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit($editIncomesCategoryID); 
 
@@ -139,29 +154,47 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editIncomeCategoryName = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
-        if ($editIncomeCategoryName === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            $this->redirect('/profile/categoryconfigurator');
-        }
-        // $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
-        if (!$editIncomeCategoryName) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
-        $editIncomeCategoryID = filter_input(INPUT_POST, 'incomeCategoryEditedID', FILTER_VALIDATE_INT);
-        if (!$editIncomeCategoryID) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
-        // $editIncomeCategoryID = $_POST['incomeCategoryEditedID'];
+
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)) {
-            // if(isset($_SESSION['incomesCatID'])) {
-            //     unset($_SESSION['incomesCatID']);
-            // }
+        $result = $personalBudget->editIncomesCategory();
+
+        if ($result === true) {
             Flash::addMessage('Zmiany zapisane');
-            $this->redirect('/profile/categoryconfigurator');      
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/editincomescategory');   
+        
     }
+        /*************** */
+
+    //     $editIncomeCategoryName = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+    //     if ($editIncomeCategoryName === '') {
+    //         Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+    //         $this->redirect('/profile/categoryconfigurator');
+    //     }
+    //     // $editIncomeCategoryName = $_POST['editIncomeCategoryName'];
+    //     if (!$editIncomeCategoryName) {
+    //         ($this->redirect('/profile/categoryconfigurator'));
+    //     }
+    //     $editIncomeCategoryID = filter_input(INPUT_POST, 'incomeCategoryEditedID', FILTER_VALIDATE_INT);
+    //     if (!$editIncomeCategoryID) {
+    //         ($this->redirect('/profile/categoryconfigurator'));
+    //     }
+    //     // $editIncomeCategoryID = $_POST['incomeCategoryEditedID'];
+    //     $personalBudget = new ModelPersonalBudget($_POST);
+    //     if ($personalBudget->editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)) {
+    //         // if(isset($_SESSION['incomesCatID'])) {
+    //         //     unset($_SESSION['incomesCatID']);
+    //         // }
+    //         Flash::addMessage('Zmiany zapisane');
+    //         $this->redirect('/profile/categoryconfigurator');      
+    //     }
+    // }
 
     public function changeExpenseNameAction()
     {

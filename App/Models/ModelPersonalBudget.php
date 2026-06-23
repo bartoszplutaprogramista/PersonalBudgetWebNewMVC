@@ -1007,8 +1007,32 @@ class ModelPersonalBudget extends \Core\Model
         ];        
     }
 
-    public function editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)
+    public function validateCategoryOfIncomes()
     {
+        $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+
+        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+
+        if ($this->data['editIncomeCategoryName'] === '') {
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+
+        $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
+        if (!$incomeCategoryEditedID) {
+            $this->errors[] = 'Błędne ID kategorii przychodu';
+            return $this->errors;
+        }
+
+        return empty($this->errors);
+    }
+
+    // public function editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)
+    public function editIncomesCategory()
+    {
+        if (!$this->validateCategoryOfIncomes()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
         $sql = 'UPDATE incomes_category_assigned_to_users 
@@ -1017,8 +1041,8 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryEditIncome = $db->prepare($sql);
-		$queryEditIncome->bindValue(':income_category', $editIncomeCategoryName, PDO::PARAM_STR);
-        $queryEditIncome->bindValue(':incomeCategoryEditId', $editIncomeCategoryID, PDO::PARAM_INT);
+		$queryEditIncome->bindValue(':income_category', $this->data['editIncomeCategoryName'], PDO::PARAM_STR);
+        $queryEditIncome->bindValue(':incomeCategoryEditId', $this->data['incomeCategoryEditedID'], PDO::PARAM_INT);
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
