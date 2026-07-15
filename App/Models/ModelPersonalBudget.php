@@ -29,6 +29,13 @@ class ModelPersonalBudget extends \Core\Model
  
     public function validateIncomes()
     {
+        // $idOfEditedIncome = filter_var($this->data['idOfEditedIncome'], FILTER_VALIDATE_INT);
+        // // echo $idOfEditedIncome;
+        // // exit;
+
+        // if (!$idOfEditedIncome) {
+        //     $this->errors[] = 'Nieprawidłowe id';
+        // }
         // KWOTA
         $amount = filter_var($this->data['amountIncome'] ?? null, FILTER_VALIDATE_FLOAT);
         if ($amount === false || $amount <= 0 || $amount > 999999.99) {
@@ -68,6 +75,12 @@ class ModelPersonalBudget extends \Core\Model
         }
 
         $db = static::getDB();
+
+        // $selectCatIncomeId = filter_var($this->data['paymentCategoryIncomeName'], FILTER_VALIDATE_INT);
+        // if (!$selectCatIncomeId) {
+        //     $this->errors[] = 'Błędne ID kategorii przychodu';
+        //     return $this->errors;
+        // }
         $catIncomeId = $this->getpaymentCategoryIncomeId($this->data['paymentCategoryIncomeName']);
         // $amountIncome = $_POST['amountIncome'];
         // $dateIncome = $_POST['dateIncome'];

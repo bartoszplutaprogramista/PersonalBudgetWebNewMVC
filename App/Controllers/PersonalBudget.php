@@ -137,7 +137,7 @@ class Personalbudget extends Authenticated
             $this->redirectToChosenPeriod();
         }
 
-        // $_SESSION['form_data'] = $_POST;
+        $_SESSION['form_data_update'] = $_POST;
 
         foreach ($result as $error) {
             Flash::addMessage($error, Flash::WARNING);
@@ -152,11 +152,11 @@ class Personalbudget extends Authenticated
             $this->redirect('/');
         }
 
-        
-        $idOfEditedExpense = filter_input(INPUT_POST, 'idOfEditedExpense', FILTER_VALIDATE_INT);
-        if (!$idOfEditedExpense) {
-            $this->redirect('/personalbudget/browsethebalance');
-        }
+        /****************** */
+        // $idOfEditedExpense = filter_input(INPUT_POST, 'idOfEditedExpense', FILTER_VALIDATE_INT);
+        // if (!$idOfEditedExpense) {
+        //     $this->redirect('/personalbudget/browsethebalance');
+        // }  
 
         // $errors = [];
         
@@ -226,21 +226,63 @@ class Personalbudget extends Authenticated
                 $this->redirect('/personalbudget/browsethebalance');
             }
             $_SESSION['idIncomesEditRow'] = $idIncomesEditRow;
+
+            $idIncomesEditRow = $_SESSION['idIncomesEditRow'] ?? null;
+            if (!$idIncomesEditRow) {
+                $this->redirect('/personalbudget/browsethebalance');
+            }
+
+            $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
+            $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
+
+                    //             echo '<pre>';
+                    // print_r($incomesEditValues);
+                    // echo '</pre>';
+                    // exit;
         }
+        // else $incomesEditValues = $_SESSION['form_data_inc_edited'] = $_POST;
+
+           else {
+                    $incomesEditValues = $_SESSION['form_data_update'] ?? null;
+                    unset($_SESSION['form_data_update']);
 
 
-        $idIncomesEditRow = $_SESSION['idIncomesEditRow'] ?? null;
-        if (!$idIncomesEditRow) {
-            $this->redirect('/personalbudget/browsethebalance');
-        }
+                    // $incomes_options_form = $_SESSION['form_data_update']['paymentCategoryIncomeName'];;
+                    $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
+                    // $incomesEditValues['name'] = $incomesEditValues['paymentCategoryIncomeName'];
+//                                 var_dump($_POST['paymentCategoryIncomeName']);
+// exit;
+                    // echo '<pre>';
+                    // print_r($incomes_options_form);
+                    // echo '</pre>';
+                    // exit;
 
-        $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
-        $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
+                    // echo $incomes_options_form;
+                    // exit;
+                    // echo '<pre>';
+                    // print_r($incomesEditValues);
+                    // echo '</pre>';
+                    // exit;
+           }
+
+
+        // $formDataEdited = $_SESSION['idIncomesEditRow'] ?? null;
+        // unset($_SESSION['idIncomesEditRow']);
+
+
+        // $idIncomesEditRow = $_SESSION['idIncomesEditRow'] ?? null;
+        // if (!$idIncomesEditRow) {
+        //     $this->redirect('/personalbudget/browsethebalance');
+        // }
+
+        // $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
+        // $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
         View::renderTemplate('PersonalBudget/editIncome.html', [
             'user' => $this->user,
             'incomes_edit_values' => $incomesEditValues,
             'incomes_options_form' => $incomes_options_form,
+            // 'formDataEdited' => $formDataEdited,
             'csrf_token' => Csrf::generate()
         ]);
     }
@@ -258,12 +300,32 @@ class Personalbudget extends Authenticated
                 $this->redirect('/personalbudget/browsethebalance');
             }
             $_SESSION['idExpensesEditRow'] = $idExpensesEditRow;
+
+            $idExpensesEditRow = $_SESSION['idExpensesEditRow'] ?? null;
+            if (!$idExpensesEditRow) {
+                $this->redirect('/personalbudget/browsethebalance');
+            }
+
+            $expensesEditValues = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($idExpensesEditRow);     
+            // $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
+            // $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
+            //             echo '<pre>';
+            // print_r($expensesEditValues);
+            // echo '</pre>';
+            // exit;
         }
 
-        $idExpensesEditRow = $_SESSION['idExpensesEditRow'] ?? null;
-        if (!$idExpensesEditRow) {
-            $this->redirect('/personalbudget/browsethebalance');
-        }
+        else {
+            $expensesEditValues = $_SESSION['form_data_expenses'] ?? null;
+            unset($_SESSION['form_data_expenses']);
+            // $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
+            // $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
+            // echo '<pre>';
+            // print_r($expensesEditValues);
+            // echo '</pre>';
+            // exit;
+
+           }
         // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
         //     $this->redirect('/');
         // }
@@ -271,10 +333,14 @@ class Personalbudget extends Authenticated
         // if (!$idExpensesEditRow) {
         //     $this->redirect('/personalbudget/browsethebalance');
         // }
-
-        $expensesEditValues = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($idExpensesEditRow);     
+    
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
+
+            //         echo '<pre>';
+            // print_r($expenses_options_form_payment_method);
+            // echo '</pre>';
+            // exit;
 
 
         View::renderTemplate('PersonalBudget/editExpense.html', [
