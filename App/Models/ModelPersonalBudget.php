@@ -1312,89 +1312,89 @@ class ModelPersonalBudget extends \Core\Model
         return $addNewPayMethCategory->execute();   
     }
 
-    public function deleteFromDataBaseUser($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBaseUser($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM users 
-                WHERE id = :idOfUser';
+    //     $sql = 'DELETE FROM users 
+    //             WHERE id = :idOfUser';
 
-        $queryDeleteUser = $db->prepare($sql);
-        $queryDeleteUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeleteUser->execute();
+    //     $queryDeleteUser = $db->prepare($sql);
+    //     $queryDeleteUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeleteUser->execute();
 
-        return $queryDeleteUser;
-    }
+    //     return $queryDeleteUser;
+    // }
 
-    public function deleteFromDataBaseIncomesUserID($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBaseIncomesUserID($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes 
-                WHERE user_id = :idOfUser';
+    //     $sql = 'DELETE FROM incomes 
+    //             WHERE user_id = :idOfUser';
 
-        $queryDeleteIncomesUser = $db->prepare($sql);
-        $queryDeleteIncomesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeleteIncomesUser->execute();
+    //     $queryDeleteIncomesUser = $db->prepare($sql);
+    //     $queryDeleteIncomesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeleteIncomesUser->execute();
 
-        return $queryDeleteIncomesUser;
-    }
+    //     return $queryDeleteIncomesUser;
+    // }
 
-    public function deleteFromDataBaseExpensesUserID($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBaseExpensesUserID($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses 
-                WHERE user_id = :idOfUser';
+    //     $sql = 'DELETE FROM expenses 
+    //             WHERE user_id = :idOfUser';
 
-        $queryDeleteExpensesUser = $db->prepare($sql);
-        $queryDeleteExpensesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeleteExpensesUser->execute();
+    //     $queryDeleteExpensesUser = $db->prepare($sql);
+    //     $queryDeleteExpensesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeleteExpensesUser->execute();
 
-        return $queryDeleteExpensesUser;
-    }
+    //     return $queryDeleteExpensesUser;
+    // }
 
-    public function deleteFromDataBaseIncomesCategoryAssignedToUser($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBaseIncomesCategoryAssignedToUser($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM incomes_category_assigned_to_users 
-                WHERE user_id = :idOfUser';
+    //     $sql = 'DELETE FROM incomes_category_assigned_to_users 
+    //             WHERE user_id = :idOfUser';
 
-        $queryDeleteIncAssignedToUser = $db->prepare($sql);
-        $queryDeleteIncAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeleteIncAssignedToUser->execute();
+    //     $queryDeleteIncAssignedToUser = $db->prepare($sql);
+    //     $queryDeleteIncAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeleteIncAssignedToUser->execute();
 
-        return $queryDeleteIncAssignedToUser;
-    }
+    //     return $queryDeleteIncAssignedToUser;
+    // }
 
-    public function deleteFromDataBaseExpensesCategoryAssignedToUser($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBaseExpensesCategoryAssignedToUser($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM expenses_category_assigned_to_users 
-                WHERE user_id = :idOfUser';
+    //     $sql = 'DELETE FROM expenses_category_assigned_to_users 
+    //             WHERE user_id = :idOfUser';
 
-        $queryDeleteExpAssignedToUser = $db->prepare($sql);
-        $queryDeleteExpAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeleteExpAssignedToUser->execute();
+    //     $queryDeleteExpAssignedToUser = $db->prepare($sql);
+    //     $queryDeleteExpAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeleteExpAssignedToUser->execute();
 
-        return $queryDeleteExpAssignedToUser;
-    }
+    //     return $queryDeleteExpAssignedToUser;
+    // }
     
-    public function deleteFromDataBasePaymentMethodsCategoryAssignedToUser($id)
-    {
-        $db = static::getDB();
+    // public function deleteFromDataBasePaymentMethodsCategoryAssignedToUser($id)
+    // {
+    //     $db = static::getDB();
 
-        $sql = 'DELETE FROM payment_methods_assigned_to_users WHERE user_id = :idOfUser';
+    //     $sql = 'DELETE FROM payment_methods_assigned_to_users WHERE user_id = :idOfUser';
 
-        $queryDeletePayMethAssignedToUser = $db->prepare($sql);
-        $queryDeletePayMethAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-        $queryDeletePayMethAssignedToUser->execute();
+    //     $queryDeletePayMethAssignedToUser = $db->prepare($sql);
+    //     $queryDeletePayMethAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
+    //     $queryDeletePayMethAssignedToUser->execute();
 
-        return $queryDeletePayMethAssignedToUser;
-    }
-    
+    //     return $queryDeletePayMethAssignedToUser;
+    // }
+
     public function deleteAccountFromDataBase($userID): bool
     {
         $db = static::getDB();
