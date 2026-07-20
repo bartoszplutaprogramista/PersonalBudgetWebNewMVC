@@ -7,6 +7,8 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\ModelPersonalBudget;
 use \App\Csrf;
+// use App\Models\User;
+
 
 #[\AllowDynamicProperties]
 class Profile extends Authenticated
@@ -486,13 +488,32 @@ class Profile extends Authenticated
         }
     }
 
+    // public function deleteDataBaseAccount()
+    // {
+    //     $userID = $_SESSION['userIdSession'];
+    //     Auth::logout();
+    //     $personalBudget = new ModelPersonalBudget($_POST);
+    //     if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {          
+    //         $this->redirect('/login/show-message-after-deleting-user-data');
+    //     }
+    // }
+
+
+    // Kontroler Profile.php - uproszczony
     public function deleteDataBaseAccount()
     {
+        // $user = $this->user;
+
+        // var_dump($user);
+        // exit;
+        $personalBudget = new ModelPersonalBudget($_POST);
         $userID = $_SESSION['userIdSession'];
         Auth::logout();
-        $personalBudget = new ModelPersonalBudget($_POST);
-        if (($personalBudget->deleteFromDataBaseIncomesUserID($userID))&&($personalBudget->deleteFromDataBaseExpensesUserID($userID))&&($personalBudget->deleteFromDataBaseIncomesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseExpensesCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBasePaymentMethodsCategoryAssignedToUser($userID))&&($personalBudget->deleteFromDataBaseUser($userID))) {          
+
+        // if ((new User)->deleteAccountFromDataBase($userID)) {
+        if ($personalBudget->deleteAccountFromDataBase($userID)) {
             $this->redirect('/login/show-message-after-deleting-user-data');
         }
     }
+
 }

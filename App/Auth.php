@@ -77,7 +77,9 @@ class Auth
     public static function getUser()
     {
         if (isset($_SESSION['user_id'])) {
+        // if (isset($_SESSION['userIdSession'])) {
             return User::findByID($_SESSION['user_id']);
+            // return User::findByID($_SESSION['userIdSession']);
         } else {
             return static::loginFromRememberCookie();
         }

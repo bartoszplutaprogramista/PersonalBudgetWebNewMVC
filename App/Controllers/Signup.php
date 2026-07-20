@@ -18,20 +18,9 @@ class Signup extends \Core\Controller
         View::renderTemplate('Signup/new.html');
     }
 
-    public function createAction()
+public function createAction()
     {
-        if(isset($_POST['g-recaptcha-response'])){
-            $secretKey = "";
-
-            $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
-
-            $answer = json_decode($check);   
-            
-            if($answer->success==false){
-                Flash::addMessage('Potwierdź że nie jesteś botem');
-                $this->redirect('/signup/new');
-            } else {
-                $user = new User($_POST);
+        $user = new User($_POST);
 
                 $personalBudget = new ModelPersonalBudget($_POST);
         
@@ -39,7 +28,7 @@ class Signup extends \Core\Controller
                     $emailOfUser = $_POST['email']; 
                     $userId = $user->getUserId($emailOfUser);
         
-                    $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
+                    $personalBudget->insertIncomesIntoIncomesCategoryAssignedToUsers($userId);
                     $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
                     $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
                     
@@ -54,12 +43,51 @@ class Signup extends \Core\Controller
                     ]);
         
                 } 
-            }
-        } else {
-            Flash::addMessage('Potwierdź że nie jesteś botem');
-            $this->redirect('/signup/new');
-        }
     }
+
+
+    // public function createAction()
+    // {
+    //     if(isset($_POST['g-recaptcha-response'])){
+    //         $secretKey = "";
+
+    //         $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
+
+    //         $answer = json_decode($check);   
+            
+    //         if($answer->success==false){
+    //             Flash::addMessage('Potwierdź że nie jesteś botem');
+    //             $this->redirect('/signup/new');
+    //         } else {
+    //             $user = new User($_POST);
+
+    //             $personalBudget = new ModelPersonalBudget($_POST);
+        
+    //             if ($user->save()) {
+    //                 $emailOfUser = $_POST['email']; 
+    //                 $userId = $user->getUserId($emailOfUser);
+        
+    //                 $personalBudget->insertIncomesIntoIncomesCategoryAssignedToUsers($userId);
+    //                 $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
+    //                 $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
+                    
+    //                 $user->sendActivationEmail();
+        
+    //                 $this->redirect('/signup/success');
+        
+    //             } else {
+        
+    //                 View::renderTemplate('Signup/new.html', [
+    //                     'user' => $user
+    //                 ]);
+        
+    //             } 
+    //         }
+    //     } else {
+    //         Flash::addMessage('Potwierdź że nie jesteś botem');
+    //         $this->redirect('/signup/new');
+    //     }
+    // }
     public function successAction()
     {
         View::renderTemplate('Signup/success.html');

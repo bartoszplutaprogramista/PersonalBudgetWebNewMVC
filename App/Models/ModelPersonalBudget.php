@@ -624,7 +624,7 @@ class ModelPersonalBudget extends \Core\Model
         return $queryNamePayment;
     }   
 
-    public function inserIncomesIntoIncomesCategoryAssignedToUsers($currentUserId)
+    public function insertIncomesIntoIncomesCategoryAssignedToUsers($currentUserId)
     {
 
         $db = static::getDB();
@@ -1393,5 +1393,38 @@ class ModelPersonalBudget extends \Core\Model
         $queryDeletePayMethAssignedToUser->execute();
 
         return $queryDeletePayMethAssignedToUser;
+    }
+    
+    public function deleteAccountFromDataBase($userID): bool
+    {
+        $db = static::getDB();
+
+        try {
+            $db->beginTransaction();
+            
+            $tables = [
+                'incomes',
+                'expenses', 
+                'incomes_category_assigned_to_users',
+                'expenses_category_assigned_to_users',
+                'payment_methods_assigned_to_users',
+            ];
+            
+            foreach ($tables as $table) {
+                $stmt = $db->prepare("DELETE FROM {$table} WHERE user_id = :id");
+                $stmt->execute([':id' => $userID]);
+            }
+            
+            $stmt = $db->prepare('DELETE FROM users WHERE id = :id');
+            $stmt->execute([':id' => $userID]);
+            
+            $db->commit();
+            return true;
+            
+        } catch (\PDOException $e) {
+            $db->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
     }
 }
