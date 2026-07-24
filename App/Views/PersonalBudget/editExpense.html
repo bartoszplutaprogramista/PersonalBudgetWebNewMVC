@@ -3,7 +3,7 @@
 {% block title2 %}Edytuj wydatek{% endblock %}
 
 {% block body2 %}
-{% if expenses_edit_values %}
+{# {% if expenses_edit_values %} #}
 {# {% for ex_edit in expenses_edit_values %} #}
 {% set ex_edit = expenses_edit_values %}
 <div class="row justify-content-center m-0 p-0">
@@ -11,7 +11,11 @@
         <div class="content mt-2 p-4">
             <h3>EDYTUJ WYDATEK</h3>
             1: {{ ex_edit.pay }}
-            2: {{ ex_edit.paymentMethod }}
+            <br>
+            2: {{ ex_edit.paymentMethod }}|
+            <br>
+            ID: {{ ex_edit.exID }}
+            <br> ID PO ZMIANIE {{ ex_edit.idOfEditedExpense }}
             <div class="div-form-buttons mx-auto">
                 <form method="post" action="/personalbudget/updateExpenseAction">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -65,7 +69,8 @@
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
                         <textarea class="form-control" id="comment" rows="2" name="commentExpense"
                             maxlength="100">{{ ex_edit.comment ?? ex_edit.commentExpense}}</textarea>
-                        <input type="hidden" name="idOfEditedExpense" value="{{ ex_edit.exID }}" />
+                        <input type="hidden" name="idOfEditedExpense"
+                            value="{{ ex_edit.exID ?? ex_edit.idOfEditedExpense }}" />
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Zmień</button>
@@ -78,5 +83,5 @@
     </div>
 </div>
 {# {% endfor %} #}
-{% endif %}
+{# {% endif %} #}
 {% endblock %}

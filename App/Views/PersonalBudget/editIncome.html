@@ -13,7 +13,13 @@
             {{ incomes_options_form|length }}
 
             inc.edit: {{ inc_edit.incCategory }}
+
+            <br>
             inc.edit2: {{ inc_edit.paymentCategoryIncomeName }}
+            <br>
+            inc.ID: {{ inc_edit.incID }}
+            <br>
+            inc.ID po drugim wejściu: {{ inc_edit.idOfEditedIncome }}
 
             <div class="div-form-buttons mx-auto">
                 <form method="post" action="/personalbudget/updateIncomeAction">
@@ -54,7 +60,8 @@
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
                         <textarea class="form-control" id="comment" rows="2" name="commentIncome"
                             maxlength="100">{{  inc_edit.comment ?? inc_edit.commentIncome }} </textarea>
-                        <input type="hidden" name="idOfEditedIncome" value="{{ inc_edit.incID }}" />
+                        <input type="hidden" name="idOfEditedIncome"
+                            value="{{ inc_edit.incID ?? inc_edit.idOfEditedIncome }}" />
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Zmień</button>

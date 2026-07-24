@@ -68,4 +68,16 @@ class Flash
             return $messages;
         }
     }
+    public static function addFormData($key, $data)
+    {
+        $_SESSION['flash_form'][$key] = $data;
+    }
+
+    public static function getFormData($key)
+    {
+        $data = $_SESSION['flash_form'][$key] ?? null;
+        unset($_SESSION['flash_form'][$key]);
+        return $data;
+    }
+
 }
