@@ -1143,8 +1143,31 @@ class ModelPersonalBudget extends \Core\Model
         
     }
 
-    public function editExpensesCategory($editExpenseCategoryName, $editExpenseCategoryID)
+    public function validateCategoryOfExpenses(){
+        $this->data['editExpenseCategoryName'] = mb_substr(trim($_POST['editExpenseCategoryName'] ?? ''), 0, 50);
+        if ($this->data['editExpenseCategoryName'] === '') {
+            // Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            // $this->redirect('/profile/categoryconfigurator');
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
+        // if (!$editExpenseCategoryName) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
+        $editExpenseCategoryID = filter_input(INPUT_POST, 'expenseCategoryEditedID', FILTER_VALIDATE_INT);
+        if (!$editExpenseCategoryID) {
+            $this->errors[] = 'Błędne ID kategorii przychodu';
+            return $this->errors;
+        }
+        return empty($this->errors);
+    }
+
+    public function editExpensesCategory()
     {
+        if (!$this->validateCategoryOfExpenses()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
         $sql = 'UPDATE expenses_category_assigned_to_users 
@@ -1153,8 +1176,8 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryEditExpense = $db->prepare($sql);
-		$queryEditExpense->bindValue(':expense_category', $editExpenseCategoryName, PDO::PARAM_STR);
-        $queryEditExpense->bindValue(':expenseCategoryEditId', $editExpenseCategoryID, PDO::PARAM_INT);
+		$queryEditExpense->bindValue(':expense_category', $this->data['editExpenseCategoryName'], PDO::PARAM_STR);
+        $queryEditExpense->bindValue(':expenseCategoryEditId', $this->data['expenseCategoryEditedID'], PDO::PARAM_INT);
         $queryEditExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditExpense->execute();

@@ -17,8 +17,10 @@
                         <label for="comment" class="form-label">Nazwa Kategorii:</label>
                         <input type="hidden" name="expenseCategoryEditedID"
                             value="{{ name_expense_category_to_edit.id }}" />
+                        {# <input type="text" class="form-control" value="{{ name_expense_category_to_edit.name }}"
+                            name="editExpenseCategoryName" maxlength="50" required> #}
                         <input type="text" class="form-control" value="{{ name_expense_category_to_edit.name }}"
-                            name="editExpenseCategoryName" maxlength="50" required>
+                            name="editExpenseCategoryName">
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Zmień</button>

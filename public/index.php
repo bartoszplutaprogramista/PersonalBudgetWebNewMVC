@@ -77,6 +77,13 @@ $router->add(
         'action' => 'successAreyouSuredeleteFromExpenses'
     ]
 );
+$router->add(
+    'profile/editexpensescategory/{idexpenseseditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editExpensesCategory'
+    ]
+);
 $router->add('{controller}/{action}');
 
 //TO JEST //$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

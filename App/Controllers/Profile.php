@@ -114,11 +114,37 @@ class Profile extends Authenticated
 
     public function editExpensesCategory()
     {
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->redirect('/');
+        if (isset($_POST['editExpensesCat'])){
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+        
+        // $editExpensesCategoryID = $_POST['editExpensesCat'];
+        // $editExpensesCategoryID = filter_input(INPUT_POST, 'editExpensesCat', FILTER_VALIDATE_INT);
+        // $_SESSION['editExpensesCategoryID'] = $editExpensesCategoryID;
+        //  if (!$editExpensesCategoryID) {
+        //         $this->redirect('/profile/categoryconfigurator');
+            // }
+            $editExpensesCategoryID = filter_input(INPUT_POST, 'editExpensesCat', FILTER_VALIDATE_INT);
+            if (!$editExpensesCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            }
+        } else{
+
+        $editExpensesCategoryID = (int)$this->route_params['idexpenseseditedcategory'];
+            if (!$editExpensesCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            }
         }
-        $editExpensesCategoryID = $_POST['editExpensesCat'];
-        // $_SESSION['expensesCatID'] = $editExpensesCategoryID;
+        // if (!$editExpensesCategoryID) {
+        //         $this->redirect('/profile/categoryconfigurator');
+        // }
+
+        // $editExpensesCategoryID = $_SESSION['editExpensesCategoryID'] ?? null;
+        // $editExpensesCategoryID = filter_input(INPUT_POST, 'editExpensesCat', FILTER_VALIDATE_INT);
+        // if (!$editExpensesCategoryID) {
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
 
         $name_expense_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToEdit($editExpensesCategoryID);
 
@@ -203,27 +229,46 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editExpenseCategoryName = mb_substr(trim($_POST['editExpenseCategoryName'] ?? ''), 0, 50);
-        if ($editExpenseCategoryName === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        
+        // $editExpenseCategoryName = mb_substr(trim($_POST['editExpenseCategoryName'] ?? ''), 0, 50);
+        // if ($editExpenseCategoryName === '') {
+        //     Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
+        // // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
+        // if (!$editExpenseCategoryName) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
+        // $editExpenseCategoryID = filter_input(INPUT_POST, 'expenseCategoryEditedID', FILTER_VALIDATE_INT);
+        // if (!$editExpenseCategoryID) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
+        $categoryId = filter_input(INPUT_POST, 'expenseCategoryEditedID', FILTER_VALIDATE_INT);
+        if (!$categoryId) {
             $this->redirect('/profile/categoryconfigurator');
         }
-        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
-        if (!$editExpenseCategoryName) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
-        $editExpenseCategoryID = filter_input(INPUT_POST, 'expenseCategoryEditedID', FILTER_VALIDATE_INT);
-        if (!$editExpenseCategoryID) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->editExpensesCategory($editExpenseCategoryName, $editExpenseCategoryID)) {
-            if(isset($_SESSION['expensesCatID'])) {
-                unset($_SESSION['expensesCatID']);
-            }
+        $result = $personalBudget->editExpensesCategory();
+
+        if ($result === true) {
             Flash::addMessage('Zmiany zapisane');
-            $this->redirect('/profile/categoryconfigurator');      
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/editexpensescategory/' . $categoryId); 
+
+
+        // if ($personalBudget->editExpensesCategory($editExpenseCategoryName, $editExpenseCategoryID)) {
+        //     if(isset($_SESSION['expensesCatID'])) {
+        //         unset($_SESSION['expensesCatID']);
+        //     }
+        //     Flash::addMessage('Zmiany zapisane');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
     }
 
     public function setLimitOfExpenseAction()
