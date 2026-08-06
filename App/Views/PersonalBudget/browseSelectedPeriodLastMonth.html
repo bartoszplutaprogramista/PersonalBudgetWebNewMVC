@@ -130,6 +130,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
                                     name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="editRow" value="{{ expense.exID }}" />
                                     <button type="submit" class="btn btn-secondary" title="Edytuj">
                                         <i class="icon-pencil"></i></button>
@@ -138,6 +139,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
                                     id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
                                     <input type="hidden" name="myOrdinalNumberDeleteExpenses"
                                         value="{{ myOrdinalNumberExpenses }}" />

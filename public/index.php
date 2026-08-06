@@ -78,10 +78,24 @@ $router->add(
     ]
 );
 $router->add(
+    'profile/editincomescategory/{idincomeseditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editIncomesCategory'
+    ]
+);
+$router->add(
     'profile/editexpensescategory/{idexpenseseditedcategory:\d+}',
     [
         'controller' => 'Profile',
         'action' => 'editExpensesCategory'
+    ]
+);
+$router->add(
+    'profile/editpaymentmethodcategory/{idpaymentmethodeditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editPaymentMethodCategory'
     ]
 );
 $router->add('{controller}/{action}');

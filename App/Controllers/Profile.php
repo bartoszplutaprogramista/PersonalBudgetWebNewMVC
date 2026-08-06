@@ -94,16 +94,22 @@ class Profile extends Authenticated
             if (!$editIncomesCategoryID) {
                 $this->redirect('/profile/categoryconfigurator');
             }
-            $_SESSION['editIncomesCategoryID'] = $editIncomesCategoryID;
+            // $_SESSION['editIncomesCategoryID'] = $editIncomesCategoryID;
         // $_SESSION['incomesCatID'] = $editIncomesCategoryID;
-        }
+        } else {
 
-        $editIncomesCategoryID = $_SESSION['editIncomesCategoryID'] ?? null;
-        if (!$editIncomesCategoryID) {
-            $this->redirect('/profile/categoryconfigurator');
+        // $editIncomesCategoryID = $_SESSION['editIncomesCategoryID'] ?? null;
+            $editIncomesCategoryID = (int)$this->route_params['idincomeseditedcategory'];
+            if (!$editIncomesCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            }
         }
 
         $name_income_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit($editIncomesCategoryID); 
+
+        if (!$name_income_category_to_edit) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
 
         View::renderTemplate('Profile/editIncomesCategory.html', [
             'user' => $this->user,
@@ -148,6 +154,10 @@ class Profile extends Authenticated
 
         $name_expense_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToEdit($editExpensesCategoryID);
 
+        if (!$name_expense_category_to_edit) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
+
         View::renderTemplate('Profile/editExpensesCategory.html', [
             'user' => $this->user,
             'name_expense_category_to_edit' => $name_expense_category_to_edit,
@@ -157,18 +167,29 @@ class Profile extends Authenticated
 
     public function editPaymentMethodCategory()
     {
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->redirect('/');
-        }
-        $editPaymentMethCategoryID = filter_input(INPUT_POST, 'editPaymentMethodCat', FILTER_VALIDATE_INT);
-        if (!$editPaymentMethCategoryID) {
-            $this->redirect('/profile/categoryconfigurator');
+        if (isset($_POST['editPaymentMethodCat'])){
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+            $editPaymentMethCategoryID = filter_input(INPUT_POST, 'editPaymentMethodCat', FILTER_VALIDATE_INT);
+            if (!$editPaymentMethCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            } 
+        }   else {
+            $editPaymentMethCategoryID = (int)$this->route_params['idpaymentmethodeditedcategory'];
+            if (!$editPaymentMethCategoryID) {
+                $this->redirect('/profile/categoryconfigurator');
+            }            
         }
         // $editPaymentMethCategoryID = $_POST['editPaymentMethodCat'];
 
         // $_SESSION['payMethCatID'] = $editPaymentMethCategoryID;
 
         $name_pay_meth_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromPayMethCategoryToEdit($editPaymentMethCategoryID);
+
+        if (!$name_pay_meth_category_to_edit) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
 
         View::renderTemplate('Profile/editPayMethCategory.html', [
             'user' => $this->user,
@@ -183,6 +204,11 @@ class Profile extends Authenticated
             $this->redirect('/');
         }
 
+        $categoryId = filter_input(INPUT_POST, 'incomeCategoryEditedID', FILTER_VALIDATE_INT);
+        if (!$categoryId) {
+            $this->redirect('/profile/categoryconfigurator');
+        }
+
         $personalBudget = new ModelPersonalBudget($_POST);
         $result = $personalBudget->editIncomesCategory();
 
@@ -195,7 +221,7 @@ class Profile extends Authenticated
             Flash::addMessage($error, Flash::WARNING);
         }
 
-        $this->redirect('/profile/editincomescategory');   
+        $this->redirect('/profile/editincomescategory/' . $categoryId);   
         
     }
         /*************** */
@@ -302,27 +328,41 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $editPayMethCategoryName = mb_substr(trim($_POST['editPayMethCategoryName'] ?? ''), 0, 50);
-        if ($editPayMethCategoryName === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            $this->redirect('/profile/categoryconfigurator');
-        }
-        // $editPayMethCategoryName = $_POST['editPayMethCategoryName'];
-        if (!$editPayMethCategoryName) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
-        $editPaymentMethCategoryID = filter_input(INPUT_POST, 'payMethodEditedID', FILTER_VALIDATE_INT);
-        if (!$editPaymentMethCategoryID) {
+        // $editPayMethCategoryName = mb_substr(trim($_POST['editPayMethCategoryName'] ?? ''), 0, 50);
+        // if ($editPayMethCategoryName === '') {
+        //     Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
+        // // $editPayMethCategoryName = $_POST['editPayMethCategoryName'];
+        // if (!$editPayMethCategoryName) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
+        $categoryId = filter_input(INPUT_POST, 'payMethodEditedID', FILTER_VALIDATE_INT);
+        if (!$categoryId) {
             ($this->redirect('/profile/categoryconfigurator'));
         }
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->editPayMethCategory($editPayMethCategoryName, $editPaymentMethCategoryID)) {
-            // if(isset($_SESSION['payMethCatID'])) {
-            //     unset($_SESSION['payMethCatID']);
-            // }
+        $result = $personalBudget->editPayMethCategory();
+
+        if ($result === true) {
             Flash::addMessage('Zmiany zapisane');
-            $this->redirect('/profile/categoryconfigurator');      
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        /////////złe
+        // $personalBudget = new ModelPersonalBudget($_POST);
+        // if ($personalBudget->editPayMethCategory()) {
+        //     // if(isset($_SESSION['payMethCatID'])) {
+        //     //     unset($_SESSION['payMethCatID']);
+        //     // }
+        //     Flash::addMessage('Zmiany zapisane');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/editpaymentmethodcategory/' . $categoryId); 
     }
 
     public function deleteIncomeCategoryDataBaseAction()
@@ -378,6 +418,9 @@ class Profile extends Authenticated
         // if(isset($_POST['deleteIncomesCatID'])) {
         //     $_SESSION['idIncomesDeleteCat'] = $_POST['deleteIncomesCatID'];
         // }
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
 
         $deleteIncomeCategoryID = filter_input(INPUT_POST, 'deleteIncomesCatID', FILTER_VALIDATE_INT);
         if (!$deleteIncomeCategoryID) {
@@ -397,6 +440,9 @@ class Profile extends Authenticated
         // if(isset($_POST['deleteExpensesCatID'])) {
         //     $_SESSION['idExpensesDeleteCat'] = $_POST['deleteExpensesCatID'];
         // }
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
 
         $deleteExpenseCategoryID = filter_input(INPUT_POST, 'deleteExpensesCatID', FILTER_VALIDATE_INT);
         if (!$deleteExpenseCategoryID) {
@@ -441,6 +487,9 @@ class Profile extends Authenticated
         // if(isset($_POST['deletePayMethCatID'])) {
         //     $_SESSION['idPayMethDeleteCat'] = $_POST['deletePayMethCatID'];
         // }
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
 
         $deletePayMethCategoryID = filter_input(INPUT_POST, 'deletePayMethCatID', FILTER_VALIDATE_INT);
         if (!$deletePayMethCategoryID) {
@@ -457,8 +506,17 @@ class Profile extends Authenticated
 
     public function addNewIncomesCategory()
     {
+        // $formData = $_SESSION['addIncomeName'] ?? null;
+        // unset($_SESSION['addIncomeName']);
+
+        // echo '<pre>';
+        // print_r($formData);
+        // echo '</pre>';
+
+
         View::renderTemplate('Profile/addNewIncomesCategory.html', [
             'user' => $this->user,
+            // 'formData' => $formData,
             'csrf_token' => Csrf::generate()
         ]);
     }
@@ -468,17 +526,32 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newIncomeCat = mb_substr(trim($_POST['addedNewIncomeCat'] ?? ''), 0, 50);
-        if ($newIncomeCat === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            $this->redirect('/profile/categoryconfigurator');
-        }
-        // $newIncomeCat = $_POST['addedNewIncomeCat'];
+        // $newIncomeCat = mb_substr(trim($_POST['addedNewIncomeCat'] ?? ''), 0, 50);
+        // if ($newIncomeCat === '') {
+        //     Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
+        //złę $newIncomeCat = $_POST['addedNewIncomeCat'];
+
+        // $_SESSION['addIncomeName'] = $_POST;
+
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->addNewIncomesCategory($newIncomeCat)) {
-            Flash::addMessage('Dodano nową kategorię');
-            $this->redirect('/profile/categoryconfigurator');      
+        $result = $personalBudget->addNewIncomesCategory();
+
+        if ($result === true) {
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/addnewincomescategory');
+        // if ($personalBudget->addNewIncomesCategory($newIncomeCat)) {
+        //     Flash::addMessage('Dodano nową kategorię');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
     }
 
     public function addNewExpensesCategory()
@@ -494,17 +567,31 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newExpenseCat = mb_substr(trim($_POST['addedNewExpenseCat'] ?? ''), 0, 50);
-        if ($newExpenseCat === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            $this->redirect('/profile/categoryconfigurator');
-        }
+        // $newExpenseCat = mb_substr(trim($_POST['addedNewExpenseCat'] ?? ''), 0, 50);
+        // if ($newExpenseCat === '') {
+        //     Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
         // $newExpenseCat = $_POST['addedNewExpenseCat'];
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->addNewExpensesCategory($newExpenseCat)) {
-            Flash::addMessage('Dodano nową kategorię');
-            $this->redirect('/profile/categoryconfigurator');      
+
+        $result = $personalBudget->addNewExpensesCategory();
+
+        if ($result === true) {
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/addnewexpensescategory');
+
+        // if ($personalBudget->addNewExpensesCategory($newExpenseCat)) {
+        //     Flash::addMessage('Dodano nową kategorię');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
     }
 
     public function addNewPayMethCategory()
@@ -520,17 +607,33 @@ class Profile extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-        $newPayMethCat = mb_substr(trim($_POST['addedNewPayMethCat'] ?? ''), 0, 50);
-        if ($newPayMethCat === '') {
-            Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            $this->redirect('/profile/categoryconfigurator');
-        }
+        // $newPayMethCat = mb_substr(trim($_POST['addedNewPayMethCat'] ?? ''), 0, 50);
+        // if ($newPayMethCat === '') {
+        //     Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+        //     $this->redirect('/profile/categoryconfigurator');
+        // }
         // $newPayMethCat = $_POST['addedNewPayMethCat'];
+
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->addNewPayMethCategory($newPayMethCat)) {
-            Flash::addMessage('Dodano nową kategorię');
-            $this->redirect('/profile/categoryconfigurator');      
+        $result = $personalBudget->addNewPayMethCategory();
+
+        if ($result === true) {
+            Flash::addMessage('Zmiany zapisane');
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/addnewpaymethcategory');
+
+
+        // $personalBudget = new ModelPersonalBudget($_POST);
+        // if ($personalBudget->addNewPayMethCategory($newPayMethCat)) {
+        //     Flash::addMessage('Dodano nową kategorię');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
     }
 
     // public function deleteDataBaseAccount()

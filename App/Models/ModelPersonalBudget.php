@@ -202,7 +202,10 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditIncome->execute();
 
-        $queryName = $queryEditIncome->fetch();   
+        $queryName = $queryEditIncome->fetch(); 
+        if (!$queryName) {
+            return false;
+        }  
         return $queryName;        
     }
 
@@ -230,6 +233,9 @@ class ModelPersonalBudget extends \Core\Model
 
         // $queryName = $queryEditExpenses->fetchAll();   
         $queryName = $queryEditExpenses->fetch();   
+        if (!$queryName) {
+            return false;
+        }
         return $queryName;
     }
 
@@ -878,6 +884,10 @@ class ModelPersonalBudget extends \Core\Model
 
         $nameOfIncomeCategory  = $queryEditIncome -> fetch(); 
 
+        if (!$nameOfIncomeCategory) {
+            return false; 
+        }
+
         return [
             'id' => $nameOfIncomeCategory['id'],
             'name' => $nameOfIncomeCategory['name']
@@ -898,6 +908,10 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditExpense->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditExpense->execute();
         $nameOfExpenseCategory  = $queryEditExpense -> fetch(); 
+
+        if (!$nameOfExpenseCategory) {
+            return false; 
+        }
 
         return [
             'id' => $nameOfExpenseCategory['id'],
@@ -920,6 +934,10 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditPayMeth->execute();
 
         $nameOfPayMethCategory  = $queryEditPayMeth -> fetch(); 
+
+        if (!$nameOfPayMethCategory) {
+            return false; 
+        }
 
         return [
             'id' => $nameOfPayMethCategory['id'],
@@ -1028,6 +1046,10 @@ class ModelPersonalBudget extends \Core\Model
 
         if ($this->data['editIncomeCategoryName'] === '') {
             $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+
+        if ($this->incomeCategoryExists($this->data['editIncomeCategoryName'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
         }
 
         $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
@@ -1154,6 +1176,9 @@ class ModelPersonalBudget extends \Core\Model
         // if (!$editExpenseCategoryName) {
         //     ($this->redirect('/profile/categoryconfigurator'));
         // }
+        if ($this->expenseCategoryExists($this->data['editExpenseCategoryName'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
+        }
         $editExpenseCategoryID = filter_input(INPUT_POST, 'expenseCategoryEditedID', FILTER_VALIDATE_INT);
         if (!$editExpenseCategoryID) {
             $this->errors[] = 'Błędne ID kategorii przychodu';
@@ -1183,8 +1208,35 @@ class ModelPersonalBudget extends \Core\Model
         return $queryEditExpense->execute();
     }
 
-    public function editPayMethCategory($editPayMethCategoryName, $payMethCatID)
+    public function validateCategoryOfPayMeth(){
+        $this->data['editPayMethCategoryName'] = mb_substr(trim($_POST['editPayMethCategoryName'] ?? ''), 0, 50);
+        if ($this->data['editPayMethCategoryName'] === '') {
+            // Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
+            // $this->redirect('/profile/categoryconfigurator');
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
+        // if (!$editExpenseCategoryName) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
+        if ($this->payMethodCategoryExists($this->data['editPayMethCategoryName'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
+        }
+        $editPaymentMethCategoryID = filter_input(INPUT_POST, 'payMethodEditedID', FILTER_VALIDATE_INT);
+        if (!$editPaymentMethCategoryID) {
+            $this->errors[] = 'Błędne ID kategorii przychodu';
+            return $this->errors;
+        }
+        return empty($this->errors);
+    }
+
+    // public function editPayMethCategory($editPayMethCategoryName, $payMethCatID)
+    public function editPayMethCategory()
     {
+        if (!$this->validateCategoryOfPayMeth()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
         $sql = 'UPDATE payment_methods_assigned_to_users 
@@ -1193,8 +1245,8 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryEditPayment = $db->prepare($sql);
-		$queryEditPayment->bindValue(':pay_meth_category', $editPayMethCategoryName, PDO::PARAM_STR);
-        $queryEditPayment->bindValue(':payMethCategoryEditId', $payMethCatID, PDO::PARAM_INT);
+		$queryEditPayment->bindValue(':pay_meth_category', $this->data['editPayMethCategoryName'], PDO::PARAM_STR);
+        $queryEditPayment->bindValue(':payMethCategoryEditId', $this->data['payMethodEditedID'], PDO::PARAM_INT);
         $queryEditPayment->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditPayment->execute();
@@ -1296,41 +1348,169 @@ class ModelPersonalBudget extends \Core\Model
         return $queryDeleteExpensesRowRelatedToPayMethCatAssignedToUser;
     }
 
-    public function addNewIncomesCategory($newIncomeCat)
+    public static function incomeCategoryExists($name)
     {
+        $db = static::getDB();
+
+        $sql = 'SELECT id 
+                FROM incomes_category_assigned_to_users
+                WHERE user_id = :user_id
+                AND name = :name
+                LIMIT 1';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
+
+
+    public function validateOfAddNewCategoryOfIncomes()
+    {
+        $this->data['addedNewIncomeCat'] = mb_substr(trim($_POST['addedNewIncomeCat'] ?? ''), 0, 50);
+
+        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+
+        if ($this->data['addedNewIncomeCat'] === '') {
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+
+        if ($this->incomeCategoryExists($this->data['addedNewIncomeCat'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
+        }
+
+        // $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
+        // if (!$incomeCategoryEditedID) {
+        //     $this->errors[] = 'Błędne ID kategorii przychodu';
+        //     return $this->errors;
+        // }
+
+        return empty($this->errors);
+    }
+ 
+    public function addNewIncomesCategory()
+    {
+        if (!$this->validateOfAddNewCategoryOfIncomes()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
             $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name) VALUES (:user_id, :name)';
 
             $addNewIncomesCategory = $db->prepare($sql);
             $addNewIncomesCategory->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
-            $addNewIncomesCategory->bindValue(':name', $newIncomeCat, PDO::PARAM_STR);
+            $addNewIncomesCategory->bindValue(':name', $this->data['addedNewIncomeCat'], PDO::PARAM_STR);
             
         return $addNewIncomesCategory->execute();   
     }
 
-    public function addNewExpensesCategory($newExpenseCat)
+    public static function expenseCategoryExists($name)
     {
+        $db = static::getDB();
+
+        $sql = 'SELECT id 
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = :user_id
+                AND name = :name
+                LIMIT 1';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
+
+    public function validateOfAddNewCategoryOfExpenses()
+    {
+        $this->data['addedNewExpenseCat'] = mb_substr(trim($_POST['addedNewExpenseCat'] ?? ''), 0, 50);
+
+        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
+
+        if ($this->data['addedNewExpenseCat'] === '') {
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+
+        if ($this->expenseCategoryExists($this->data['addedNewExpenseCat'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
+        }
+
+        // $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
+        // if (!$incomeCategoryEditedID) {
+        //     $this->errors[] = 'Błędne ID kategorii przychodu';
+        //     return $this->errors;
+        // }
+
+        return empty($this->errors);
+    }
+
+    public function addNewExpensesCategory()
+    {
+        if (!$this->validateOfAddNewCategoryOfExpenses()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
             $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name) VALUES (:user_id, :name)';
 
             $addNewExpensesCategory = $db->prepare($sql);
             $addNewExpensesCategory->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
-            $addNewExpensesCategory->bindValue(':name', $newExpenseCat, PDO::PARAM_STR);
+            $addNewExpensesCategory->bindValue(':name', $this->data['addedNewExpenseCat'], PDO::PARAM_STR);
             
         return $addNewExpensesCategory->execute();   
     }
 
-    public function addNewPayMethCategory($newPayMethCat)
+    public static function payMethodCategoryExists($name)
     {
+        $db = static::getDB();
+
+        $sql = 'SELECT id 
+                FROM payment_methods_assigned_to_users
+                WHERE user_id = :user_id
+                AND name = :name
+                LIMIT 1';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
+
+    public function validateOfAddNewCategoryOfPayMethod()
+    {
+        $this->data['addedNewPayMethCat'] = mb_substr(trim($_POST['addedNewPayMethCat'] ?? ''), 0, 50);
+
+        if ($this->data['addedNewPayMethCat'] === '') {
+            $this->errors[] = 'Nazwa kategorii jest wymagana';
+        }
+
+        if ($this->payMethodCategoryExists($this->data['addedNewPayMethCat'])) {
+            $this->errors[] = 'Kategoria o tej nazwie już istnieje';
+        }
+
+        return empty($this->errors);
+    }
+
+    public function addNewPayMethCategory()
+    {
+        if (!$this->validateOfAddNewCategoryOfPayMethod()) {
+            return $this->errors;
+        }
+
         $db = static::getDB();
 
             $sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name) VALUES (:user_id, :name)';
 
             $addNewPayMethCategory = $db->prepare($sql);
             $addNewPayMethCategory->bindValue(':user_id', $_SESSION['userIdSession'], PDO::PARAM_INT);
-            $addNewPayMethCategory->bindValue(':name', $newPayMethCat, PDO::PARAM_STR);
+            $addNewPayMethCategory->bindValue(':name', $this->data['addedNewPayMethCat'], PDO::PARAM_STR);
             
         return $addNewPayMethCategory->execute();   
     }
