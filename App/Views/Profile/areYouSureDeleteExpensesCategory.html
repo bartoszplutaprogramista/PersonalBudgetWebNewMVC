@@ -14,6 +14,7 @@
                     <div class="margin-end-income">
                         <form method="post" action="/profile/deleteExpenseCategoryDataBaseAction" id="deleteCatExp"
                             name="ExpCatdelete">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <input type="hidden" name="expenseDeleteID"
                                 value="{{ name_expense_category_to_delete.id }}" />
                             <button type="submit" class="btn btn-warning">
@@ -22,7 +23,7 @@
                         </form>
                     </div>
                     <div class="margin-start-income">
-                        <form action="/profile/categoryconfigurator" method="post">
+                        <form action="/profile/categoryconfigurator" method="get">
                             <button type="submit" class="btn btn-secondary">Anuluj</button>
                         </form>
                     </div>

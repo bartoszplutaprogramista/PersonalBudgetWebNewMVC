@@ -300,27 +300,45 @@ class Profile extends Authenticated
     public function setLimitOfExpenseAction()
     {
         // $setLimitValue = $_POST['limitValue'];
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->redirect('/');
-        }
-        $setLimitValue = filter_input(INPUT_POST, 'limitValue', FILTER_VALIDATE_INT);
-        if (!$setLimitValue) {
+        // if (isset($_POST['limitID'])){
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+        // }
+        $idLimitValue = filter_input(INPUT_POST, 'limitID', FILTER_VALIDATE_INT);
+        if (!$idLimitValue) {
             ($this->redirect('/profile/categoryconfigurator'));
         }
 
-        $limitValueID = filter_input(INPUT_POST, 'limitID', FILTER_VALIDATE_INT);
-        if (!$limitValueID) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
+        // $limitValueID = filter_input(INPUT_POST, 'limitID', FILTER_VALIDATE_INT);
+        // if (!$limitValueID) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
 
         $personalBudget = new ModelPersonalBudget($_POST);
-        if ($personalBudget->setLimitValueDB($setLimitValue, $limitValueID)) {
-            if(isset($_SESSION['idExpenseLimit'])) {
-                unset($_SESSION['idExpenseLimit']);
-            }
+
+        $result = $personalBudget->setLimitValueDB();
+
+        if ($result === true) {
             Flash::addMessage('Zmiany zapisane');
-            $this->redirect('/profile/categoryconfigurator');      
+            $this->redirect('/profile/categoryconfigurator'); 
         }
+
+        foreach ($result as $error) {
+            Flash::addMessage($error, Flash::WARNING);
+        }
+
+        $this->redirect('/profile/setlimitforexpense/' . $idLimitValue); 
+
+
+        // if ($personalBudget->setLimitValueDB($setLimitValue, $limitValueID)) {
+        // if ($personalBudget->setLimitValueDB()) {
+        //     // if(isset($_SESSION['idExpenseLimit'])) {
+        //     //     unset($_SESSION['idExpenseLimit']);
+        //     // }
+        //     Flash::addMessage('Zmiany zapisane');
+        //     $this->redirect('/profile/categoryconfigurator');      
+        // }
     }
 
     public function changePayMethNameAction()
@@ -367,6 +385,9 @@ class Profile extends Authenticated
 
     public function deleteIncomeCategoryDataBaseAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $deleteIncomeCategoryID = filter_input(INPUT_POST, 'incomeDeleteID', FILTER_VALIDATE_INT);
         if (!$deleteIncomeCategoryID) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -383,6 +404,9 @@ class Profile extends Authenticated
 
     public function deleteExpenseCategoryDataBaseAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $deleteExpenseCategoryID = filter_input(INPUT_POST, 'expenseDeleteID', FILTER_VALIDATE_INT);
         if (!$deleteExpenseCategoryID) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -399,6 +423,9 @@ class Profile extends Authenticated
 
     public function deletePaymentMethodsCategoryDataBaseAction()
     {
+        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+            $this->redirect('/');
+        }
         $deletePaymentMethodCategoryID = filter_input(INPUT_POST, 'payMethDeleteID', FILTER_VALIDATE_INT);
         if (!$deletePaymentMethodCategoryID) {
             ($this->redirect('/profile/categoryconfigurator'));
@@ -431,7 +458,8 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/areYouSureDeleteIncomesCategory.html', [
             'user' => $this->user,
-            'name_income_category_to_delete' => $name_income_category_to_delete
+            'name_income_category_to_delete' => $name_income_category_to_delete,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -453,7 +481,8 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/areYouSureDeleteExpensesCategory.html', [
             'user' => $this->user,
-            'name_expense_category_to_delete' => $name_expense_category_to_delete
+            'name_expense_category_to_delete' => $name_expense_category_to_delete,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 
@@ -462,16 +491,34 @@ class Profile extends Authenticated
         // if(isset($_POST['setExpenseLimit'])) {
         //     $_SESSION['idExpenseLimit'] = $_POST['setExpenseLimit'];
         // }
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->redirect('/');
+        if (isset($_POST['setExpenseLimit'])){
+            if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+                $this->redirect('/');
+            }
+            $idExpenseLimit = filter_input(INPUT_POST, 'setExpenseLimit', FILTER_VALIDATE_INT);
+        // echo $idExpenseLimit;
+        // exit;
+            if (!$idExpenseLimit) {
+                ($this->redirect('/profile/categoryconfigurator'));
+            }
+        } else {
+            $idExpenseLimit = (int)$this->route_params['idlimit'];
         }
 
-        $idExpenseLimit = filter_input(INPUT_POST, 'setExpenseLimit', FILTER_VALIDATE_INT);
-        if (!$idExpenseLimit) {
-            ($this->redirect('/profile/categoryconfigurator'));
-        }
+        
+
+        // $idExpenseLimit = filter_input(INPUT_POST, 'setExpenseLimit', FILTER_VALIDATE_INT);
+        // echo $idExpenseLimit;
+        // exit;
+        // if (!$idExpenseLimit) {
+        //     ($this->redirect('/profile/categoryconfigurator'));
+        // }
 
         $set_limit_expense = \App\Models\ModelPersonalBudget::selectNameFromExpensesCategoryToLimit($idExpenseLimit);
+        if ($set_limit_expense === false) {
+            Flash::addMessage('Nie znaleziono kategorii lub nie należy do Twojego konta', Flash::WARNING);
+            $this->redirect('/profile/categoryconfigurator');
+        }
         $limit_value = \App\Models\ModelPersonalBudget::selectValueOfLimit($idExpenseLimit);
 
         View::renderTemplate('Profile/setLimit.html', [
@@ -500,7 +547,8 @@ class Profile extends Authenticated
 
         View::renderTemplate('Profile/areYouSureDeletePayMethCategory.html', [
             'user' => $this->user,
-            'name_pay_meth_category_to_delete' => $name_pay_meth_category_to_delete
+            'name_pay_meth_category_to_delete' => $name_pay_meth_category_to_delete,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 

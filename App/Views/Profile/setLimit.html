@@ -15,11 +15,16 @@
                                     name="ExpSetLimit">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <div class="mb-3">
-                                        <label for="limitValue" class="form-label">Kwota (zł):</label>
-                                        <input type="number" class="form-control" step="1" min="1" max="999999"
+                                        <label for="limitValue" class="form-label">Kwota - liczba całkowita
+                                            (zł):</label>
+                                        {# <input type="number" class="form-control" step="1" min="1" max="999999"
                                             id="limitValue" value="{{ limit_value }}"
                                             placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
-                                            name="limitValue" onkeypress="return onlyNumberKeyIntegers(event)" required>
+                                            name="limitValue" onkeypress="return onlyNumberKeyIntegers(event)" required> #}
+                                        <input class="form-control" step="1" min="1" max="999999" id="limitValue"
+                                            value="{{ limit_value }}"
+                                            placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
+                                            name="limitValue">
                                     </div>
                                     <input type="hidden" name="limitID" value="{{ set_limit_expense.id }}" />
                                     <button type="submit" class="btn btn-warning">

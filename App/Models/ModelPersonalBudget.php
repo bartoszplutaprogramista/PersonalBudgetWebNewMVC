@@ -1007,6 +1007,10 @@ class ModelPersonalBudget extends \Core\Model
 
         $nameOfExpenseCategory  = $queryLimitName -> fetch(); 
 
+        if ($nameOfExpenseCategory === false) {
+            return false;
+        }
+
         // return $nameOfExpenseCategory['name']; 
         return [
             'id' => $nameOfExpenseCategory['id'],
@@ -1083,8 +1087,34 @@ class ModelPersonalBudget extends \Core\Model
         return $queryEditIncome->execute();
     }
 
-    public function setLimitValueDB($editIncomeCategoryName, $limitID)
+    public function validateLimit()
     {
+        // $limit = filter_input(INPUT_POST, 'limitValue', FILTER_VALIDATE_INT);
+        $limit =  $_POST['limitValue'] ?? null;
+
+        if ($limit === null || $limit === '') {
+            $this->errors[] = 'Ustawienie limitu jest wymagane';
+        }
+
+        if (!preg_match('/^\d+$/', $limit)) {
+            $this->errors[] = 'Limit musi być liczbą całkowitą (bez przecinka)';
+          }
+
+        $idLimit = filter_var($this->data['limitID'], FILTER_VALIDATE_INT);
+        if (!$idLimit) {
+            $this->errors[] = 'Błędne ID kategorii limitu';
+            return $this->errors;
+        }
+
+        return empty($this->errors);
+    }
+
+    public function setLimitValueDB()
+    {
+        if (!$this->validateLimit()) {
+            return $this->errors;
+        }
+        
         $db = static::getDB();
 
         $sql = 'UPDATE expenses_category_assigned_to_users 
@@ -1093,8 +1123,8 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryEditIncome = $db->prepare($sql);
-		$queryEditIncome->bindValue(':limit_value', $editIncomeCategoryName, PDO::PARAM_INT);
-        $queryEditIncome->bindValue(':limitId', $limitID, PDO::PARAM_INT);
+		$queryEditIncome->bindValue(':limit_value', $this->data['limitValue'], PDO::PARAM_INT);
+        $queryEditIncome->bindValue(':limitId', $this->data['limitID'], PDO::PARAM_INT);
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();

@@ -27,8 +27,9 @@ class Personalbudget extends Authenticated
     {
          $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
-        $formData = $_SESSION['form_data'] ?? null;
-        unset($_SESSION['form_data']);
+        $formData = Flash::getFormData('new_income_form');
+        // $formData = $_SESSION['form_data'] ?? null;
+        // unset($_SESSION['form_data']);
 
         View::renderTemplate('PersonalBudget/addIncome.html', [
             'user' => $this->user,
@@ -43,8 +44,9 @@ class Personalbudget extends Authenticated
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod(); 
 
-        $formDataExpenses = $_SESSION['form_data_expenses'] ?? null;
-        unset($_SESSION['form_data_expenses']);
+        // $formDataExpenses = $_SESSION['form_data_expenses'] ?? null;
+        // unset($_SESSION['form_data_expenses']);
+        $formDataExpenses = Flash::getFormData('new_expense_form');
 
         View::renderTemplate('PersonalBudget/addExpense.html', [
             'user' => $this->user,
@@ -479,7 +481,9 @@ class Personalbudget extends Authenticated
         }
 
 
-        $_SESSION['form_data'] = $_POST;
+        // $_SESSION['form_data'] = $_POST;
+
+        Flash::addFormData('new_income_form', $_POST);
 
         // echo $_SESSION['form_data']['dateIncome'];
         // exit;
@@ -555,7 +559,8 @@ class Personalbudget extends Authenticated
                 $this->redirect('/personalbudget/successaddexpense');
             }
 
-            $_SESSION['form_data_expenses'] = $_POST;
+            // $_SESSION['form_data_expenses'] = $_POST;
+            Flash::addFormData('new_expense_form', $_POST);
 
             foreach ($result as $error) {
                 Flash::addMessage($error, Flash::WARNING);

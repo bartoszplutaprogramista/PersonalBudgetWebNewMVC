@@ -98,6 +98,13 @@ $router->add(
         'action' => 'editPaymentMethodCategory'
     ]
 );
+$router->add(
+    'profile/setlimitforexpense/{idlimit:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'setLimitForExpense'
+    ]
+);
 $router->add('{controller}/{action}');
 
 //TO JEST //$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
