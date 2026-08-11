@@ -84,6 +84,7 @@ class Personalbudget extends Authenticated
         $id_incomes_delete = (int)$this->route_params['idincomesdelete'];
         $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($id_incomes_delete);
         if (!$data_to_are_you_sure_table_incomes) {
+            Flash::addMessage('Nie znaleziono id lub nie należy do Twojego konta', Flash::WARNING);
             $this->redirect('/personalbudget/browsethebalance');
         }
         $ordinal_delete_incomes_number = (int)$this->route_params['myordinalnumberdeleteincomesvar'];
@@ -105,6 +106,7 @@ class Personalbudget extends Authenticated
         $id_expenses_delete = (int)$this->route_params['idexpensesdelete'];
         $data_to_are_you_sure_table_expenses = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($id_expenses_delete);
         if (!$data_to_are_you_sure_table_expenses) {
+            Flash::addMessage('Nie znaleziono id lub nie należy do Twojego konta', Flash::WARNING);
             $this->redirect('/personalbudget/browsethebalance');
         }
         $ordinal_delete_expenses_number = (int)$this->route_params['myordinalnumberdeleteexpensesvar'];

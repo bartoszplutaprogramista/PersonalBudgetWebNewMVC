@@ -12,14 +12,58 @@ use \App\Models\ModelPersonalBudget;
 class Signup extends \Core\Controller
 {
     public $user;
+    // public $errors = [];
+    // private $data;
+
+    // public function __construct($data = [])
+    // {
+    //     $this->data = $data;
+    // }
 
     public function newAction()
     {
         View::renderTemplate('Signup/new.html');
     }
 
+    // public function validateSignup()
+    // {
+    //     // Walidacja imienia
+    //     $name = trim($this->data['name'] ?? '');
+    //     if ($name === '' || mb_strlen($name) > 50) {
+    //         $this->errors[] = 'Imię jest wymagane i nie może przekraczać 50 znaków';
+    //     }
+
+    //     // Walidacja email
+    //     $email = filter_var($this->data['email'] ?? null, FILTER_VALIDATE_EMAIL);
+    //     if ($email === false) {
+    //         $this->errors[] = 'Nieprawidłowy adres e-mail';
+    //     }
+
+    //     // Walidacja hasła
+    //     $password = $this->data['password'] ?? '';
+
+    //     if ($password === '') {
+    //         $this->errors[] = 'Hasło jest wymagane';
+    //     } elseif (strlen($password) < 6) {
+    //         $this->errors[] = 'Hasło musi mieć co najmniej 6 znaków';
+    //     } elseif (!preg_match('/[A-Za-z]/', $password)) {
+    //         $this->errors[] = 'Hasło musi zawierać przynajmniej jedną literę';
+    //     } elseif (!preg_match('/[0-9]/', $password)) {
+    //         $this->errors[] = 'Hasło musi zawierać przynajmniej jedną cyfrę';
+    //     }
+
+    //     return empty($this->errors);
+    // }
+
+
 public function createAction()
     {
+        // if (!$this->validateSignup()) {
+        //     return $this->errors;
+        // }
+
+
+
         $user = new User($_POST);
 
                 $personalBudget = new ModelPersonalBudget($_POST);

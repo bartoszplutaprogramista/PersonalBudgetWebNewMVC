@@ -108,6 +108,7 @@ class Profile extends Authenticated
         $name_income_category_to_edit = \App\Models\ModelPersonalBudget::selectNameFromIncomesCategoryToEdit($editIncomesCategoryID); 
 
         if (!$name_income_category_to_edit) {
+            Flash::addMessage('Nie znaleziono kategorii lub nie należy do Twojego konta', Flash::WARNING);
             $this->redirect('/profile/categoryconfigurator');
         }
 
@@ -139,6 +140,7 @@ class Profile extends Authenticated
 
         $editExpensesCategoryID = (int)$this->route_params['idexpenseseditedcategory'];
             if (!$editExpensesCategoryID) {
+                Flash::addMessage('Nie znaleziono kategorii lub nie należy do Twojego konta', Flash::WARNING);
                 $this->redirect('/profile/categoryconfigurator');
             }
         }
@@ -178,6 +180,7 @@ class Profile extends Authenticated
         }   else {
             $editPaymentMethCategoryID = (int)$this->route_params['idpaymentmethodeditedcategory'];
             if (!$editPaymentMethCategoryID) {
+                Flash::addMessage('Nie znaleziono kategorii lub nie należy do Twojego konta', Flash::WARNING);
                 $this->redirect('/profile/categoryconfigurator');
             }            
         }
