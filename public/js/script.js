@@ -14,7 +14,6 @@ input2 = document.getElementById('theDate1');
 input3editExpenses = document.getElementById('theDate3');
 
 if (input != null) {
-    // document.getElementById('theDate').value = today;
     document.getElementById('theDate').setAttribute("max", today);
 
 } else if (input2 != null) {

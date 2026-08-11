@@ -30,18 +30,8 @@ abstract class Controller
         }
     }
 
-    // protected function before()
-    // {
-    // }
-
     protected function before()
     {
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     die('BEFORE DZIAŁA');
-        //     if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-        //         $this->redirect('/');
-        //     }
-        // }
     }
 
 

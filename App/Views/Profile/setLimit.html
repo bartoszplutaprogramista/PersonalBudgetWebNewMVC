@@ -17,14 +17,10 @@
                                     <div class="mb-3">
                                         <label for="limitValue" class="form-label">Kwota - liczba całkowita
                                             (zł):</label>
-                                        {# <input type="number" class="form-control" step="1" min="1" max="999999"
+                                        <input type="number" class="form-control" step="1" min="1" max="999999"
                                             id="limitValue" value="{{ limit_value }}"
                                             placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
-                                            name="limitValue" onkeypress="return onlyNumberKeyIntegers(event)" required> #}
-                                        <input class="form-control" step="1" min="1" max="999999" id="limitValue"
-                                            value="{{ limit_value }}"
-                                            placeholder="{{ limit_value is null ? 'Limit nie ustawiony' }}"
-                                            name="limitValue">
+                                            name="limitValue" onkeypress="return onlyNumberKeyIntegers(event)" required>
                                     </div>
                                     <input type="hidden" name="limitID" value="{{ set_limit_expense.id }}" />
                                     <button type="submit" class="btn btn-warning">
@@ -33,10 +29,6 @@
                                 </form>
                             </div>
                             <div class="mt-3">
-                                {# <form action="/profile/categoryconfigurator" method="post">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                                    <button type="submit" class="btn btn-secondary">Anuluj</button>
-                                </form> #}
                                 <a href="/profile/categoryconfigurator" class="btn btn-secondary text-white">Anuluj</a>
                             </div>
                         </div>

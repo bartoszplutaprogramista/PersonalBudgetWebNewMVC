@@ -29,27 +29,17 @@ class ModelPersonalBudget extends \Core\Model
  
     public function validateIncomes()
     {
-        // $idOfEditedIncome = filter_var($this->data['idOfEditedIncome'], FILTER_VALIDATE_INT);
-        // // echo $idOfEditedIncome;
-        // // exit;
-
-        // if (!$idOfEditedIncome) {
-        //     $this->errors[] = 'Nieprawidłowe id';
-        // }
-        // KWOTA
         $amount = filter_var($this->data['amountIncome'] ?? null, FILTER_VALIDATE_FLOAT);
         if ($amount === false || $amount <= 0 || $amount > 999999.99) {
             $this->errors[] = 'Nieprawidłowa kwota';
         }
 
-        // DATA
         $date = $this->data['dateIncome'] ?? '';
         $d = DateTime::createFromFormat('Y-m-d', $date);
         if (!$d || $d->format('Y-m-d') !== $date) {
             $this->errors[] = 'Nieprawidłowy format daty';
         }
 
-        // KOMENTARZ
         $this->data['commentIncome'] = mb_substr(trim($this->data['commentIncome'] ?? ''), 0, 100);
 
         return empty($this->errors);
@@ -63,11 +53,6 @@ class ModelPersonalBudget extends \Core\Model
             return $this->errors;
         }
 
-                    // $amountIncome = $_POST['amountIncome'];
-                    // $dateIncome = $_POST['dateIncome'];
-                    // $commentIncome = $_POST['commentIncome'];
-        // $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
-
         $idIncomeEdited = filter_var($this->data['idOfEditedIncome'], FILTER_VALIDATE_INT);
         if (!$idIncomeEdited) {
             $this->errors[] = 'Błędne ID przychodu';
@@ -76,15 +61,7 @@ class ModelPersonalBudget extends \Core\Model
 
         $db = static::getDB();
 
-        // $selectCatIncomeId = filter_var($this->data['paymentCategoryIncomeName'], FILTER_VALIDATE_INT);
-        // if (!$selectCatIncomeId) {
-        //     $this->errors[] = 'Błędne ID kategorii przychodu';
-        //     return $this->errors;
-        // }
         $catIncomeId = $this->getpaymentCategoryIncomeId($this->data['paymentCategoryIncomeName']);
-        // $amountIncome = $_POST['amountIncome'];
-        // $dateIncome = $_POST['dateIncome'];
-        // $commentIncome = $_POST['commentIncome'];
 
         $sql = 'UPDATE incomes 
                 SET income_category_assigned_to_user_id  = :income_category,  
@@ -99,44 +76,25 @@ class ModelPersonalBudget extends \Core\Model
 		$queryEditIncome->bindValue(':amount', $this->data['amountIncome'], PDO::PARAM_STR);
 		$queryEditIncome->bindValue(':dateIncome', $this->data['dateIncome'], PDO::PARAM_STR);
 		$queryEditIncome->bindValue(':commentIncome', $this->data['commentIncome'], PDO::PARAM_STR);
-        // $queryEditIncome->bindValue(':incomeEditId', $_SESSION['idIncomesEditRow'], PDO::PARAM_INT);
         $queryEditIncome->bindValue(':incomeEditId', $idIncomeEdited, PDO::PARAM_INT);
         $queryEditIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         
         return $queryEditIncome->execute();
     }
 
-    // public function updateExpenses($idExpenseEdited, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
     public function validateExpenses()
     {
-        // $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
-        // if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
-        //     $errors[] = 'Nieprawidłowa kwota';
-        // }
-
-        // $dateExpense = $_POST['dateExpense'] ?? '';
-        // $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
-        // if (!$d || $d->format('Y-m-d') !== $dateExpense) {
-        //     $errors[] = 'Nieprawidłowy format daty';
-        // }
-
-        // $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
-        
-        
-        // KWOTA
         $amountExpense = filter_var($this->data['amountExpense'] ?? null, FILTER_VALIDATE_FLOAT);
         if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
             $this->errors[] = 'Nieprawidłowa kwota';
         }
 
-        // DATA
         $dateExpense = $this->data['dateExpense'] ?? '';
         $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
         if (!$d || $d->format('Y-m-d') !== $dateExpense) {
             $this->errors[] = 'Nieprawidłowy format daty';
         }
 
-        // KOMENTARZ
         $this->data['commentExpense'] = mb_substr(trim($this->data['commentExpense'] ?? ''), 0, 100);
 
         return empty($this->errors);
@@ -155,11 +113,6 @@ class ModelPersonalBudget extends \Core\Model
         $db = static::getDB();
         $catExpenseId = $this->getpaymentCategoryExpenseId($this->data['paymentCategoryExpense']);
         $paymentId = $this->getPaymentId($this->data['paymentMethod']);
-        // $paymentCatExpenseId = $this->getpaymentCategoryExpenseId($paymentCategoryExpense);
-        // $paymentId = $this->getPaymentId($paymentName);
-        // $amountExpense = $_POST['amountExpense'];
-        // $dateExpense = $_POST['dateExpense'];
-        // $commentExpense = $_POST['commentExpense'];
 
         $sql = 'UPDATE expenses 
                 SET expense_category_assigned_to_user_id = :expense_category,  
@@ -230,8 +183,7 @@ class ModelPersonalBudget extends \Core\Model
         $queryEditExpenses->bindValue(':id', $idExpensesEdit, PDO::PARAM_INT);
         $queryEditExpenses->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryEditExpenses->execute();
-
-        // $queryName = $queryEditExpenses->fetchAll();   
+  
         $queryName = $queryEditExpenses->fetch();   
         if (!$queryName) {
             return false;
@@ -248,7 +200,6 @@ class ModelPersonalBudget extends \Core\Model
                 AND user_id = :userId';
 
         $queryDeleteIncome = $db->prepare($sql);
-        // $queryDeleteIncome->bindValue(':idOfRow', $_SESSION['idIncomesDelete'], PDO::PARAM_INT);
         $queryDeleteIncome->bindValue(':idOfRow', $idIncomesDelete, PDO::PARAM_INT);
         $queryDeleteIncome->bindValue(':userId', $_SESSION['userIdSession'], PDO::PARAM_INT);
         $queryDeleteIncome->execute();
@@ -701,8 +652,6 @@ class ModelPersonalBudget extends \Core\Model
     }
 
     public function getpaymentCategoryIncomeId($paymentCategoryIncomeName){
-
-        // $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
         $db = static::getDB();
 
         $sql = 'SELECT id FROM incomes_category_assigned_to_users WHERE name = :nameIncomeCategory AND user_id = :userId';
@@ -723,27 +672,7 @@ class ModelPersonalBudget extends \Core\Model
             return $this->errors;
         }
         
-        // $amountIncome = filter_input(INPUT_POST, 'amountIncome', FILTER_VALIDATE_FLOAT);
-        // if ($amountIncome === false || $amountIncome <= 0 || $amountIncome > 999999.99) {
-        //     $errors[] = 'Nieprawidłowa kwota';
-        // }
-
-        // $dateIncome = $_POST['dateIncome'] ?? '';
-        // $d = DateTime::createFromFormat('Y-m-d', $dateIncome);
-        // if (!$d || $d->format('Y-m-d') !== $dateIncome) {
-        //     $errors[] = 'Nieprawidłowy format daty';
-        // }
-
-        // $commentIncome = mb_substr(trim($_POST['commentIncome'] ?? ''), 0, 100);
-
-            // $paymentCatIncId = filter_var($this->data['paymentCategoryIncomeName'], FILTER_VALIDATE_INT);
-
             $paymentCategoryIncomeId = $this->getpaymentCategoryIncomeId($this->data['paymentCategoryIncomeName']);
-
-            // $amountIncome = $_POST['amountIncome'];
-		    // $dateIncome = $_POST['dateIncome'];
-
-		    // $commentIncome = $_POST['commentIncome'];
 
             $db = static::getDB();
 
@@ -762,7 +691,6 @@ class ModelPersonalBudget extends \Core\Model
     public function getPaymentId($paymentName)
     {
         $db = static::getDB();
-        // $paymentName = $_POST['paymentMethod'];
 
         $sql = 'SELECT id FROM payment_methods_assigned_to_users WHERE name = :paymentName AND user_id = :userId';
 
@@ -778,8 +706,7 @@ class ModelPersonalBudget extends \Core\Model
     public function getPaymentCategoryExpenseId($paymentCategoryExpense)
     {
         $db = static::getDB();
-        // $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
-
+ 
         $sql = 'SELECT id FROM expenses_category_assigned_to_users WHERE name = :nameExpCat AND user_id = :userId';
 
         $queryPaymentCategoryExpense = $db->prepare($sql);	
@@ -792,7 +719,6 @@ class ModelPersonalBudget extends \Core\Model
         return $paymentCategoryExpenseId['id'];
     }
 
-    // public function insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)
     public function insertToExpenses()
     {
         if (!$this->validateExpenses()) {
@@ -804,10 +730,6 @@ class ModelPersonalBudget extends \Core\Model
         $paymentId = $this->getPaymentId($this->data['paymentMethod']);
 
         $db = static::getDB();
-
-        // $amountExpense = $_POST['amountExpense'];
-        // $dateExpense = $_POST['dateExpense'];
-        // $commentExpense = $_POST['commentExpense'];
 
         $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) VALUES (:userId, :expense_category, :payment_method, :amount, :dateExpense, :commentExpense)';
 
@@ -961,7 +883,6 @@ class ModelPersonalBudget extends \Core\Model
 
         $nameOfIncomeCategory  = $queryDeleteIncome -> fetch(); 
 
-        // return $nameOfIncomeCategory['name'];   
         return [
             'id' => $nameOfIncomeCategory['id'],
             'name' => $nameOfIncomeCategory['name']
@@ -984,7 +905,6 @@ class ModelPersonalBudget extends \Core\Model
 
         $nameOfExpenseCategory  = $queryDeleteExpense -> fetch(); 
 
-        // return $nameOfExpenseCategory['name'];
         return [
             'id' => $nameOfExpenseCategory['id'],
             'name' => $nameOfExpenseCategory['name']
@@ -1011,7 +931,6 @@ class ModelPersonalBudget extends \Core\Model
             return false;
         }
 
-        // return $nameOfExpenseCategory['name']; 
         return [
             'id' => $nameOfExpenseCategory['id'],
             'name' => $nameOfExpenseCategory['name']
@@ -1035,7 +954,6 @@ class ModelPersonalBudget extends \Core\Model
 
         $nameOfPayMethCategory  = $queryDeletePayMeth -> fetch(); 
 
-        // return $nameOfPayMethCategory['name']; 
         return [
             'id' => $nameOfPayMethCategory['id'],
             'name' => $nameOfPayMethCategory['name']
@@ -1045,8 +963,6 @@ class ModelPersonalBudget extends \Core\Model
     public function validateCategoryOfIncomes()
     {
         $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
-
-        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
 
         if ($this->data['editIncomeCategoryName'] === '') {
             $this->errors[] = 'Nazwa kategorii jest wymagana';
@@ -1065,7 +981,6 @@ class ModelPersonalBudget extends \Core\Model
         return empty($this->errors);
     }
 
-    // public function editIncomesCategory($editIncomeCategoryName, $editIncomeCategoryID)
     public function editIncomesCategory()
     {
         if (!$this->validateCategoryOfIncomes()) {
@@ -1089,7 +1004,6 @@ class ModelPersonalBudget extends \Core\Model
 
     public function validateLimit()
     {
-        // $limit = filter_input(INPUT_POST, 'limitValue', FILTER_VALIDATE_INT);
         $limit =  $_POST['limitValue'] ?? null;
 
         if ($limit === null || $limit === '') {
@@ -1198,14 +1112,9 @@ class ModelPersonalBudget extends \Core\Model
     public function validateCategoryOfExpenses(){
         $this->data['editExpenseCategoryName'] = mb_substr(trim($_POST['editExpenseCategoryName'] ?? ''), 0, 50);
         if ($this->data['editExpenseCategoryName'] === '') {
-            // Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            // $this->redirect('/profile/categoryconfigurator');
             $this->errors[] = 'Nazwa kategorii jest wymagana';
         }
-        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
-        // if (!$editExpenseCategoryName) {
-        //     ($this->redirect('/profile/categoryconfigurator'));
-        // }
+
         if ($this->expenseCategoryExists($this->data['editExpenseCategoryName'])) {
             $this->errors[] = 'Kategoria o tej nazwie już istnieje';
         }
@@ -1241,14 +1150,8 @@ class ModelPersonalBudget extends \Core\Model
     public function validateCategoryOfPayMeth(){
         $this->data['editPayMethCategoryName'] = mb_substr(trim($_POST['editPayMethCategoryName'] ?? ''), 0, 50);
         if ($this->data['editPayMethCategoryName'] === '') {
-            // Flash::addMessage('Nazwa kategorii jest wymagana', Flash::WARNING);
-            // $this->redirect('/profile/categoryconfigurator');
             $this->errors[] = 'Nazwa kategorii jest wymagana';
         }
-        // $editExpenseCategoryName = $_POST['editExpenseCategoryName'];
-        // if (!$editExpenseCategoryName) {
-        //     ($this->redirect('/profile/categoryconfigurator'));
-        // }
         if ($this->payMethodCategoryExists($this->data['editPayMethCategoryName'])) {
             $this->errors[] = 'Kategoria o tej nazwie już istnieje';
         }
@@ -1259,8 +1162,6 @@ class ModelPersonalBudget extends \Core\Model
         }
         return empty($this->errors);
     }
-
-    // public function editPayMethCategory($editPayMethCategoryName, $payMethCatID)
     public function editPayMethCategory()
     {
         if (!$this->validateCategoryOfPayMeth()) {
@@ -1401,8 +1302,6 @@ class ModelPersonalBudget extends \Core\Model
     {
         $this->data['addedNewIncomeCat'] = mb_substr(trim($_POST['addedNewIncomeCat'] ?? ''), 0, 50);
 
-        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
-
         if ($this->data['addedNewIncomeCat'] === '') {
             $this->errors[] = 'Nazwa kategorii jest wymagana';
         }
@@ -1410,12 +1309,6 @@ class ModelPersonalBudget extends \Core\Model
         if ($this->incomeCategoryExists($this->data['addedNewIncomeCat'])) {
             $this->errors[] = 'Kategoria o tej nazwie już istnieje';
         }
-
-        // $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
-        // if (!$incomeCategoryEditedID) {
-        //     $this->errors[] = 'Błędne ID kategorii przychodu';
-        //     return $this->errors;
-        // }
 
         return empty($this->errors);
     }
@@ -1459,8 +1352,6 @@ class ModelPersonalBudget extends \Core\Model
     {
         $this->data['addedNewExpenseCat'] = mb_substr(trim($_POST['addedNewExpenseCat'] ?? ''), 0, 50);
 
-        // $this->data['editIncomeCategoryName'] = mb_substr(trim($_POST['editIncomeCategoryName'] ?? ''), 0, 50);
-
         if ($this->data['addedNewExpenseCat'] === '') {
             $this->errors[] = 'Nazwa kategorii jest wymagana';
         }
@@ -1468,12 +1359,6 @@ class ModelPersonalBudget extends \Core\Model
         if ($this->expenseCategoryExists($this->data['addedNewExpenseCat'])) {
             $this->errors[] = 'Kategoria o tej nazwie już istnieje';
         }
-
-        // $incomeCategoryEditedID = filter_var($this->data['incomeCategoryEditedID'], FILTER_VALIDATE_INT);
-        // if (!$incomeCategoryEditedID) {
-        //     $this->errors[] = 'Błędne ID kategorii przychodu';
-        //     return $this->errors;
-        // }
 
         return empty($this->errors);
     }
@@ -1544,89 +1429,6 @@ class ModelPersonalBudget extends \Core\Model
             
         return $addNewPayMethCategory->execute();   
     }
-
-    // public function deleteFromDataBaseUser($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM users 
-    //             WHERE id = :idOfUser';
-
-    //     $queryDeleteUser = $db->prepare($sql);
-    //     $queryDeleteUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeleteUser->execute();
-
-    //     return $queryDeleteUser;
-    // }
-
-    // public function deleteFromDataBaseIncomesUserID($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM incomes 
-    //             WHERE user_id = :idOfUser';
-
-    //     $queryDeleteIncomesUser = $db->prepare($sql);
-    //     $queryDeleteIncomesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeleteIncomesUser->execute();
-
-    //     return $queryDeleteIncomesUser;
-    // }
-
-    // public function deleteFromDataBaseExpensesUserID($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM expenses 
-    //             WHERE user_id = :idOfUser';
-
-    //     $queryDeleteExpensesUser = $db->prepare($sql);
-    //     $queryDeleteExpensesUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeleteExpensesUser->execute();
-
-    //     return $queryDeleteExpensesUser;
-    // }
-
-    // public function deleteFromDataBaseIncomesCategoryAssignedToUser($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM incomes_category_assigned_to_users 
-    //             WHERE user_id = :idOfUser';
-
-    //     $queryDeleteIncAssignedToUser = $db->prepare($sql);
-    //     $queryDeleteIncAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeleteIncAssignedToUser->execute();
-
-    //     return $queryDeleteIncAssignedToUser;
-    // }
-
-    // public function deleteFromDataBaseExpensesCategoryAssignedToUser($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM expenses_category_assigned_to_users 
-    //             WHERE user_id = :idOfUser';
-
-    //     $queryDeleteExpAssignedToUser = $db->prepare($sql);
-    //     $queryDeleteExpAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeleteExpAssignedToUser->execute();
-
-    //     return $queryDeleteExpAssignedToUser;
-    // }
-    
-    // public function deleteFromDataBasePaymentMethodsCategoryAssignedToUser($id)
-    // {
-    //     $db = static::getDB();
-
-    //     $sql = 'DELETE FROM payment_methods_assigned_to_users WHERE user_id = :idOfUser';
-
-    //     $queryDeletePayMethAssignedToUser = $db->prepare($sql);
-    //     $queryDeletePayMethAssignedToUser->bindValue(':idOfUser', $id, PDO::PARAM_INT);
-    //     $queryDeletePayMethAssignedToUser->execute();
-
-    //     return $queryDeletePayMethAssignedToUser;
-    // }
 
     public function deleteAccountFromDataBase($userID): bool
     {

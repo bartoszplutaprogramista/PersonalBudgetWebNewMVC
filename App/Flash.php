@@ -46,7 +46,6 @@ class Flash
         }
 
         // Append the message to the array
-        //$_SESSION['flash_notifications'][] = $message;
         $_SESSION['flash_notifications'][] = [
             'body' => $message,
             'type' => $type
@@ -61,7 +60,6 @@ class Flash
     public static function getMessages()
     {
         if (isset($_SESSION['flash_notifications'])) {
-            //return $_SESSION['flash_notifications'];
             $messages = $_SESSION['flash_notifications'];
             unset($_SESSION['flash_notifications']);
 

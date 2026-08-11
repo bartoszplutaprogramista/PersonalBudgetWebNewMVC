@@ -8,26 +8,14 @@
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>DODAJ PRZYCHÓD</h3>
-            {{ "NOWY WIDOK" }}
-            {{ inc_edit.name }}
-            {{ incomes_options_form|length }}
-
-            inc.edit: {{ inc_edit.incCategory }}
-
-            <br>
-            inc.edit2: {{ inc_edit.paymentCategoryIncomeName }}
-            <br>
-            inc.ID: {{ inc_edit.incID }}
-            <br>
-            inc.ID po drugim wejściu: {{ inc_edit.idOfEditedIncome }}
-
             <div class="div-form-buttons mx-auto">
                 <form method="post" action="/personalbudget/updateIncomeAction">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Kwota (zł):</label>
                         <input class="form-control" min="1" max="999999.99" step="0.01" id="amount"
-                            value="{{ inc_edit.amn ?? inc_edit.amountIncome }}" name="amountIncome">
+                            value="{{ inc_edit.amn ?? inc_edit.amountIncome }}" name="amountIncome"
+                            onkeypress="return onlyNumberKey(event)" required>
                     </div>
                     <div class="mb-3">
                         <label for="theDate3" class="form-label">Data:</label>
@@ -39,20 +27,11 @@
                         name="paymentCategoryIncomeName" id="paymentCategoryIncomeId">
                         {% if incomes_options_form %}
                         {% for option_name in incomes_options_form %}
-                        {# <option value="{{ option_name.name }}"
-                            {% if inc_edit.paymentCategoryIncomeName == option_name.name %} selected {% endif %}>
-                            {{ option_name.name }}
-                        </option> #}
-                        {# <option value="{{ option_name.name }}" {% if inc_edit.incCategory == option_name.name %}
-                            selected {% endif %}>
-                            {{ option_name.name }}
-                        </option> #}
                         <option value="{{ option_name.name }}"
                             {% if (inc_edit.incCategory ?? inc_edit.paymentCategoryIncomeName) == option_name.name %}
                             selected {% endif %}>
                             {{ option_name.name }}
                         </option>
-                        {# {{ option_name.name }} #}
                         {% endfor %}
                         {% endif %}
                     </select>

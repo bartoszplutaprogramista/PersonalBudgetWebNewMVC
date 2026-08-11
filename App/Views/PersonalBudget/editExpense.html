@@ -3,29 +3,19 @@
 {% block title2 %}Edytuj wydatek{% endblock %}
 
 {% block body2 %}
-{# {% if expenses_edit_values %} #}
-{# {% for ex_edit in expenses_edit_values %} #}
 {% set ex_edit = expenses_edit_values %}
 <div class="row justify-content-center m-0 p-0">
     <div class="col-xl-12 col-xxl-9 p-0">
         <div class="content mt-2 p-4">
             <h3>EDYTUJ WYDATEK</h3>
-            1: {{ ex_edit.pay }}
-            <br>
-            2: {{ ex_edit.paymentMethod }}|
-            <br>
-            ID: {{ ex_edit.exID }}
-            <br> ID PO ZMIANIE {{ ex_edit.idOfEditedExpense }}
             <div class="div-form-buttons mx-auto">
                 <form method="post" action="/personalbudget/updateExpenseAction">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
-                        <input class="form-control" min="1" max="999999.99" step="0.01" id="amountOfExpanse"
-                            value="{{ ex_edit.amn ?? ex_edit.amountExpense }}" name="amountExpense">
-                        {# <input type="number" class="form-control" min="1" max="999999.99" step="0.01"
+                        <input type="number" class="form-control" min="1" max="999999.99" step="0.01"
                             id="amountOfExpanse" value="{{ ex_edit.amn }}" name="amountExpense"
-                            onkeypress="return onlyNumberKey(event)"> #}
+                            onkeypress="return onlyNumberKey(event)" required>
                     </div>
                     <div class="mb-3">
                         <label for="theDate3" class="form-label">Data:</label>
@@ -37,9 +27,6 @@
                         id="paymentMethodId">
                         {% if expenses_options_form_payment_method %}
                         {% for option_name_pay_method in expenses_options_form_payment_method %}
-
-                        {# <option value='{{ option_name_pay_method.name }}'>{{ option_name_pay_method.name }}</option> #}
-                        {# <option value='{{ option_name_pay_method.name }}'>{{ option_name_pay_method.name }}</option> #}
                         <option value="{{ option_name_pay_method.name }}"
                             {% if (ex_edit.pay ?? ex_edit.paymentMethod) == option_name_pay_method.name %} selected
                             {% endif %}>
@@ -54,14 +41,11 @@
                         name="paymentCategoryExpense">
                         {% if expenses_options_form_category %}
                         {% for option_name_category in expenses_options_form_category %}
-
-                        {# <option value='{{ option_name_category.name }}'>{{ option_name_category.name }}</option> #}
                         <option value="{{ option_name_category.name }}"
                             {% if (ex_edit.excategory ?? ex_edit.paymentCategoryExpense) == option_name_category.name %}
                             selected {% endif %}>
                             {{ option_name_category.name }}
                         </option>
-
                         {% endfor %}
                         {% endif %}
                     </select>
@@ -82,6 +66,4 @@
         </div>
     </div>
 </div>
-{# {% endfor %} #}
-{# {% endif %} #}
 {% endblock %}

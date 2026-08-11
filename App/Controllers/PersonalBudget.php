@@ -28,8 +28,6 @@ class Personalbudget extends Authenticated
          $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
         $formData = Flash::getFormData('new_income_form');
-        // $formData = $_SESSION['form_data'] ?? null;
-        // unset($_SESSION['form_data']);
 
         View::renderTemplate('PersonalBudget/addIncome.html', [
             'user' => $this->user,
@@ -43,9 +41,6 @@ class Personalbudget extends Authenticated
     {
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod(); 
-
-        // $formDataExpenses = $_SESSION['form_data_expenses'] ?? null;
-        // unset($_SESSION['form_data_expenses']);
         $formDataExpenses = Flash::getFormData('new_expense_form');
 
         View::renderTemplate('PersonalBudget/addExpense.html', [
@@ -73,14 +68,8 @@ class Personalbudget extends Authenticated
         ]);
     }
 
-    // public function successAreyouSuredeleteFromIncomesAction($idIncomesDelete, $myOrdinalNumberDeleteIncomesVar)
     public function successAreyouSuredeleteFromIncomesAction()
     {
-        // $id_incomes_delete = $idIncomesDelete;
-        // $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($_SESSION['idIncomesDelete']);
-        // $ordinal_delete_incomes_number = $myOrdinalNumberDeleteIncomesVar;
-        // $which_period = $_SESSION['paymentMethod'];
-
         $id_incomes_delete = (int)$this->route_params['idincomesdelete'];
         $data_to_are_you_sure_table_incomes = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($id_incomes_delete);
         if (!$data_to_are_you_sure_table_incomes) {
@@ -147,7 +136,6 @@ class Personalbudget extends Authenticated
             $this->redirectToChosenPeriod();
         }
 
-        // $_SESSION['form_data_update'] = $_POST;
         Flash::addFormData('update_income_form', $_POST);
 
 
@@ -164,29 +152,6 @@ class Personalbudget extends Authenticated
             $this->redirect('/');
         }
 
-        /****************** */
-        // $idOfEditedExpense = filter_input(INPUT_POST, 'idOfEditedExpense', FILTER_VALIDATE_INT);
-        // if (!$idOfEditedExpense) {
-        //     $this->redirect('/personalbudget/browsethebalance');
-        // }  
-
-        // $errors = [];
-        
-        // $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
-        // if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
-        //     $errors[] = 'Nieprawidłowa kwota';
-        // }
-
-        // $dateExpense = $_POST['dateExpense'] ?? '';
-        // $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
-        // if (!$d || $d->format('Y-m-d') !== $dateExpense) {
-        //     $errors[] = 'Nieprawidłowy format daty';
-        // }
-
-        // $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
-
-        /************* */
-
         $personalBudget = new ModelPersonalBudget($_POST);
         $result = $personalBudget->updateExpenses();
 
@@ -195,7 +160,6 @@ class Personalbudget extends Authenticated
             $this->redirectToChosenPeriod();
         }
 
-        // $_SESSION['form_data_expenses'] = $_POST;
         Flash::addFormData('update_expense_form', $_POST);
 
         foreach ($result as $error) {
@@ -204,29 +168,6 @@ class Personalbudget extends Authenticated
 
         $this->redirect('/personalbudget/editExpenses');
     }
-
-
-        // if (!empty($errors)) {
-        //     foreach ($errors as $error) {
-        //         Flash::addMessage($error, Flash::WARNING);
-        //     }
-
-        //     $this->redirect('/personalbudget/addexpense');
-        // }
-
-
-        // $amountExpense = $_POST['amountExpense'];
-        // $dateExpense = $_POST['dateExpense'];
-        // $commentExpense = $_POST['commentExpense'];
-        // $paymentName = $_POST['paymentMethod'];
-        // $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
-
-        // $personalBudget = new ModelPersonalBudget($_POST);
-
-        // if ($personalBudget->updateExpenses($idOfEditedExpense, $amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
-        //     Flash::addMessage('Pomyślnie zakończono edycję');
-        //     $this->redirectToChosenPeriod();
-    // }
 
     public function editIncomes()
     {
@@ -238,73 +179,22 @@ class Personalbudget extends Authenticated
             if (!$idIncomesEditRow) {
                 $this->redirect('/personalbudget/browsethebalance');
             }
-            // $_SESSION['idIncomesEditRow'] = $idIncomesEditRow;
-
-            // $idIncomesEditRow = $_SESSION['idIncomesEditRow'] ?? null;
+ 
             if (!$idIncomesEditRow) {
                 $this->redirect('/personalbudget/browsethebalance');
             }
 
             $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
-            // $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
-
-                    //             echo '<pre>';
-                    // print_r($incomesEditValues);
-                    // echo '</pre>';
-                    // exit;
-                    // echo '<pre>';
-                    // print_r($incomes_options_form);
-                    // echo '</pre>';
-                    // exit;
         }
-        // else $incomesEditValues = $_SESSION['form_data_inc_edited'] = $_POST;
-
            else {
-                    // $incomesEditValues = $_SESSION['form_data_update'] ?? null;
-                    // unset($_SESSION['form_data_update']);
-                    // $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
-
                     $incomesEditValues = Flash::getFormData('update_income_form');
-                    // $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
-
-
-                    // $incomes_options_form = $_SESSION['form_data_update']['paymentCategoryIncomeName'];;
-                    
-                    // $incomesEditValues['name'] = $incomesEditValues['paymentCategoryIncomeName'];
-//                                 var_dump($_POST['paymentCategoryIncomeName']);
-// exit;
-                    // echo '<pre>';
-                    // print_r($incomes_options_form);
-                    // echo '</pre>';
-                    // exit;
-
-                    // echo $incomes_options_form;
-                    // exit;
-                    // echo '<pre>';
-                    // print_r($incomesEditValues);
-                    // echo '</pre>';
-                    // exit;
            }
-
-
-        // $formDataEdited = $_SESSION['idIncomesEditRow'] ?? null;
-        // unset($_SESSION['idIncomesEditRow']);
-
-
-        // $idIncomesEditRow = $_SESSION['idIncomesEditRow'] ?? null;
-        // if (!$idIncomesEditRow) {
-        //     $this->redirect('/personalbudget/browsethebalance');
-        // }
-
-        // $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
-        // $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
         $incomes_options_form = \App\Models\ModelPersonalBudget::selectOptionsForIncomes();
 
         View::renderTemplate('PersonalBudget/editIncome.html', [
             'user' => $this->user,
             'incomes_edit_values' => $incomesEditValues,
             'incomes_options_form' => $incomes_options_form,
-            // 'formDataEdited' => $formDataEdited,
             'csrf_token' => Csrf::generate()
         ]);
     }
@@ -329,44 +219,13 @@ class Personalbudget extends Authenticated
             }
 
             $expensesEditValues = \App\Models\ModelPersonalBudget::selectAllFromExpensesToEdit($idExpensesEditRow);     
-            // $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
-            // $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
-            //             echo '<pre>';
-            // print_r($expensesEditValues);
-            // echo '</pre>';
-            // exit;
         }
 
         else {
-            // $expensesEditValues = $_SESSION['form_data_expenses'] ?? null;
-            // unset($_SESSION['form_data_expenses']);
             $expensesEditValues = Flash::getFormData('update_expense_form');
-
-
-            // $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
-            // $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
-            // echo '<pre>';
-            // print_r($expensesEditValues);
-            // echo '</pre>';
-            // exit;
-
-           }
-        // if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-        //     $this->redirect('/');
-        // }
-        // $idExpensesEditRow = filter_input(INPUT_POST, 'editRow', FILTER_VALIDATE_INT);
-        // if (!$idExpensesEditRow) {
-        //     $this->redirect('/personalbudget/browsethebalance');
-        // }
-    
+           } 
         $expenses_options_form_category = \App\Models\ModelPersonalBudget::selectOptionsForExpensesCategory();           
         $expenses_options_form_payment_method = \App\Models\ModelPersonalBudget::selectOptionsForExpensesPaymentMethod();
-
-            //         echo '<pre>';
-            // print_r($expenses_options_form_payment_method);
-            // echo '</pre>';
-            // exit;
-
 
         View::renderTemplate('PersonalBudget/editExpense.html', [
             'user' => $this->user,
@@ -391,10 +250,7 @@ class Personalbudget extends Authenticated
         if (!$myordinalnumberdeleteincomesvar) {
             $this->redirect('/personalbudget/browsethebalance');
         }
-        // die('/personalbudget/successareyousuredeletefromincomes/' . $idIncomesDelete . '/' . $myOrdinalNumberDeleteIncomesVar);
         $this->redirect('/personalbudget/successareyousuredeletefromincomes/' . $idincomesdelete . '/' . $myordinalnumberdeleteincomesvar);        
-        // $this->redirect('/personalbudget/successareyousuredeletefromincomes/' . $idIncomesDelete . '/' . $myOrdinalNumberDeleteIncomesVar);        
-        // $this->redirect('/personalbudget/successareyousuredeletefromincomes');
     }
 
     public function areYouSureDeleteFromExpenses()
@@ -413,18 +269,6 @@ class Personalbudget extends Authenticated
         }
 
         $this->redirect('/personalbudget/successareyousuredeletefromexpenses/' . $idexpensesdelete . '/' . $myordinalnumberdeleteexpensesvar); 
-
-    /*
-        if(isset($_POST['deleteRow'])) {
-            $_SESSION['idExpensesDelete'] = $_POST['deleteRow'];
-        }
-
-        if(isset($_POST['myOrdinalNumberDeleteExpenses'])) {
-            
-            $_SESSION['myOrdinalNumberDeleteExpensesVar'] = $_POST['myOrdinalNumberDeleteExpenses'];
-        }
-
-        $this->redirect('/personalbudget/successareyousuredeletefromexpenses');*/
     }
 
     public function deleteFromIncomes()
@@ -436,9 +280,6 @@ class Personalbudget extends Authenticated
         if (!$idIncomesDelete) {
             $this->redirect('/personalbudget/browsethebalance');
         }
-        // if(isset($_POST['deleteRow'])) {
-        //     $idIncomesDelete = $_POST['deleteRow'];
-        // }
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->deleteIncome($idIncomesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
@@ -455,9 +296,6 @@ class Personalbudget extends Authenticated
         if (!$idExpensesDelete) {
             $this->redirect('/personalbudget/browsethebalance');
         }
-        // if(isset($_POST['deleteRow'])) {
-        //     $idExpensesDelete = $_POST['deleteRow'];
-        // }
         $personalBudget = new ModelPersonalBudget($_POST);
         if ($personalBudget->deleteExpense($idExpensesDelete)) {
             Flash::addMessage('Pomyślnie usunięto rekord');
@@ -465,15 +303,11 @@ class Personalbudget extends Authenticated
         }
     }
 
-    // public function newIncomeAction()
     public function newIncomeAction()
     {
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
-        }
-
-/****************************************************************/
-        
+        }   
 
         $personalBudget = new ModelPersonalBudget($_POST);
         $result = $personalBudget->insertToIncomes();
@@ -482,69 +316,13 @@ class Personalbudget extends Authenticated
             $this->redirect('/personalbudget/successaddincome');
         }
 
-
-        // $_SESSION['form_data'] = $_POST;
-
         Flash::addFormData('new_income_form', $_POST);
-
-        // echo $_SESSION['form_data']['dateIncome'];
-        // exit;
-
-        // $_SESSION['form_data'] = array_filter($_POST, fn($v) => $v !== "");
-
-        // $formData = $_POST;
-
-        // if (empty($formData['dateIncome'])) {
-        //     unset($formData['dateIncome']);
-        // }
-
-        // $_SESSION['form_data'] = $formData;
-
-
 
         foreach ($result as $error) {
             Flash::addMessage($error, Flash::WARNING);
         }
 
         $this->redirect('/personalbudget/addincome');
-
-
-
-
-
-
-
-
-        // if (!empty($errors)) {
-        //     foreach ($errors as $error) {
-        //         Flash::addMessage($error, Flash::WARNING);
-        //     }
-
-        //     $this->redirect('/personalbudget/addincome');
-        // }
-
-        // if (!empty($errors)) {
-        //     $this->errors = $errors;
-        //     return false;
-        // }
-    
-    // ... reszta metody
-/****************************************************************/
-
-
-
-
-        // $amountIncome = $_POST['amountIncome'];
-        // $dateIncome = $_POST['dateIncome'];
-        // $commentIncome = $_POST['commentIncome'];
-        // $paymentCategoryIncomeName = $_POST['paymentCategoryIncomeName'];
-
-        // $this->user = Auth::getUser();  
-
-        // $personalBudget = new ModelPersonalBudget($_POST);
-        // if ($personalBudget->insertToIncomes()) {
-        //     $this->redirect('/personalbudget/successaddincome');      
-        // }
     }
 
     public function newExpenseAction()
@@ -552,8 +330,6 @@ class Personalbudget extends Authenticated
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $this->redirect('/');
         }
-            // $errors = [];
-
             $personalBudget = new ModelPersonalBudget($_POST);
             $result = $personalBudget->insertToExpenses();
 
@@ -561,7 +337,6 @@ class Personalbudget extends Authenticated
                 $this->redirect('/personalbudget/successaddexpense');
             }
 
-            // $_SESSION['form_data_expenses'] = $_POST;
             Flash::addFormData('new_expense_form', $_POST);
 
             foreach ($result as $error) {
@@ -570,42 +345,6 @@ class Personalbudget extends Authenticated
 
             $this->redirect('/personalbudget/addexpense');
     }
-            
-            // $amountExpense = filter_input(INPUT_POST, 'amountExpense', FILTER_VALIDATE_FLOAT);
-            // if ($amountExpense === false || $amountExpense <= 0 || $amountExpense > 999999.99) {
-            //     $errors[] = 'Nieprawidłowa kwota';
-            // }
-
-            // $dateExpense = $_POST['dateExpense'] ?? '';
-            // $d = DateTime::createFromFormat('Y-m-d', $dateExpense);
-            // if (!$d || $d->format('Y-m-d') !== $dateExpense) {
-            //     $errors[] = 'Nieprawidłowy format daty';
-            // }
-
-            // $commentExpense = mb_substr(trim($_POST['commentExpense'] ?? ''), 0, 100);
-
-            // if (!empty($errors)) {
-            //     foreach ($errors as $error) {
-            //         Flash::addMessage($error, Flash::WARNING);
-            //     }
-
-            //     $this->redirect('/personalbudget/addexpense');
-            // }
-
-
-        // $amountExpense = $_POST['amountExpense'];
-        // $dateExpense = $_POST['dateExpense'];
-        // $commentExpense = $_POST['commentExpense'];
-        // $paymentName = $_POST['paymentMethod'];
-        // $paymentCategoryExpense = $_POST['paymentCategoryExpense'];
-
-
-        // $this->user = Auth::getUser();  
-        // $personalBudget = new ModelPersonalBudget($_POST);
-        // if ($personalBudget->insertToExpenses($amountExpense, $dateExpense, $commentExpense, $paymentName, $paymentCategoryExpense)) {
-        //     $this->redirect('/personalbudget/successaddexpense');      
-        // }
-    // }
 
     public static function dateFromToCurrentMonth()
     {
@@ -742,29 +481,25 @@ class Personalbudget extends Authenticated
 
     public function successBrowseSelectedPeriodCurrentMonthAction()
     {
-        
+        $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();        
+        $date_from_to_current_month = \App\Controllers\Personalbudget::dateFromToCurrentMonth();
+        $query_name_income_current_month = \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentMonth);
+        $query_name_expense_current_month = \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentMonth);
+        $query_name_incomes_sum_current_month = \App\Models\ModelPersonalBudget::incomesSum($dateCurrentMonth);
+        $query_name_expenses_sum_current_month = \App\Models\ModelPersonalBudget::expensesSum($dateCurrentMonth);
+        $chart_incomes_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
+        $chart_expenses_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
 
-            $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
-                        
-            
-            $date_from_to_current_month = \App\Controllers\Personalbudget::dateFromToCurrentMonth();
-            $query_name_income_current_month = \App\Models\ModelPersonalBudget::getQueryNameIncome($dateCurrentMonth);
-            $query_name_expense_current_month = \App\Models\ModelPersonalBudget::getQueryNameExpense($dateCurrentMonth);
-            $query_name_incomes_sum_current_month = \App\Models\ModelPersonalBudget::incomesSum($dateCurrentMonth);
-            $query_name_expenses_sum_current_month = \App\Models\ModelPersonalBudget::expensesSum($dateCurrentMonth);
-            $chart_incomes_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
-            $chart_expenses_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
-
-            View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
-                'user' => $this->user,
-                'date_from_to_current_month' => $date_from_to_current_month,
-                'query_name_income_current_month' => $query_name_income_current_month,
-                'query_name_expense_current_month' => $query_name_expense_current_month,
-                'query_name_incomes_sum_current_month' => $query_name_incomes_sum_current_month,
-                'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
-                'chart_incomes_current_month' => $chart_incomes_current_month,
-                'chart_expenses_current_month' => $chart_expenses_current_month,
-                'csrf_token' => Csrf::generate()
+        View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
+            'user' => $this->user,
+            'date_from_to_current_month' => $date_from_to_current_month,
+            'query_name_income_current_month' => $query_name_income_current_month,
+            'query_name_expense_current_month' => $query_name_expense_current_month,
+            'query_name_incomes_sum_current_month' => $query_name_incomes_sum_current_month,
+            'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
+            'chart_incomes_current_month' => $chart_incomes_current_month,
+            'chart_expenses_current_month' => $chart_expenses_current_month,
+            'csrf_token' => Csrf::generate()
         ]);
     }
 

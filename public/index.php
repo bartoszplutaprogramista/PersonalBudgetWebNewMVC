@@ -16,18 +16,6 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-// var_dump(getenv('SHOW_ERRORS'));
-// exit;
-
-
-// $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-// $dotenv->load();
-
-
-
-
-
-
 /**
  * Error and Exception handling
  */
@@ -51,9 +39,6 @@ session_start();
  * Routing
  */
 $router = new Core\Router();
-
-// var_dump($_SERVER['REQUEST_URI']);
-// exit;
 
 // Add the routes
 $router->add('api/expenses/summary/{category:[a-zA-Z0-9ąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+}/{year:\d+}/{month:\d+}',['controller' => 'PersonalBudget', 'action' => 'dateLimitSumExpense']);
@@ -106,22 +91,4 @@ $router->add(
     ]
 );
 $router->add('{controller}/{action}');
-
-//TO JEST //$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-//TO JEST //$path = trim($path, '/');
-
-// echo "<pre>";
-// echo "REQUEST_URI: "; var_dump($_SERVER['REQUEST_URI']);
-// echo "PARSED PATH: "; var_dump($path);
-// echo "ROUTES: "; var_dump($router->getRoutes());
-// echo "</pre>";
-// exit;
-
-// Przekazanie poprawnej ścieżki do routera
-//TO JEST // $router->dispatch($path);
-
-
 $router->dispatch($_SERVER['QUERY_STRING']);
-
-
-////personalbudget/successareyousuredeletefromincomes/214/3
