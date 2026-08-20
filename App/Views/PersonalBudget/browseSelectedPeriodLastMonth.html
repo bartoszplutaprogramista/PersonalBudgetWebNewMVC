@@ -199,6 +199,18 @@
                                 </p>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                {% set incomes = query_name_incomes_sum_last_month.incSum|default(0) %}
+                                {% set expenses = query_name_expenses_sum_last_month.expSum|default(0) %}
+
+                                {% set balance = (incomes - expenses)|number_format(2, '.', ' ') %}
+
+                                <p>Bilans (zł): <b
+                                        class="{{ balance < 0 ? 'balance-negative' : 'balance-positive' }}">{{ balance }}</b>
+                                </p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

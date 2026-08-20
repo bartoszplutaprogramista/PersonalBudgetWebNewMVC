@@ -60,7 +60,7 @@ class Signup extends \Core\Controller
             $this->redirect('/signup/new');
         }
     }
-    
+
     public function successAction()
     {
         View::renderTemplate('Signup/success.html');

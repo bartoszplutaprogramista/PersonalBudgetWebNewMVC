@@ -92,6 +92,15 @@ body
     font-weight: 600;
 }
 
+.balance-negative{
+	color: #ffc107 !important;
+    font-weight: 600;	
+}
+
+.balance-positive{
+	color: #ffffff;
+}
+
 
 .column-expenses-delete
 {
