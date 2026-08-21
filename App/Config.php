@@ -86,4 +86,14 @@ class Config
     { 
         return self::env('MAIL_SECURE'); 
     }
+
+    /////////////////CAPTCHA/////////////////////
+    public static function CAPTCHA_SECRET_KEY(): string
+    {
+        return self::env('CAPTCHA_SECRET_KEY');
+    }
+    public static function CAPTCHA_SITE_KEY(): string
+    {
+        return self::env('CAPTCHA_SITE_KEY');
+    }
 }
