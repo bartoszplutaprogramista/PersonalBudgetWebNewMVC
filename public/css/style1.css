@@ -8,6 +8,18 @@ body
 	margin: 0 !important;
 }
 
+.limit-category-configurator
+{
+	color: #fff;
+	font-size: 12px;
+	text-align: right;	
+}
+
+.color-limit
+{
+	color: #ffc107;
+}
+
 .keep-password
 {
 	font-size: 16px;

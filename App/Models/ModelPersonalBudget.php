@@ -778,7 +778,7 @@ class ModelPersonalBudget extends \Core\Model
     {
         $db = static::getDB();
         $sql = 'SELECT 
-                id, name
+                id, name, limit_value
                 FROM expenses_category_assigned_to_users AS expCat
                 WHERE expCat.user_id = :user_id';
 

@@ -116,6 +116,20 @@
                                 </form>
                             </td>
                         </tr>
+
+                        {% if exp_conf.limit_value is null %}
+                        <tr>
+                            <td colspan="5" class="limit-category-configurator">
+                                Limit nie ustawiony ({{ exp_conf.name }})
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="limit-category-configurator color-limit">
+                                Ustawiony limit ({{ exp_conf.name }}): <b>{{ exp_conf.limit_value }} zł</b>
+                            </td>
+                        </tr>
+                        {% endif %}
                         {% set myOrdinalNumber = myOrdinalNumber + 1 %}
                         {% endfor %}
                         {% endif %}
