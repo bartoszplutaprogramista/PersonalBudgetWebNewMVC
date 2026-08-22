@@ -53,7 +53,7 @@ class Signup extends \Core\Controller
                 } else {
         
                     View::renderTemplate('Signup/new.html', [
-                        'user' => $user
+                        'captcha_site_key' => Config::CAPTCHA_SITE_KEY()
                     ]);
         
                 } 
