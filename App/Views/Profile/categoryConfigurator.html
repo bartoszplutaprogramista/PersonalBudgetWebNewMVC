@@ -65,7 +65,7 @@
             </div>
 
             <div class="table-responsive">
-                <table id="table_expenses" class="table-center my-table-category-configurator mb-4">
+                <table id="table_expenses" class="expense-limit-table table-center my-table-category-configurator mb-4">
                     <thead>
                         <tr>
                             <th colspan="5" class="center-td">Kategorie dla wydatków
@@ -120,13 +120,13 @@
                         {% if exp_conf.limit_value is null %}
                         <tr>
                             <td colspan="5" class="limit-category-configurator">
-                                Limit nie ustawiony ({{ exp_conf.name }})
+                                Limit nie ustawiony
                             </td>
                         </tr>
                         {% else %}
                         <tr>
                             <td colspan="5" class="limit-category-configurator color-limit">
-                                Ustawiony limit ({{ exp_conf.name }}): <b>{{ exp_conf.limit_value }} zł</b>
+                                Ustawiony limit: <b>{{ exp_conf.limit_value }} zł</b>
                             </td>
                         </tr>
                         {% endif %}
