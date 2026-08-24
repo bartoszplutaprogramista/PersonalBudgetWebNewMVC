@@ -180,10 +180,6 @@ class Personalbudget extends Authenticated
                 $this->redirect('/personalbudget/browsethebalance');
             }
  
-            if (!$idIncomesEditRow) {
-                $this->redirect('/personalbudget/browsethebalance');
-            }
-
             $incomesEditValues = \App\Models\ModelPersonalBudget::selectAllFromIncomesToEdit($idIncomesEditRow);
         }
            else {
@@ -208,12 +204,6 @@ class Personalbudget extends Authenticated
                 $this->redirect('/');
             }
             $idExpensesEditRow = filter_input(INPUT_POST, 'editRow', FILTER_VALIDATE_INT);
-            if (!$idExpensesEditRow) {
-                $this->redirect('/personalbudget/browsethebalance');
-            }
-            $_SESSION['idExpensesEditRow'] = $idExpensesEditRow;
-
-            $idExpensesEditRow = $_SESSION['idExpensesEditRow'] ?? null;
             if (!$idExpensesEditRow) {
                 $this->redirect('/personalbudget/browsethebalance');
             }

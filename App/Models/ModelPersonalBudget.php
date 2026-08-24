@@ -1011,8 +1011,16 @@ class ModelPersonalBudget extends \Core\Model
         }
 
         if (!preg_match('/^\d+$/', $limit)) {
-            $this->errors[] = 'Limit musi być liczbą całkowitą (bez przecinka)';
-          }
+        $this->errors[] = 'Limit musi być liczbą całkowitą (bez przecinka)';
+        } else {
+            $limitInt = (int)$limit;
+
+            if ($limitInt < 1) {
+                $this->errors[] = 'Limit nie może być mniejszy niż 1';
+            }
+
+            $this->data['limitValue'] = $limitInt;
+        }
 
         $idLimit = filter_var($this->data['limitID'], FILTER_VALIDATE_INT);
         if (!$idLimit) {
