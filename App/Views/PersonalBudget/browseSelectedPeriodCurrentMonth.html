@@ -9,6 +9,7 @@
         <div class="content mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS BIEŻĄCY MIESIĄC</h3>
             <form action="/personalbudget/newbrowsethebalance" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2 mb-2">
 
                     <div class="bd-highlight balance-width d-flex align-items-center">
@@ -61,6 +62,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/editIncomes" id="formDeleteExpanse"
                                     name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="editRowIncomes" value="{{ income.incID }}" />
                                     <button type="submit" class="btn btn-secondary" title="Edytuj">
                                         <i class="icon-pencil"></i></button>
@@ -69,6 +71,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromIncomes"
                                     id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="deleteRowIncomes" value="{{ income.incID }}" />
                                     <input type="hidden" name="myOrdinalNumberDeleteIncomes"
                                         value="{{ myOrdinalNumber }}" />
@@ -127,6 +130,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/editExpenses" id="formDeleteExpanse"
                                     name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="editRow" value="{{ expense.exID }}" />
                                     <button type="submit" class="btn btn-secondary" title="Edytuj">
                                         <i class="icon-pencil"></i></button>
@@ -135,6 +139,7 @@
                             <td class="column-delete-edit text-center">
                                 <form method="post" action="/personalbudget/areYouSureDeleteFromExpenses"
                                     id="formDeleteExpanse" name="formDelete">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                                     <input type="hidden" name="deleteRow" value="{{ expense.exID }}" />
                                     <input type="hidden" name="myOrdinalNumberDeleteExpenses"
                                         value="{{ myOrdinalNumberExpenses }}" />
@@ -193,6 +198,19 @@
                                     <b>0</b>
                                     {% endif %}
                                 </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {% set incomes = query_name_incomes_sum_current_month.incSum|default(0) %}
+                                {% set expenses = query_name_expenses_sum_current_month.expSum|default(0) %}
+
+                                {% set balance = (incomes - expenses)|number_format(2, '.', ' ') %}
+
+                                <p>Bilans (zł): <b
+                                        class="{{ balance < 0 ? 'balance-negative' : 'balance-positive' }}">{{ balance }}</b>
+                                </p>
+
                             </td>
                         </tr>
                     </tbody>

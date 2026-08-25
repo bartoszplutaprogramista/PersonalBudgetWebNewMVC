@@ -21,7 +21,7 @@
                     </thead>
                     <tbody>
                         {% if data_to_are_you_sure_table_incomes %}
-                        {% for income_are_you_sure in data_to_are_you_sure_table_incomes %}
+                        {% set income_are_you_sure = data_to_are_you_sure_table_incomes %}
                         <tr>
                             <td class="ordinal-number">{{ ordinal_delete_incomes_number }}</td>
                             <td class="column-incomes-delete">{{ income_are_you_sure.amn }}</td>
@@ -29,7 +29,6 @@
                             <td class="column-incomes-delete">{{ income_are_you_sure.incCategory }}</td>
                             <td class="column-incomes-delete">{{ income_are_you_sure.comment }}</td>
                         </tr>
-                        {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
@@ -39,6 +38,7 @@
                     <div class="margin-end-income">
                         <form method="post" action="/personalbudget/deleteFromIncomes" id="formDeleteExpanse"
                             name="formDelete">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <input type="hidden" name="deleteRow" value="{{ id_incomes_delete }}" />
                             <button type="submit" class="btn btn-warning">
                                 Usuń
@@ -47,6 +47,7 @@
                     </div>
                     <div class="margin-start-income">
                         <form action="/personalbudget/redirectToChosenPeriod" method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <input type="hidden" name="paymentMethod" value="{{ which_period }}" />
                             <button type="submit" class="btn btn-secondary">Anuluj</button>
                         </form>

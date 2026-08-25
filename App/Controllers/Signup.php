@@ -7,6 +7,7 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\User;
 use \App\Models\ModelPersonalBudget;
+use App\Config;
 
 #[\AllowDynamicProperties]
 class Signup extends \Core\Controller
@@ -15,13 +16,15 @@ class Signup extends \Core\Controller
 
     public function newAction()
     {
-        View::renderTemplate('Signup/new.html');
+        View::renderTemplate('Signup/new.html', [
+        'captcha_site_key' => Config::CAPTCHA_SITE_KEY()
+    ]);
     }
 
     public function createAction()
     {
         if(isset($_POST['g-recaptcha-response'])){
-            $secretKey = "";
+            $secretKey = Config::CAPTCHA_SECRET_KEY();
 
             $check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
 
@@ -39,7 +42,7 @@ class Signup extends \Core\Controller
                     $emailOfUser = $_POST['email']; 
                     $userId = $user->getUserId($emailOfUser);
         
-                    $personalBudget->inserIncomesIntoIncomesCategoryAssignedToUsers($userId);
+                    $personalBudget->insertIncomesIntoIncomesCategoryAssignedToUsers($userId);
                     $personalBudget->insertExpensesIntoExpensesCategoryAssignedToUsers($userId);
                     $personalBudget->insertIntoPaymentMethodsAssignedToUsers($userId);
                     
@@ -50,7 +53,7 @@ class Signup extends \Core\Controller
                 } else {
         
                     View::renderTemplate('Signup/new.html', [
-                        'user' => $user
+                        'captcha_site_key' => Config::CAPTCHA_SITE_KEY()
                     ]);
         
                 } 
@@ -60,6 +63,7 @@ class Signup extends \Core\Controller
             $this->redirect('/signup/new');
         }
     }
+
     public function successAction()
     {
         View::renderTemplate('Signup/success.html');

@@ -4,6 +4,7 @@ namespace Core;
 
 use \App\Auth;
 use \App\Flash;
+use \App\Csrf;
 
 abstract class Controller
 {
@@ -32,6 +33,7 @@ abstract class Controller
     protected function before()
     {
     }
+
 
     protected function after()
     {

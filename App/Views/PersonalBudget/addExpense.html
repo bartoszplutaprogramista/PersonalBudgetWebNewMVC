@@ -35,24 +35,28 @@
                     </div>
                 </div>
                 <form method="post" action="/personalbudget/newExpenseAction">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="mb-3">
                         <label for="amountOfExpanse" class="form-label">Kwota (zł):</label>
                         <input type="number" class="form-control" min="1" step="0.01" max="999999.99"
-                            id="amountOfExpanse" value="1" name="amountExpense"
-                            onkeypress="return onlyNumberKey(event)">
+                            id="amountOfExpanse" name="amountExpense" onkeypress="return onlyNumberKey(event)" required
+                            value="{{ formDataExpenses.amountExpense ?? '' }}">
                     </div>
-                    <div class="mb-3">
+                    <div class=" mb-3">
                         <label for="theDate" class="form-label">Data:</label>
-                        <input type="date" class="form-control" id="theDate" name="dateExpense" min="2000-01-01">
+                        <input type="date" class="form-control" id="theDate" name="dateExpense" min="2000-01-01"
+                            value="{{ formDataExpenses.dateExpense ?? 'now'|date('Y-m-d') }}">
                     </div>
                     <label class="p-input-radio mb-2" for="paymentMethodId">Sposób płatności:</label>
                     <select class="form-select form-select-sm mb-3" aria-label="sposob platnosci" name="paymentMethod"
                         id="paymentMethodId">
                         {% if expenses_options_form_payment_method %}
                         {% for option_name_pay_method in expenses_options_form_payment_method %}
-
-                        <option value='{{ option_name_pay_method.name }}'>{{ option_name_pay_method.name }}</option>
-
+                        <option value="{{ option_name_pay_method.name }}"
+                            {% if formDataExpenses and formDataExpenses.paymentMethod == option_name_pay_method.name %}
+                            selected {% endif %}>
+                            {{ option_name_pay_method.name }}
+                        </option>
                         {% endfor %}
                         {% endif %}
                     </select>
@@ -61,8 +65,11 @@
                         name="paymentCategoryExpense">
                         {% if expenses_options_form_category %}
                         {% for option_name_category in expenses_options_form_category %}
-
-                        <option value='{{ option_name_category.name }}'>{{ option_name_category.name }}</option>
+                        <option value="{{ option_name_category.name }}"
+                            {% if formDataExpenses and formDataExpenses.paymentCategoryExpense == option_name_category.name %}
+                            selected {% endif %}>
+                            {{ option_name_category.name }}
+                        </option>
 
                         {% endfor %}
                         {% endif %}
@@ -70,7 +77,8 @@
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
-                        <textarea class="form-control" id="comment" rows="2" name="commentExpense"></textarea>
+                        <textarea class="form-control" id="comment" rows="2" name="commentExpense"
+                            maxlength="100">{{ formDataExpenses.commentExpense ?? '' }}</textarea>
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Dodaj</button>

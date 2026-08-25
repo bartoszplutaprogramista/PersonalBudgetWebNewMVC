@@ -35,7 +35,7 @@ class View
 
         $userValue = Auth::getUser();
 
-            if($userValue !== null)
+              if($userValue && is_object($userValue))
             {
                 $array = get_object_vars($userValue);
                 $user_object = new User($_POST);

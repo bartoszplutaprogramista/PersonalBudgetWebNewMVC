@@ -14,7 +14,6 @@ input2 = document.getElementById('theDate1');
 input3editExpenses = document.getElementById('theDate3');
 
 if (input != null) {
-    document.getElementById('theDate').value = today;
     document.getElementById('theDate').setAttribute("max", today);
 
 } else if (input2 != null) {
@@ -29,6 +28,13 @@ if (input != null) {
 function onlyNumberKey(evt) {
     let ASCIICode = (evt.which) ? evt.which : evt.keyCode
     if ((ASCIICode > 31 && ASCIICode < 44) || (ASCIICode > 44 && ASCIICode < 48) || (ASCIICode > 57))
+        return false;
+    return true;
+}
+
+function onlyNumberKeyIntegers(evt) {
+    let ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if ((ASCIICode > 31 && ASCIICode <= 44) || (ASCIICode > 44 && ASCIICode < 48) || (ASCIICode > 57))
         return false;
     return true;
 }

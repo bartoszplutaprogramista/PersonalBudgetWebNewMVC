@@ -46,7 +46,6 @@ class Flash
         }
 
         // Append the message to the array
-        //$_SESSION['flash_notifications'][] = $message;
         $_SESSION['flash_notifications'][] = [
             'body' => $message,
             'type' => $type
@@ -61,11 +60,22 @@ class Flash
     public static function getMessages()
     {
         if (isset($_SESSION['flash_notifications'])) {
-            //return $_SESSION['flash_notifications'];
             $messages = $_SESSION['flash_notifications'];
             unset($_SESSION['flash_notifications']);
 
             return $messages;
         }
     }
+    public static function addFormData($key, $data)
+    {
+        $_SESSION['flash_form'][$key] = $data;
+    }
+
+    public static function getFormData($key)
+    {
+        $data = $_SESSION['flash_form'][$key] ?? null;
+        unset($_SESSION['flash_form'][$key]);
+        return $data;
+    }
+
 }

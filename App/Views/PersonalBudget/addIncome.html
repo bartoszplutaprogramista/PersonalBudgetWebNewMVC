@@ -9,27 +9,35 @@
             <h3>DODAJ PRZYCHÓD</h3>
             <div class="div-form-buttons mx-auto">
                 <form method="post" action="/personalbudget/newIncomeAction">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="mb-3">
                         <label for="amount" class="form-label">Kwota (zł):</label>
                         <input type="number" class="form-control" min="1" max="999999.99" step="0.01" id="amount"
-                            value="1" name="amountIncome" onkeypress="return onlyNumberKey(event)">
+                            name="amountIncome" onkeypress="return onlyNumberKey(event)" required
+                            value="{{ formData.amountIncome ?? '' }}">
                     </div>
                     <div class="mb-3">
                         <label for="theDate" class="form-label">Data:</label>
-                        <input type="date" class="form-control" id="theDate" min="2000-01-01" name="dateIncome">
+                        <input type="date" class="form-control" id="theDate" min="2000-01-01" name="dateIncome"
+                            value="{{ formData.dateIncome ?? 'now'|date('Y-m-d') }}">
                     </div>
                     <label class="p-input-radio mb-2" for="paymentCategoryIncomeId">Kategoria płatności:</label>
                     <select class="form-select form-select-sm" aria-label="kategoria platnosci"
                         name="paymentCategoryIncomeName" id="paymentCategoryIncomeId">
                         {% if incomes_options_form %}
                         {% for option_name in incomes_options_form %}
-                        <option value='{{ option_name.name }}'>{{ option_name.name }}</option>
+                        <option value="{{ option_name.name }}"
+                            {% if formData and formData.paymentCategoryIncomeName == option_name.name %} selected
+                            {% endif %}>
+                            {{ option_name.name }}
+                        </option>
                         {% endfor %}
                         {% endif %}
                     </select>
                     <div class="mt-3 mb-3">
                         <label for="comment" class="form-label">Komentarz (opcjonalnie):</label>
-                        <textarea class="form-control" id="comment" rows="2" name="commentIncome"></textarea>
+                        <textarea class="form-control" id="comment" rows="2" name="commentIncome"
+                            maxlength="100">{{ formData.commentIncome ?? '' }}</textarea>
                     </div>
                     <div class="mt-4 submit">
                         <button type="submit" class="btn btn-warning btn-lg">Dodaj</button>

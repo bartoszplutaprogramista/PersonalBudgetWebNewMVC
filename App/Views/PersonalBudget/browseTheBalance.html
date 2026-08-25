@@ -8,6 +8,7 @@
         <div class="content2 mt-2 p-4">
             <h3>PRZEGLĄDAJ BILANS</h3>
             <form action="/personalbudget/newbrowsethebalance" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="d-flex flex-row bd-highlight div-balance-buttons mx-auto p-2">
                     <div class="bd-highlight balance-width d-flex align-items-center">
                         <label class="p-input-radio w-100" for="paymentMethodSelected">Wybierz okres czasu:</label>

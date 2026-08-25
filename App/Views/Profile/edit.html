@@ -24,6 +24,7 @@
             <div class="div-form-buttons mx-auto text-center">
 
                 <form method="post" id="formProfile" action="/profile/update">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <div class="form-group">
                         <label for="inputName">Imię</label>
                         <input id="inputName" name="name" placeholder="Imię" value="{{ user.name }}"

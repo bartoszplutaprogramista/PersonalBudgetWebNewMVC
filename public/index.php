@@ -11,6 +11,10 @@
  */
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+// require_once __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 /**
  * Error and Exception handling
@@ -44,6 +48,47 @@ $router->add('login', ['controller' => 'Login', 'action' => 'new']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
+$router->add(
+    'personalbudget/successareyousuredeletefromincomes/{idincomesdelete:\d+}/{myordinalnumberdeleteincomesvar:\d+}',
+    [
+        'controller' => 'PersonalBudget',
+        'action' => 'successAreyouSuredeleteFromIncomes'
+    ]
+);
+$router->add(
+    'personalbudget/successareyousuredeletefromexpenses/{idexpensesdelete:\d+}/{myordinalnumberdeleteexpensesvar:\d+}',
+    [
+        'controller' => 'PersonalBudget',
+        'action' => 'successAreyouSuredeleteFromExpenses'
+    ]
+);
+$router->add(
+    'profile/editincomescategory/{idincomeseditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editIncomesCategory'
+    ]
+);
+$router->add(
+    'profile/editexpensescategory/{idexpenseseditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editExpensesCategory'
+    ]
+);
+$router->add(
+    'profile/editpaymentmethodcategory/{idpaymentmethodeditedcategory:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'editPaymentMethodCategory'
+    ]
+);
+$router->add(
+    'profile/setlimitforexpense/{idlimit:\d+}',
+    [
+        'controller' => 'Profile',
+        'action' => 'setLimitForExpense'
+    ]
+);
 $router->add('{controller}/{action}');
-
 $router->dispatch($_SERVER['QUERY_STRING']);
