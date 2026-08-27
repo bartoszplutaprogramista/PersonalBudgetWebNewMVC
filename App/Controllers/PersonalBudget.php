@@ -9,6 +9,9 @@ use \App\Models\ModelPersonalBudget;
 use \App\Models\User;
 use \App\Csrf;
 use DateTime;
+use GeminiAPI\Client;
+use GeminiAPI\Resources\ModelName;
+use GeminiAPI\Resources\Parts\TextPart;
 
 
 #[\AllowDynamicProperties]
@@ -469,6 +472,161 @@ class Personalbudget extends Authenticated
         ]);
     }
 
+    public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum)
+    {
+        $totalIncome = 0;
+        foreach ($incomesSum as $row) {
+            $totalIncome += $row['incNameSum'];
+        }
+
+        $totalExpense = 0;
+        foreach ($expensesSum as $row) {
+            $totalExpense += $row['expNameSum']; // jeśli masz expNameSum
+        }
+
+        $incomeText = "";
+        foreach ($incomesSum as $row) {
+            $incomeText .= $row['catName'] . ": " . $row['incNameSum'] . " zł\n";
+        }
+
+        $expenseText = "";
+        foreach ($expensesSum as $row) {
+            $expenseText .= $row['catName'] . ": " . $row['expNameSum'] . " zł\n";
+        }
+
+        // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
+
+        $prompt = "
+        Jako doradca finansowy oceń sytuację użytkownika.
+
+        Wyświetl poniższe informacje:
+        <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
+        <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
+
+        Pogrubiona czcionka
+        Przychody:
+        {$incomeText}
+        <br><br>
+
+        pogrubiona czcionka
+        Wydatki:
+        {$expenseText}
+        <br><br>
+
+        Podaj krótką, konkretną radę.
+        ";
+
+        // echo '<pre>' . $prompt . '</pre>';
+        // exit;
+
+        return $prompt;
+    }
+
+    public static function generateFinancialAdvice($incomesSum, $expensesSum)
+    {
+        $apiKey = \App\Config::GEMINI_API_KEY();
+        $prompt = \App\Controllers\Personalbudget::sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum);
+
+        $data = [
+            "contents" => [
+                [
+                    "role" => "user",
+                    "parts" => [
+                        ["text" => $prompt]
+                    ]
+                ]
+            ]
+        ];
+
+        // $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=$apiKey";
+        // $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey";
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=$apiKey";
+        $ch = curl_init($url);
+
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_HTTPHEADER => [
+                "Content-Type: application/json"
+            ],
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_RETURNTRANSFER => true
+        ]);
+
+        $response = curl_exec($ch);
+        // echo "<pre>";
+        // var_dump($response);
+        // echo "</pre>";
+        // exit;
+
+
+        curl_close($ch);
+
+        $json = json_decode($response, true);
+
+        return $json["candidates"][0]["content"]["parts"][0]["text"]
+            ?? "Brak odpowiedzi od Gemini.";
+    }
+
+
+
+    // public static function generateFinancialAdvice($incomesSum, $expensesSum)
+    // {
+    //     $apiKey = \App\Config::GEMINI_API_KEY();
+    //     $prompt = \App\Controllers\Personalbudget::sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum);
+
+
+    //     $client = new \GeminiAPI\Client($apiKey);
+
+    //     $response = $client->withV1Version()   // ← KLUCZOWA ZMIANA
+    //         ->generativeModel(\GeminiAPI\Resources\ModelName::GEMINI_1_5_FLASH)
+    //         ->generateContent(
+    //             new \GeminiAPI\Resources\Parts\TextPart($prompt)
+    //         );
+
+    //     return $response->text();
+
+        // $data = [
+        //     "model" => "gemini-3.7-flash",
+        //     "input" => [
+        //         [
+        //             "role" => "user",
+        //             "content" => $prompt
+        //         ]
+        //     ]
+        // ];
+
+        // $ch = curl_init("https://api.gemini.google.com/v1beta/models/gemini-3.7-flash:generateContent");
+
+        // curl_setopt_array($ch, [
+        //     CURLOPT_POST => true,
+        //     CURLOPT_HTTPHEADER => [
+        //         "Content-Type: application/json",
+        //         "x-goog-api-key: $apiKey"
+        //     ],
+        //     CURLOPT_POSTFIELDS => json_encode($data),
+        //     CURLOPT_RETURNTRANSFER => true
+        // ]);
+
+        // $response = curl_exec($ch);
+        // curl_close($ch);
+
+        // $json = json_decode($response, true);
+
+        // return $json["output_text"] ?? "Brak odpowiedzi od Gemini.";
+    // }
+
+
+    //     public static function generateFinancialAdvice($incomesSum, $expensesSum)
+    // {  
+    //     $response = $client->withV1BetaVersion()
+    //         ->generativeModel(\GeminiAPI\Resources\ModelName::GEMINI_1_5_FLASH)
+    //         ->generateContent(
+    //             new \GeminiAPI\Resources\Parts\TextPart($prompt)
+    //         );
+
+    //     return $response->text();
+    // }
+
     public function successBrowseSelectedPeriodCurrentMonthAction()
     {
         $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();        
@@ -480,6 +638,17 @@ class Personalbudget extends Authenticated
         $chart_incomes_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
         $chart_expenses_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
 
+        // echo '<pre>';
+        // print_r($chart_expenses_current_month);
+        // echo '</pre>';
+        // exit;
+
+
+        $financial_advice = \App\Controllers\Personalbudget::generateFinancialAdvice(
+            $chart_incomes_current_month,
+            $chart_expenses_current_month
+        );
+
         View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
             'user' => $this->user,
             'date_from_to_current_month' => $date_from_to_current_month,
@@ -489,6 +658,7 @@ class Personalbudget extends Authenticated
             'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
             'chart_incomes_current_month' => $chart_incomes_current_month,
             'chart_expenses_current_month' => $chart_expenses_current_month,
+            'financial_advice' => $financial_advice,
             'csrf_token' => Csrf::generate()
         ]);
     }
