@@ -472,16 +472,29 @@ class Personalbudget extends Authenticated
         ]);
     }
 
+    public function getAdviceAjaxAction()
+    {
+        $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
+        $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
+        $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
+
+        $advice = self::generateFinancialAdvice($incomes, $expenses);
+
+        echo $advice; // zwracamy tylko tekst
+    }
+
     public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum)
     {
         $totalIncome = 0;
         foreach ($incomesSum as $row) {
             $totalIncome += $row['incNameSum'];
+            $totalIncome = number_format($totalIncome, 2, '.', '');
         }
 
         $totalExpense = 0;
         foreach ($expensesSum as $row) {
             $totalExpense += $row['expNameSum']; // jeśli masz expNameSum
+            $totalExpense = number_format($totalExpense, 2, '.', '');
         }
 
         $incomeText = "";
@@ -497,24 +510,27 @@ class Personalbudget extends Authenticated
         // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
 
         $prompt = "
-        Jako doradca finansowy oceń sytuację użytkownika.
+        Jako doradca finansowy oceń sytuację użytkownika. 
+        Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
+        Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
+        Cały tekst ma być czarny: używaj <div style='color:#000;'> ... </div>.
+
+        <div style='color:#000;'>
 
         Wyświetl poniższe informacje:
         <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
         <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
 
-        Pogrubiona czcionka
-        Przychody:
+        <strong>Przychody:</strong>
         {$incomeText}
         <br><br>
 
-        pogrubiona czcionka
-        Wydatki:
+        <strong>Wydatki:</strong>
         {$expenseText}
         <br><br>
 
-        Podaj krótką, konkretną radę.
-        ";
+        Doradź w jaki sposób ta osoba może mądrze i lepiej zarządzać swoimi finansami .
+        </div>";
 
         // echo '<pre>' . $prompt . '</pre>';
         // exit;
@@ -644,10 +660,10 @@ class Personalbudget extends Authenticated
         // exit;
 
 
-        $financial_advice = \App\Controllers\Personalbudget::generateFinancialAdvice(
-            $chart_incomes_current_month,
-            $chart_expenses_current_month
-        );
+        // $financial_advice = \App\Controllers\Personalbudget::generateFinancialAdvice(
+        //     $chart_incomes_current_month,
+        //     $chart_expenses_current_month
+        // );
 
         View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
             'user' => $this->user,
@@ -658,7 +674,7 @@ class Personalbudget extends Authenticated
             'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
             'chart_incomes_current_month' => $chart_incomes_current_month,
             'chart_expenses_current_month' => $chart_expenses_current_month,
-            'financial_advice' => $financial_advice,
+            // 'financial_advice' => $financial_advice,
             'csrf_token' => Csrf::generate()
         ]);
     }
