@@ -472,18 +472,67 @@ class Personalbudget extends Authenticated
         ]);
     }
 
+    // public function getAdviceAjaxAction()
+    // {
+    //     $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
+    //     $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
+    //     $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
+    //     $dateFromTo = \App\Controllers\Personalbudget::dateFromToCurrentMonth();
+
+    //     $advice = self::generateFinancialAdvice($incomes, $expenses, $dateFromTo);
+
+    //     echo $advice; // zwracamy tylko tekst
+    // }
+
     public function getAdviceAjaxAction()
     {
-        $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
-        $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
-        $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
+        $paymentMethod = $_SESSION['paymentMethod'] ?? null;
 
-        $advice = self::generateFinancialAdvice($incomes, $expenses);
+        switch ($paymentMethod) {
 
-        echo $advice; // zwracamy tylko tekst
+            case 'currentMonth':
+                $date = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
+                $dateFromTo = \App\Controllers\Personalbudget::dateFromToCurrentMonth();
+                $useSelectedPeriod = false;
+                break;
+
+            case 'lastMonth':
+                $date = \App\Models\ModelPersonalBudget::getDateLastMonth();
+                $dateFromTo = \App\Controllers\Personalbudget::dateFromToLastMonth();
+                $useSelectedPeriod = false;
+                break;
+
+            case 'currentYear':
+                $date = \App\Models\ModelPersonalBudget::getDateCurrentYear();
+                $dateFromTo = \App\Controllers\Personalbudget::dateFromToCurrentYear();
+                $useSelectedPeriod = false;
+                break;
+
+            default:
+                // SELECTED PERIOD
+                $start = \App\Models\ModelPersonalBudget::getStartDateSelectedPeriod();
+                $end = \App\Models\ModelPersonalBudget::getEndDateSelectedPeriod();
+
+                $dateFromTo = $start . " - " . $end;
+
+                $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChartSelectedPeriod();
+                $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChartSelectedPeriod();
+
+                $useSelectedPeriod = true;
+                break;
+        }
+
+        if (!$useSelectedPeriod) {
+            $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($date);
+            $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($date);
+        }
+
+        $advice = self::generateFinancialAdvice($incomes, $expenses, $dateFromTo);
+
+        echo $advice;
     }
 
-    public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum)
+    public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to)
     {
         $totalIncome = 0;
         foreach ($incomesSum as $row) {
@@ -513,11 +562,15 @@ class Personalbudget extends Authenticated
         Jako doradca finansowy oceń sytuację użytkownika. 
         Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
         Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
-        Cały tekst ma być czarny: używaj <div style='color:#000;'> ... </div>.
+        Nie używaj żadnych stylów inline typu style='color:...'.
+        Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
+        Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
+
 
         <div style='color:#000;'>
 
         Wyświetl poniższe informacje:
+        <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong>
         <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
         <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
 
@@ -538,10 +591,10 @@ class Personalbudget extends Authenticated
         return $prompt;
     }
 
-    public static function generateFinancialAdvice($incomesSum, $expensesSum)
+    public static function generateFinancialAdvice($incomesSum, $expensesSum, $date_from_to)
     {
         $apiKey = \App\Config::GEMINI_API_KEY();
-        $prompt = \App\Controllers\Personalbudget::sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum);
+        $prompt = \App\Controllers\Personalbudget::sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to);
 
         $data = [
             "contents" => [
