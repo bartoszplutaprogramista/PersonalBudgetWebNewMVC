@@ -422,6 +422,18 @@ class Personalbudget extends Authenticated
         $_SESSION['start_date'] = $dateSelectedPeriod1;
         $_SESSION['end_date'] = $dateSelectedPeriod2;
 
+        $start = DateTime::createFromFormat('Y-m-d', $dateSelectedPeriod1);
+        $end   = DateTime::createFromFormat('Y-m-d', $dateSelectedPeriod2);
+
+        if (!$start || $start->format('Y-m-d') !== $dateSelectedPeriod1 ||
+            !$end || $end->format('Y-m-d') !== $dateSelectedPeriod2) {
+
+            Flash::addMessage('Niewłaściwy format daty');
+            $this->redirect('/personalbudget/choosecorrectdate');
+        }
+
+
+
         if($_SESSION['start_date']>$_SESSION['end_date']){
             $this->redirect('/personalbudget/choosecorrectdate');
         } else {
@@ -564,21 +576,23 @@ class Personalbudget extends Authenticated
         Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
         Nie używaj żadnych stylów inline typu style='color:...'.
         Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
+        Nie używaj żadnych list: zakazane są <ul>, <ol>, <li>
+        Tag <strong> jest dozwolony i ma być używany normalnie.
         Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
 
 
         <div style='color:#000;'>
 
         Wyświetl poniższe informacje:
-        <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong>
+        <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong><br><br>
         <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
         <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
 
-        <strong>Przychody:</strong>
+        <strong>Przychody:</strong><br>
         {$incomeText}
         <br><br>
 
-        <strong>Wydatki:</strong>
+        <strong>Wydatki:</strong><br>
         {$expenseText}
         <br><br>
 
