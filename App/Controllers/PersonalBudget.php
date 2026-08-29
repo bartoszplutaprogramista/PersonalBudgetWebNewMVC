@@ -544,7 +544,46 @@ class Personalbudget extends Authenticated
         echo $advice;
     }
 
-    public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to)
+    public static function getPrompt($date_from_to, $totalIncome, $totalExpense, $incomeText, $expenseText){
+        $promptText = "
+            Jako doradca finansowy oceń sytuację użytkownika. 
+            Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
+            Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
+            Nie używaj żadnych stylów inline typu style='color:...'.
+            Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
+            Nie używaj żadnych list: zakazane są <ul>, <ol>, <li>
+            Tag <strong> jest dozwolony i ma być używany normalnie.
+            Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
+
+            Przychody i wydatki wypisz jako prosty tekst,
+            KAŻDY ELEMENT W OSOBNEJ LINII, ROZDZIELONY TAGIEM <br>,
+            np.:
+            Nazwa źródła - kwota zł<br>
+            Nazwa źródła - kwota zł<br>
+            Bez użycia <ul>, <ol>, <li>.
+
+
+            <div style='color:#000;'>
+
+            Wyświetl poniższe informacje:
+            <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong><br><br>
+            <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
+            <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
+
+            <strong>Przychody:</strong><br>
+            {$incomeText}
+            <br><br>
+
+            <strong>Wydatki:</strong><br>
+            {$expenseText}
+            <br><br>
+
+            Doradź w jaki sposób ta osoba może mądrze i lepiej zarządzać swoimi finansami .
+            </div>";
+        return $promptText;
+    }
+
+public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to)
     {
         $totalIncome = 0;
         foreach ($incomesSum as $row) {
@@ -554,7 +593,7 @@ class Personalbudget extends Authenticated
 
         $totalExpense = 0;
         foreach ($expensesSum as $row) {
-            $totalExpense += $row['expNameSum']; // jeśli masz expNameSum
+            $totalExpense += $row['expNameSum'];
             $totalExpense = number_format($totalExpense, 2, '.', '');
         }
 
@@ -567,43 +606,82 @@ class Personalbudget extends Authenticated
         foreach ($expensesSum as $row) {
             $expenseText .= $row['catName'] . ": " . $row['expNameSum'] . " zł\n";
         }
-
+        $prompt = self::getPrompt($date_from_to, $totalIncome, $totalExpense, $incomeText, $expenseText);
         // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
-
-        $prompt = "
-        Jako doradca finansowy oceń sytuację użytkownika. 
-        Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
-        Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
-        Nie używaj żadnych stylów inline typu style='color:...'.
-        Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
-        Nie używaj żadnych list: zakazane są <ul>, <ol>, <li>
-        Tag <strong> jest dozwolony i ma być używany normalnie.
-        Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
-
-
-        <div style='color:#000;'>
-
-        Wyświetl poniższe informacje:
-        <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong><br><br>
-        <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
-        <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
-
-        <strong>Przychody:</strong><br>
-        {$incomeText}
-        <br><br>
-
-        <strong>Wydatki:</strong><br>
-        {$expenseText}
-        <br><br>
-
-        Doradź w jaki sposób ta osoba może mądrze i lepiej zarządzać swoimi finansami .
-        </div>";
 
         // echo '<pre>' . $prompt . '</pre>';
         // exit;
 
         return $prompt;
     }
+
+    // public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to)
+    // {
+    //     $totalIncome = 0;
+    //     foreach ($incomesSum as $row) {
+    //         $totalIncome += $row['incNameSum'];
+    //         $totalIncome = number_format($totalIncome, 2, '.', '');
+    //     }
+
+    //     $totalExpense = 0;
+    //     foreach ($expensesSum as $row) {
+    //         $totalExpense += $row['expNameSum']; // jeśli masz expNameSum
+    //         $totalExpense = number_format($totalExpense, 2, '.', '');
+    //     }
+
+    //     $incomeText = "";
+    //     foreach ($incomesSum as $row) {
+    //         $incomeText .= $row['catName'] . ": " . $row['incNameSum'] . " zł\n";
+    //     }
+
+    //     $expenseText = "";
+    //     foreach ($expensesSum as $row) {
+    //         $expenseText .= $row['catName'] . ": " . $row['expNameSum'] . " zł\n";
+    //     }
+
+    //     // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
+
+    //     $prompt = "
+    //     Jako doradca finansowy oceń sytuację użytkownika. 
+    //     Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
+    //     Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
+    //     Nie używaj żadnych stylów inline typu style='color:...'.
+    //     Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
+    //     Nie używaj żadnych list: zakazane są <ul>, <ol>, <li>
+    //     Tag <strong> jest dozwolony i ma być używany normalnie.
+    //     Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
+
+    //     Przychody i wydatki wypisz jako prosty tekst,
+    //     KAŻDY ELEMENT W OSOBNEJ LINII, ROZDZIELONY TAGIEM <br>,
+    //     np.:
+    //     Nazwa źródła - kwota zł<br>
+    //     Nazwa źródła - kwota zł<br>
+    //     Bez użycia <ul>, <ol>, <li>.
+
+
+    //     <div style='color:#000;'>
+
+    //     Wyświetl poniższe informacje:
+    //     <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong><br><br>
+    //     <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
+    //     <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
+
+    //     <strong>Przychody:</strong><br>
+    //     {$incomeText}
+    //     <br><br>
+
+    //     <strong>Wydatki:</strong><br>
+    //     {$expenseText}
+    //     <br><br>
+
+    //     Doradź w jaki sposób ta osoba może mądrze i lepiej zarządzać swoimi finansami .
+    //     </div>";
+
+        // echo '<pre>' . $prompt . '</pre>';
+        // exit;
+
+    //     return $prompt;
+    // }
 
     public static function generateFinancialAdvice($incomesSum, $expensesSum, $date_from_to)
     {
