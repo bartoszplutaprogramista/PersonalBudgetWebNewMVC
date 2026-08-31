@@ -484,18 +484,6 @@ class Personalbudget extends Authenticated
         ]);
     }
 
-    // public function getAdviceAjaxAction()
-    // {
-    //     $dateCurrentMonth = \App\Models\ModelPersonalBudget::getDateCurrentMonth();
-    //     $incomes = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
-    //     $expenses = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
-    //     $dateFromTo = \App\Controllers\Personalbudget::dateFromToCurrentMonth();
-
-    //     $advice = self::generateFinancialAdvice($incomes, $expenses, $dateFromTo);
-
-    //     echo $advice; // zwracamy tylko tekst
-    // }
-
     public function getAdviceAjaxAction()
     {
         $paymentMethod = $_SESSION['paymentMethod'] ?? null;
@@ -607,81 +595,9 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
             $expenseText .= $row['catName'] . ": " . $row['expNameSum'] . " zł\n";
         }
         $prompt = self::getPrompt($date_from_to, $totalIncome, $totalExpense, $incomeText, $expenseText);
-        // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
-
-        // echo '<pre>' . $prompt . '</pre>';
-        // exit;
 
         return $prompt;
     }
-
-    // public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum, $date_from_to)
-    // {
-    //     $totalIncome = 0;
-    //     foreach ($incomesSum as $row) {
-    //         $totalIncome += $row['incNameSum'];
-    //         $totalIncome = number_format($totalIncome, 2, '.', '');
-    //     }
-
-    //     $totalExpense = 0;
-    //     foreach ($expensesSum as $row) {
-    //         $totalExpense += $row['expNameSum']; // jeśli masz expNameSum
-    //         $totalExpense = number_format($totalExpense, 2, '.', '');
-    //     }
-
-    //     $incomeText = "";
-    //     foreach ($incomesSum as $row) {
-    //         $incomeText .= $row['catName'] . ": " . $row['incNameSum'] . " zł\n";
-    //     }
-
-    //     $expenseText = "";
-    //     foreach ($expensesSum as $row) {
-    //         $expenseText .= $row['catName'] . ": " . $row['expNameSum'] . " zł\n";
-    //     }
-
-    //     // $client = new \GeminiAPI\Client(\App\Config::GEMINI_API_KEY());
-
-    //     $prompt = "
-    //     Jako doradca finansowy oceń sytuację użytkownika. 
-    //     Przeanalizuj na co dana osoba wydaje pieniądze w jaki sposób je zarabia.
-    //     Wynik zwróć w czystym HTML — bez Markdown, bez **, bez ###.
-    //     Nie używaj żadnych stylów inline typu style='color:...'.
-    //     Nie używaj <span>, <font>, ani innych tagów zmieniających kolor.
-    //     Nie używaj żadnych list: zakazane są <ul>, <ol>, <li>
-    //     Tag <strong> jest dozwolony i ma być używany normalnie.
-    //     Cały tekst ma być czarny i ma być zawarty wyłącznie w jednym <div style='color:#000;'>.
-
-    //     Przychody i wydatki wypisz jako prosty tekst,
-    //     KAŻDY ELEMENT W OSOBNEJ LINII, ROZDZIELONY TAGIEM <br>,
-    //     np.:
-    //     Nazwa źródła - kwota zł<br>
-    //     Nazwa źródła - kwota zł<br>
-    //     Bez użycia <ul>, <ol>, <li>.
-
-
-    //     <div style='color:#000;'>
-
-    //     Wyświetl poniższe informacje:
-    //     <strong>Analiza przychodów i wydatków w okresie {$date_from_to}</strong><br><br>
-    //     <strong>Suma przychodów:</strong> {$totalIncome} zł <br><br>
-    //     <strong> Suma wydatków:</strong> {$totalExpense} zł zrób odstęp <br><br>
-
-    //     <strong>Przychody:</strong><br>
-    //     {$incomeText}
-    //     <br><br>
-
-    //     <strong>Wydatki:</strong><br>
-    //     {$expenseText}
-    //     <br><br>
-
-    //     Doradź w jaki sposób ta osoba może mądrze i lepiej zarządzać swoimi finansami .
-    //     </div>";
-
-        // echo '<pre>' . $prompt . '</pre>';
-        // exit;
-
-    //     return $prompt;
-    // }
 
     public static function generateFinancialAdvice($incomesSum, $expensesSum, $date_from_to)
     {
@@ -699,8 +615,6 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
             ]
         ];
 
-        // $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent?key=$apiKey";
-        // $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$apiKey";
         $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=$apiKey";
         $ch = curl_init($url);
 
@@ -714,11 +628,6 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
         ]);
 
         $response = curl_exec($ch);
-        // echo "<pre>";
-        // var_dump($response);
-        // echo "</pre>";
-        // exit;
-
 
         curl_close($ch);
 
@@ -727,66 +636,6 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
         return $json["candidates"][0]["content"]["parts"][0]["text"]
             ?? "Brak odpowiedzi od Gemini.";
     }
-
-
-
-    // public static function generateFinancialAdvice($incomesSum, $expensesSum)
-    // {
-    //     $apiKey = \App\Config::GEMINI_API_KEY();
-    //     $prompt = \App\Controllers\Personalbudget::sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expensesSum);
-
-
-    //     $client = new \GeminiAPI\Client($apiKey);
-
-    //     $response = $client->withV1Version()   // ← KLUCZOWA ZMIANA
-    //         ->generativeModel(\GeminiAPI\Resources\ModelName::GEMINI_1_5_FLASH)
-    //         ->generateContent(
-    //             new \GeminiAPI\Resources\Parts\TextPart($prompt)
-    //         );
-
-    //     return $response->text();
-
-        // $data = [
-        //     "model" => "gemini-3.7-flash",
-        //     "input" => [
-        //         [
-        //             "role" => "user",
-        //             "content" => $prompt
-        //         ]
-        //     ]
-        // ];
-
-        // $ch = curl_init("https://api.gemini.google.com/v1beta/models/gemini-3.7-flash:generateContent");
-
-        // curl_setopt_array($ch, [
-        //     CURLOPT_POST => true,
-        //     CURLOPT_HTTPHEADER => [
-        //         "Content-Type: application/json",
-        //         "x-goog-api-key: $apiKey"
-        //     ],
-        //     CURLOPT_POSTFIELDS => json_encode($data),
-        //     CURLOPT_RETURNTRANSFER => true
-        // ]);
-
-        // $response = curl_exec($ch);
-        // curl_close($ch);
-
-        // $json = json_decode($response, true);
-
-        // return $json["output_text"] ?? "Brak odpowiedzi od Gemini.";
-    // }
-
-
-    //     public static function generateFinancialAdvice($incomesSum, $expensesSum)
-    // {  
-    //     $response = $client->withV1BetaVersion()
-    //         ->generativeModel(\GeminiAPI\Resources\ModelName::GEMINI_1_5_FLASH)
-    //         ->generateContent(
-    //             new \GeminiAPI\Resources\Parts\TextPart($prompt)
-    //         );
-
-    //     return $response->text();
-    // }
 
     public function successBrowseSelectedPeriodCurrentMonthAction()
     {
@@ -799,17 +648,6 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
         $chart_incomes_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromIncomesToChart($dateCurrentMonth);
         $chart_expenses_current_month = \App\Models\ModelPersonalBudget::sumOfNamesFromExpensesToChart($dateCurrentMonth);
 
-        // echo '<pre>';
-        // print_r($chart_expenses_current_month);
-        // echo '</pre>';
-        // exit;
-
-
-        // $financial_advice = \App\Controllers\Personalbudget::generateFinancialAdvice(
-        //     $chart_incomes_current_month,
-        //     $chart_expenses_current_month
-        // );
-
         View::renderTemplate('PersonalBudget/browseSelectedPeriodCurrentMonth.html', [
             'user' => $this->user,
             'date_from_to_current_month' => $date_from_to_current_month,
@@ -819,7 +657,6 @@ public static function sumIncomesAndExpensesForGeminiPrompt($incomesSum, $expens
             'query_name_expenses_sum_current_month' => $query_name_expenses_sum_current_month,
             'chart_incomes_current_month' => $chart_incomes_current_month,
             'chart_expenses_current_month' => $chart_expenses_current_month,
-            // 'financial_advice' => $financial_advice,
             'csrf_token' => Csrf::generate()
         ]);
     }
