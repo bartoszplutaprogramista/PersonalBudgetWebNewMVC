@@ -96,4 +96,10 @@ class Config
     {
         return self::env('CAPTCHA_SITE_KEY');
     }
+
+    ////////////////GEMINI_API///////////////////
+    public static function GEMINI_API_KEY(): string
+    {
+        return self::env('GEMINI_API_KEY');
+    }
 }

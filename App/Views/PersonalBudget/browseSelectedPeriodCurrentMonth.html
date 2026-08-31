@@ -216,6 +216,16 @@
                     </tbody>
                 </table>
             </div>
+            <div class="center-btn mt-4">
+                <button id="openBtn" class="button-e-consultant"><b>WSKAZÓWKA OD E-DORADCY</b></button>
+            </div>
+            <div id="modal" class="modal-overlay">
+                <div class="modal-box">
+                    <button id="closeBtn" class="modal-close">×</button>
+                    <h3 class="e-consultant">Rada od Twojego doradcy finansowego</h3>
+                    <p class="my-text"></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -232,4 +242,6 @@
     document.body.appendChild(script);
 </script>
 <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script src="/js/geminiApiPhpClient.js"></script>
+<script src="/js/geminiAdvisor.js"></script>
 {% endblock %}
